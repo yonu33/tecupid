@@ -1,0 +1,353 @@
+:root {
+  --bg: #f6f4fb;
+  --surface: #ffffff;
+  --text: #1d1a2b;
+  --muted: #6b6782;
+  --border: #e3dff0;
+  --accent: #6c4cf5;
+  --accent-text: #ffffff;
+  --like: #e8436a;
+  --nope: #6b6782;
+  --shadow: 0 10px 30px rgb(40 20 100 / 0.12);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14121d;
+    --surface: #1f1c2c;
+    --text: #ece9f7;
+    --muted: #a19cba;
+    --border: #322e45;
+    --accent: #9a82ff;
+    --accent-text: #14121d;
+    --like: #ff6b8e;
+    --nope: #a19cba;
+    --shadow: 0 10px 30px rgb(0 0 0 / 0.4);
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", "Yu Gothic UI", sans-serif;
+  line-height: 1.7;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.screen {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 16px 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* スタート */
+.start {
+  min-height: 100dvh;
+  justify-content: center;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.logo {
+  margin: 4px 0 16px;
+  font-size: 3rem;
+  letter-spacing: 0.02em;
+}
+
+.lead {
+  margin: 0 0 32px;
+}
+
+.note {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.btn-primary {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 40px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.btn-text {
+  border: none;
+  background: none;
+  color: var(--muted);
+  text-decoration: underline;
+  padding: 8px;
+}
+
+/* スワイプ */
+.progress {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.2s;
+}
+
+.progress-text {
+  margin: 4px 0 16px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  min-height: 300px;
+  padding: 40px 24px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  touch-action: pan-y;
+  user-select: none;
+  cursor: grab;
+  transition: transform 0.2s;
+}
+
+.card.dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.card-text {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.card-example {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.stamp {
+  position: absolute;
+  top: 16px;
+  padding: 2px 10px;
+  border: 2px solid;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.stamp.like {
+  left: 16px;
+  color: var(--like);
+}
+
+.stamp.nope {
+  right: 16px;
+  color: var(--nope);
+}
+
+.actions {
+  display: flex;
+  gap: 40px;
+  margin-top: 28px;
+}
+
+.btn-round {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: var(--surface);
+  font-size: 1.6rem;
+  box-shadow: var(--shadow);
+}
+
+.btn-round.like {
+  color: var(--like);
+}
+
+.btn-round.nope {
+  color: var(--nope);
+}
+
+.hint {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.sub-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 16px;
+  margin-top: 8px;
+}
+
+/* 結果 */
+.result {
+  align-items: stretch;
+}
+
+.result-title {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.combo {
+  padding: 20px;
+  border-radius: 20px;
+  background: var(--accent);
+  color: var(--accent-text);
+  text-align: center;
+}
+
+.combo .eyebrow {
+  color: inherit;
+  opacity: 0.85;
+}
+
+.combo-name {
+  margin: 4px 0 0;
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.combo-name span {
+  opacity: 0.7;
+}
+
+.rank h2 {
+  margin: 32px 0 8px;
+  font-size: 1.1rem;
+}
+
+.rank-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.tech {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.tech-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.place {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.tech-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.score {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.tech-summary {
+  margin: 4px 0 8px;
+  font-size: 0.9rem;
+}
+
+.reasons {
+  margin: 0 0 8px;
+  padding-left: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.resource {
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
+.follow-up {
+  margin: -8px 0 12px;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.other-departments {
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.other-departments > summary {
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.rest {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.rest li .score {
+  margin-left: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .progress-bar {
+    transition: none;
+  }
+}

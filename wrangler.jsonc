@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tecupid",
+  "compatibility_date": "2026-11-01",
+  // Astro で静的ビルドした dist/ を Workers Static Assets として配信する。
+  // MVP ではサーバー側のスクリプト（main）は持たない。
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
