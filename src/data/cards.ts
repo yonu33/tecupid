@@ -38,6 +38,14 @@ export const CARDS: FeatureCard[] = [
   { id: "i05", axis: "department", department: "infra", text: "アプリを「コンテナ」に詰めて、どこでも同じように動かしたい", example: "「自分の PC では動くのに、サーバーでは動かない」を防ぐ", tags: { containers: 1 } },
   { id: "i06", axis: "department", department: "infra", text: "コードを push したら、テストやデプロイが自動で走る仕組みを作りたい", tags: { "ci-cd": 1 } },
 
+  // 部門の専用カード: AI・データ
+  { id: "a01", axis: "department", department: "ai-data", text: "画像や文章を理解するニューラルネットワークを、自分で作ってみたい", example: "画像の分類や、文章の生成など", tags: { "deep-learning": 1 } },
+  { id: "a02", axis: "department", department: "ai-data", text: "まずは決定木や回帰など、仕組みを説明しやすい機械学習から始めたい", example: "「なぜその予測になったか」を説明しやすい", tags: { "deep-learning": -1 } },
+  { id: "a03", axis: "department", department: "ai-data", text: "数行のコードで、モデルの学習から評価まで済ませたい", tags: { "high-level-api": 1 } },
+  { id: "a04", axis: "department", department: "ai-data", text: "学習の 1 ステップずつを自分で書いて、中で何が起きているかを理解したい", tags: { "high-level-api": -1 } },
+  { id: "a05", axis: "department", department: "ai-data", text: "Excel のような表のデータを、コードで集計したり加工したりしたい", example: "売上データの月別の集計や、抜けている値の処理など", tags: { dataframe: 1 } },
+  { id: "a06", axis: "department", department: "ai-data", text: "モデルを作るより、データを整えて傾向を見つけるほうが楽しそう", tags: { dataframe: 1, "deep-learning": -0.5 } },
+
   // 言語の性質
   { id: "l01", axis: "language", text: "型を書いておけば、実行する前にミスを見つけてくれるのがうれしい", example: "数値を入れるべき場所に文字列を入れた、などのミス", tags: { "static-typing": 1 } },
   { id: "l02", axis: "language", text: "型をいちいち書かずに、思いついたまま書き始めたい", tags: { "static-typing": -1, "fast-feedback": 0.5 } },

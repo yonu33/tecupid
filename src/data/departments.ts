@@ -1,7 +1,7 @@
 // 結果画面の部門。docs/requirements.md の 6.6 を参照。
 import type { Tag } from "./tags";
 
-export const DEPARTMENT_IDS = ["language", "framework", "infra"] as const;
+export const DEPARTMENT_IDS = ["language", "framework", "infra", "ai-data"] as const;
 
 export type DepartmentId = (typeof DEPARTMENT_IDS)[number];
 
@@ -19,4 +19,5 @@ export const DEPARTMENTS: Department[] = [
   { id: "language", name: "言語", interestTags: null },
   { id: "framework", name: "フレームワーク", interestTags: ["web-frontend", "web-backend", "mobile", "full-stack"] },
   { id: "infra", name: "インフラ・DevOps", interestTags: ["infra"] },
+  { id: "ai-data", name: "AI・データ", interestTags: ["data-ai"] },
 ];

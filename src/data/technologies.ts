@@ -227,4 +227,33 @@ export const INFRA: Tool[] = [
   },
 ];
 
-export const TECHNOLOGIES: Technology[] = [...LANGUAGES, ...FRAMEWORKS, ...INFRA];
+// maturity は付けない。scikit-learn は 2007 年から公開されているが 1.0 が 2021 年で、
+// 今の基準（1.0 の年）では実態と逆の判定になるため（technology-weights.md の 4.5）。
+export const AI_DATA: Tool[] = [
+  {
+    department: "ai-data", id: "pytorch", name: "PyTorch",
+    summary: "ディープラーニングのライブラリ。学習の処理を自分で書きながら、仕組みを理解しやすい。",
+    tagWeights: { "data-ai": 1, "deep-learning": 1, "high-level-api": -1 },
+    resources: docs("https://docs.pytorch.org/tutorials/beginner/basics/intro.html"),
+  },
+  {
+    department: "ai-data", id: "tensorflow", name: "TensorFlow",
+    summary: "ディープラーニングのライブラリ。Keras を使うと、少ないコードでモデルを作って学習できる。",
+    tagWeights: { "data-ai": 1, "deep-learning": 1, "high-level-api": 1 },
+    resources: docs("https://www.tensorflow.org/tutorials?hl=ja"),
+  },
+  {
+    department: "ai-data", id: "scikit-learn", name: "scikit-learn",
+    summary: "決定木や回帰などの、ディープラーニング以外の機械学習を手軽に使えるライブラリ。",
+    tagWeights: { "data-ai": 1, "deep-learning": -1, "high-level-api": 1 },
+    resources: docs("https://scikit-learn.org/stable/getting_started.html"),
+  },
+  {
+    department: "ai-data", id: "pandas", name: "pandas",
+    summary: "表形式のデータを読み込んで、集計や加工をするためのライブラリ。データ分析の土台になる。",
+    tagWeights: { "data-ai": 1, dataframe: 1 },
+    resources: docs("https://pandas.pydata.org/docs/getting_started/index.html"),
+  },
+];
+
+export const TECHNOLOGIES: Technology[] = [...LANGUAGES, ...FRAMEWORKS, ...INFRA, ...AI_DATA];

@@ -122,6 +122,24 @@ Go の言語のタグに `infra: 1` を追加した（公式サイトの用途�
 - distributed: Kubernetes と Terraform は複数台やクラウド全体を対象にするので 1。Linux と Docker は 1 台のマシンを対象にするので −1。GitHub Actions はどちらでもないので 0。
 - maturity: Linux は 1.0 が 1994 年なので 1。Terraform は 1.0 が 2021 年なので −1。Docker（2014 年）、Kubernetes（2015 年）、GitHub Actions（2019 年に一般提供）は 0。
 
+## 3.5 AI・データ（4 件）
+
+| 技術 | data-ai | deep-learning | high-level-api | dataframe |
+|---|---|---|---|---|
+| PyTorch | 1 | 1 | −1 | |
+| TensorFlow | 1 | 1 | 1 | |
+| scikit-learn | 1 | −1 | 1 | |
+| pandas | 1 | | | 1 |
+
+### 3.5.1 判定のメモ
+
+- deep-learning: scikit-learn は、公式の FAQ でディープラーニングを対象外としているので −1 ⚠
+- high-level-api:
+  - TensorFlow は、Keras の `fit` で学習するのが公式チュートリアルの標準なので 1。
+  - scikit-learn は、`fit` と `predict` が標準なので 1。
+  - PyTorch は、学習ループを自分で書くのが公式チュートリアルの標準なので −1。
+- pandas は、モデルの学習を扱わないので、deep-learning と high-level-api は 0。
+
 ## 4. 見つかった課題
 
 ### 4.1 React、Vue.js、Svelte の重みが同じ（対応済み）
@@ -143,4 +161,13 @@ Go、Rust、Swift、C++、Kotlin を単独で使うフレームワークが一�
 ### 4.4 タグの少ないフレームワークが上位に来やすい
 
 コサイン類似度では、タグが少ない技術ほど、一致したタグ 1 つの影響が大きくなる。たとえば「クラス設計と型が好きな業務系」の人で、Express（タグ 3 個）がフレームワークの 1 位になった。組み合わせは Java ＋ Spring Boot になるので、MVP ではこのままにしておく。
+
+### 4.5 maturity の基準が実態と逆になる技術がある
+
+`maturity` は 1.0 のリリース年で判定している。しかし、scikit-learn は 2007 年から公開されて広く使われているのに、1.0 は 2021 年なので「新しい技術」（−1）になってしまう。
+
+当面は、AI・データ部門の技術には `maturity` を付けないで対応している。対策の案は次の 2 つ。
+
+- 「最初の公開年」で判定する。ただし、Go（2009 年公開、2012 年に 1.0）や Rust（2010 年公開、2015 年に 1.0）なども判定が変わる可能性があるので、全体を見直す必要がある。
+- 1.0 の年で判定したまま、1.0 より前に何年も公開されていた技術にだけ `maturity` を付けない、という例外を基準に書く。
 

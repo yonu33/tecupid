@@ -29,6 +29,10 @@ export const TAGS = [
   "distributed",
   "containers",
   "ci-cd",
+  // AI・データの性質
+  "deep-learning",
+  "high-level-api",
+  "dataframe",
   // 開発環境とエコシステム
   "fast-feedback",
   "maturity",
@@ -56,7 +60,7 @@ export const TAG_INFO: Record<Tag, TagInfo> = {
   "web-backend": { label: "Web バックエンド", axis: "domain", appliesTo: LF },
   mobile: { label: "モバイル", axis: "domain", appliesTo: LF },
   systems: { label: "低レイヤ", axis: "domain", appliesTo: ["language"] },
-  "data-ai": { label: "データ・AI", axis: "domain", appliesTo: ["language"] },
+  "data-ai": { label: "データ・AI", axis: "domain", appliesTo: ["language", "ai-data"] },
   "cross-platform": { label: "クロスプラットフォーム", axis: "domain", appliesTo: LF },
   "full-stack": { label: "フルスタック", axis: "domain", appliesTo: ["framework"] },
   infra: { label: "インフラ・DevOps", axis: "domain", appliesTo: ["language", "infra"] },
@@ -75,6 +79,9 @@ export const TAG_INFO: Record<Tag, TagInfo> = {
   distributed: { label: "複数台の管理", axis: "department", appliesTo: ["infra"] },
   containers: { label: "コンテナ", axis: "department", appliesTo: ["infra"] },
   "ci-cd": { label: "CI/CD", axis: "department", appliesTo: ["infra"] },
+  "deep-learning": { label: "ディープラーニング", axis: "department", appliesTo: ["ai-data"] },
+  "high-level-api": { label: "高水準 API", axis: "department", appliesTo: ["ai-data"] },
+  dataframe: { label: "表データの加工", axis: "department", appliesTo: ["ai-data"] },
   "fast-feedback": { label: "すぐ試せる", axis: "ecosystem", appliesTo: LF },
   maturity: { label: "歴史の長さ", axis: "ecosystem", appliesTo: "all" },
 };

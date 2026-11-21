@@ -77,7 +77,9 @@ describe("ペルソナ", () => {
 
   it("インフラにだけ関心がある → インフラ部門がフレームワーク部門より上", () => {
     const r = recommend(answers(["d14", "d15"], ["d01", "d03"]), CARDS, TECHNOLOGIES);
-    expect(r.departments.map((d) => d.department.id)).toEqual(["language", "infra", "framework"]);
+    const ids = r.departments.map((d) => d.department.id);
+    expect(ids.slice(0, 2)).toEqual(["language", "infra"]);
+    expect(ids.indexOf("infra")).toBeLessThan(ids.indexOf("framework"));
     expect(top(r.languages, 1)).toEqual(["go"]);
   });
 
@@ -104,6 +106,34 @@ describe("ペルソナ", () => {
 
   it("インフラ: テストやデプロイの自動化 → GitHub Actions", () => {
     expect(infraTop(["d15", "i06"], ["i01"])).toBe("github-actions");
+  });
+
+  const aiTop = (like: string[], nope: string[]) => {
+    const r = recommend(answers(like, nope), CARDS, TECHNOLOGIES);
+    return r.departments.find((d) => d.department.id === "ai-data")!.ranked[0].tech.id;
+  };
+
+  it("AI・データに関心がある → AI・データ部門が関心ありになり、言語は Python", () => {
+    const r = recommend(answers(["d12", "a01"], ["d01", "d14"]), CARDS, TECHNOLOGIES);
+    expect(r.departments[1].department.id).toBe("ai-data");
+    expect(r.departments[1].featured).toBe(true);
+    expect(top(r.languages, 1)).toEqual(["python"]);
+  });
+
+  it("AI: ニューラルネットワークを、学習の処理から自分で書きたい → PyTorch", () => {
+    expect(aiTop(["d12", "a01", "a04"], ["a03"])).toBe("pytorch");
+  });
+
+  it("AI: ニューラルネットワークを、少ないコードで → TensorFlow", () => {
+    expect(aiTop(["d12", "a01", "a03"], ["a04"])).toBe("tensorflow");
+  });
+
+  it("AI: 説明しやすい機械学習を、手軽に → scikit-learn", () => {
+    expect(aiTop(["d12", "a02", "a03"], ["a01"])).toBe("scikit-learn");
+  });
+
+  it("AI: 表のデータを集計して傾向を見つけたい → pandas", () => {
+    expect(aiTop(["d13", "a05", "a06"], ["a01"])).toBe("pandas");
   });
 
   it("クラス設計と型が好きな業務系 → Java ＋ Spring Boot", () => {
