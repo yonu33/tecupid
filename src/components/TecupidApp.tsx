@@ -447,16 +447,6 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
     : [result.languages[0].tech];
   const shareUrl = buildShareUrl(window.location.origin, shareTechs.map((t) => t.id));
   const text = sharePostText(shareTechs.map((t) => t.name));
-  const [copied, setCopied] = useState(false);
-
-  const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(`${text}\n${shareUrl}`);
-      setCopied(true);
-    } catch {
-      setCopied(false);
-    }
-  };
 
   return (
     <main className="screen result">
@@ -479,6 +469,9 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
         </TermWindow>
       )}
 
+      {/* シェアは結果のすぐ下に、目立つように置く */}
+      <ShareBox text={text} url={shareUrl} />
+
       <p className="meter-note">
         <PixelSprite sprite={SMALL_HEART} scale={2} />
         マッチ度は、いちばん合う技術を 100 としたときの値です
@@ -499,12 +492,12 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
           <summary>そのほかの部門（{others.map((d) => d.department.name).join("、")}）</summary>
           {others.map((d) => (
             <RankSection
-          key={d.department.id}
-          title={`${d.department.name}部門`}
-          note={d.department.note}
-          ranked={d.ranked}
-          best={best}
-        />
+              key={d.department.id}
+              title={`${d.department.name}部門`}
+              note={d.department.note}
+              ranked={d.ranked}
+              best={best}
+            />
           ))}
         </details>
       )}
@@ -515,22 +508,64 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
         </button>
       </div>
 
-      {/* SNS の共有はひとまず X だけ。ロゴ（商標）は使わず、文字だけにする */}
-      <div className="share-row" role="group" aria-label="結果をシェア">
-        <span className="share-label">// シェア</span>
-        <a className="btn-text" href={xShareUrl(text, shareUrl)} target="_blank" rel="noopener noreferrer">
-          X でポスト
-        </a>
-        <button className="btn-text" onClick={copy}>
-          {copied ? "コピーしました" : "URL をコピー"}
-        </button>
-      </div>
       <p className="note">
         推薦は学習の参考情報です。キャリアや就職での成果を保証するものではありません。
         <br />
         技術の情報は {DATA_UPDATED} 時点のものです。最新の情報は公式ドキュメントで確認してください。
       </p>
     </main>
+  );
+}
+
+/**
+ * 結果のシェア。投稿する文章と URL をテキストボックスで見せて、手でコピーもできるようにする。
+ * SNS の共有はひとまず X だけ。ロゴ（商標）は使わず、文字だけにする。
+ */
+function ShareBox({ text, url }: { text: string; url: string }) {
+  const full = `${text}\n${url}`;
+  const [copied, setCopied] = useState(false);
+  const boxRef = useRef<HTMLTextAreaElement>(null);
+
+  const selectAll = () => {
+    const box = boxRef.current;
+    if (!box) return;
+    box.focus();
+    box.setSelectionRange(0, box.value.length);
+  };
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(full);
+      setCopied(true);
+    } catch {
+      // クリップボードが使えないときは、全体を選択して手でコピーしてもらう
+      selectAll();
+    }
+  };
+
+  return (
+    <TermWindow title="~/tecupid/share" className="share-box" role="region" aria-label="結果をシェア">
+      <p className="window-label">結果をシェアしよう</p>
+      <label htmlFor="share-text" className="visually-hidden">
+        シェアする文章
+      </label>
+      <textarea
+        id="share-text"
+        ref={boxRef}
+        className="share-text"
+        readOnly
+        rows={6}
+        value={full}
+        onFocus={(e) => e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)}
+      />
+      <div className="share-actions">
+        <a className="btn-primary share-x" href={xShareUrl(text, url)} target="_blank" rel="noopener noreferrer">
+          X でポスト
+        </a>
+        <button className="btn-key share-copy" onClick={copy}>
+          {copied ? "コピーしました" : "コピー"}
+        </button>
+      </div>
+    </TermWindow>
   );
 }
 

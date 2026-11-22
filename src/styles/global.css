@@ -884,21 +884,44 @@ details[open] > summary::before {
   margin-top: 40px;
 }
 
-.share-row {
+/* 結果のシェア。結果のすぐ下に、目立つように置く */
+.share-box {
+  margin: 24px 8px 0 4px;
+}
+
+.share-text {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 2px solid var(--line);
+  border-radius: 0;
+  background: var(--bg);
+  color: var(--window-text);
+  font: inherit;
+  line-height: 1.6;
+  resize: none;
+  /* 長い URL も途中で折り返し、文章の長さに合わせて高さを変える（未対応のブラウザは rows の 6 行） */
+  overflow-wrap: anywhere;
+  field-sizing: content;
+}
+
+.share-actions {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 4px 16px;
+  gap: 16px;
   margin-top: 16px;
 }
 
-.share-label {
-  color: var(--muted);
+.share-x {
+  flex: 1 1 auto;
+  justify-content: center;
 }
 
-.share-row .btn-text {
-  color: var(--accent);
+.share-actions .share-copy {
+  min-width: 112px;
+  height: auto;
+  padding: 12px 16px;
 }
 
 /* 404 */
