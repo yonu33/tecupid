@@ -61,7 +61,7 @@ $env:SITE_URL="https://tecupid.yonu.work"; npm run deploy
 
 ## ライセンス
 
-プログラムのコードは [MIT ライセンス](LICENSE) です。特徴カードの文章、技術の概要、ドット絵、`docs/` の文書などは著作権を留保しています（範囲は LICENSE の Scope を参照）。
+[MIT ライセンス](LICENSE) です。
 
 ## クレジット
 

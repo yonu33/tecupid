@@ -22,17 +22,6 @@ SOFTWARE.
 
 ---
 
-Scope
-
-The MIT License above covers the source code of tecupid. It does not cover the
-following content, which remains Copyright (c) 2026 yonu33, all rights reserved:
-
-- The text of the feature cards and the technology and topic summaries
-  (the Japanese text in src/data/cards.ts and src/data/technologies.ts)
-- The pixel art (src/components/sprites.ts, public/favicon.svg, public/og/)
-- The documents in docs/ and the site's legal pages (src/pages/terms.astro,
-  src/pages/privacy.astro, src/pages/disclaimer.astro, src/pages/about.astro)
-
 The DotGothic16 font (Copyright 2020 The DotGothic16 Project Authors) is not
-part of this repository's licensed material; it is installed from npm and is
-licensed under the SIL Open Font License 1.1.
+part of this repository; it is installed from npm and is licensed under the
+SIL Open Font License 1.1.
