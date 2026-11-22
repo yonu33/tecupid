@@ -157,6 +157,22 @@ Go の言語のタグに `infra: 1` を追加した（公式サイトの用途�
 - maturity: 1.0 は PostgreSQL（前身の Postgres95 を経て 1997 年に 6.0）、SQLite（2000 年）、MongoDB（2009 年）、Redis（2009 年）で、すべて 2011 年以前なので 1。部門の中では差がつかない。
 - MySQL を載せていない理由: relational 1、embedded −1、in-memory −1、maturity 1 で、PostgreSQL と重みがまったく同じになり、推薦で区別できない。2 つを区別する客観的なタグ（例: 開発の主体が企業かコミュニティか）を決めたら追加する。
 
+## 3.7 ゲーム開発（3 件）
+
+C# の言語のタグに `game: 0.5` を追加した（Microsoft の .NET 公式サイトに、ゲーム開発のページがあるため）。
+
+| 技術 | game | open-source | visual-scripting | maturity |
+|---|---|---|---|---|
+| Unity | 1 | −1 | 0.5 | 1 |
+| Unreal Engine | 1 | | 1 | 1 |
+| Godot | 1 | 1 | −1 | |
+
+### 3.7.1 判定のメモ
+
+- open-source: Godot は MIT ライセンスなので 1。Unity はソースコードが公開されていないので −1。Unreal Engine はソースコードを公開しているが、オープンソースのライセンスではないので 0。
+- visual-scripting: Unreal Engine は Blueprint が標準の作り方なので 1。Unity は公式の Visual Scripting があるが、標準は C# のスクリプトなので 0.5。Godot は 4.0 でビジュアルスクリプトを廃止したので −1。
+- maturity: Unity（1.0 は 2005 年）と Unreal Engine（1998 年）は 1。Godot（1.0 は 2014 年）は 0。
+
 ## 4. 見つかった課題
 
 ### 4.1 React、Vue.js、Svelte の重みが同じ（対応済み）

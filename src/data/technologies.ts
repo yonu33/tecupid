@@ -63,7 +63,7 @@ export const LANGUAGES: Language[] = [
   {
     department: "language", id:"csharp", name: "C#",
     summary: ".NET の上で動く静的型付け言語。Web、デスクトップ、モバイルまで幅広く書ける。",
-    tagWeights: { "web-frontend": 0.5, "web-backend": 1, mobile: 0.5, "data-ai": 0.5, "cross-platform": 1, "static-typing": 1, "null-safety": 0.5, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "simple-syntax": -1, "fast-feedback": 1, maturity: 1 },
+    tagWeights: { "web-frontend": 0.5, "web-backend": 1, mobile: 0.5, "data-ai": 0.5, "cross-platform": 1, game: 0.5, "static-typing": 1, "null-safety": 0.5, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "simple-syntax": -1, "fast-feedback": 1, maturity: 1 },
     resources: docs("https://learn.microsoft.com/ja-jp/dotnet/csharp/"),
   },
   {
@@ -291,4 +291,25 @@ export const DATABASES: Tool[] = [
   },
 ];
 
-export const TECHNOLOGIES: Technology[] = [...LANGUAGES, ...FRAMEWORKS, ...INFRA, ...AI_DATA, ...DATABASES];
+export const GAME_ENGINES: Tool[] = [
+  {
+    department: "game", id: "unity", name: "Unity",
+    summary: "C# でスクリプトを書く、2D と 3D の両方に使えるゲームエンジン。スマホゲームでも広く使われる。",
+    tagWeights: { game: 1, "open-source": -1, "visual-scripting": 0.5, maturity: 1 },
+    resources: [{ title: "公式の学習サイト", url: "https://learn.unity.com/", official: true }],
+  },
+  {
+    department: "game", id: "unreal-engine", name: "Unreal Engine",
+    summary: "高品質な 3D のゲームに強いゲームエンジン。ノードをつなぐ Blueprint で、コードを書かずに動きを作れる。",
+    tagWeights: { game: 1, "visual-scripting": 1, maturity: 1 },
+    resources: docs("https://dev.epicgames.com/documentation/ja-jp/unreal-engine"),
+  },
+  {
+    department: "game", id: "godot", name: "Godot",
+    summary: "オープンソースで無料のゲームエンジン。軽くて 2D のゲームを作りやすく、専用の言語 GDScript で書く。",
+    tagWeights: { game: 1, "open-source": 1, "visual-scripting": -1 },
+    resources: docs("https://docs.godotengine.org/ja/4.x/"),
+  },
+];
+
+export const TECHNOLOGIES: Technology[] = [...LANGUAGES, ...FRAMEWORKS, ...INFRA, ...AI_DATA, ...DATABASES, ...GAME_ENGINES];

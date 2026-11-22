@@ -163,6 +163,29 @@ describe("ペルソナ", () => {
     expect(dbTop(["d16", "b05"], ["b06"])).toBe("redis");
   });
 
+  const gameTop = (like: string[], nope: string[]) => {
+    const r = recommend(answers(like, nope), CARDS, TECHNOLOGIES);
+    return r.departments.find((d) => d.department.id === "game")!.ranked[0].tech.id;
+  };
+
+  it("ゲームを作りたい → ゲーム開発部門が関心ありになり、言語は C# が上位", () => {
+    const r = recommend(answers(["d18"], []), CARDS, TECHNOLOGIES);
+    expect(r.departments[1].department.id).toBe("game");
+    expect(top(r.languages, 1)).toEqual(["csharp"]);
+  });
+
+  it("ゲーム: オープンソースで、動きはすべてコードで書きたい → Godot", () => {
+    expect(gameTop(["d18", "g01", "g03"], ["g02"])).toBe("godot");
+  });
+
+  it("ゲーム: ノードをつないで、コードを書かずに作りたい → Unreal Engine", () => {
+    expect(gameTop(["d18", "g02"], ["g03"])).toBe("unreal-engine");
+  });
+
+  it("ゲーム: 長く使われている定番で、オープンソースにはこだわらない → Unity", () => {
+    expect(gameTop(["d18", "g04"], ["g01"])).toBe("unity");
+  });
+
   it("経験レベル: LV.10 は、レベルを指定しないときと同じ結果", () => {
     const a = answers(["d01", "d02", "l01"], ["d09"]);
     const ids = (r: ReturnType<typeof recommend>) => r.departments.flatMap((d) => d.ranked.map((x) => x.tech.id));

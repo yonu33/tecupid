@@ -12,6 +12,7 @@ export const TAGS = [
   "full-stack",
   "infra",
   "database",
+  "game",
   // 言語の性質
   "static-typing",
   "null-safety",
@@ -38,6 +39,9 @@ export const TAGS = [
   "relational",
   "embedded",
   "in-memory",
+  // ゲーム開発の性質
+  "open-source",
+  "visual-scripting",
   // 開発環境とエコシステム
   "fast-feedback",
   "maturity",
@@ -70,6 +74,7 @@ export const TAG_INFO: Record<Tag, TagInfo> = {
   "full-stack": { label: "フルスタック", axis: "domain", appliesTo: ["framework"] },
   infra: { label: "インフラ・DevOps", axis: "domain", appliesTo: ["language", "infra"] },
   database: { label: "データベース", axis: "domain", appliesTo: ["database"] },
+  game: { label: "ゲーム開発", axis: "domain", appliesTo: ["language", "game"] },
   "static-typing": { label: "静的型付け", axis: "language", appliesTo: ["language"] },
   "null-safety": { label: "null 安全", axis: "language", appliesTo: ["language"] },
   "native-compile": { label: "ネイティブコンパイル", axis: "language", appliesTo: ["language"] },
@@ -91,6 +96,8 @@ export const TAG_INFO: Record<Tag, TagInfo> = {
   relational: { label: "リレーショナル", axis: "department", appliesTo: ["database"] },
   embedded: { label: "組み込み型", axis: "department", appliesTo: ["database"] },
   "in-memory": { label: "インメモリ", axis: "department", appliesTo: ["database"] },
+  "open-source": { label: "オープンソース", axis: "department", appliesTo: ["game"] },
+  "visual-scripting": { label: "ビジュアルスクリプト", axis: "department", appliesTo: ["game"] },
   "fast-feedback": { label: "すぐ試せる", axis: "ecosystem", appliesTo: LF },
   maturity: { label: "歴史の長さ", axis: "ecosystem", appliesTo: "all" },
 };

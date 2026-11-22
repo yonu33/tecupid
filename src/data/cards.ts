@@ -33,6 +33,7 @@ export const CARDS: FeatureCard[] = [
   { id: "d15", axis: "domain", text: "開発環境づくりやデプロイの作業を、自動化するのが好き", tags: { infra: 1, "ci-cd": 0.5 } },
   { id: "d16", axis: "domain", text: "たくさんのデータを、速く安全に保存して取り出す仕組みに興味がある", tags: { database: 1 } },
   { id: "d17", axis: "domain", text: "SQL を書いて、データを自由に検索したり集計したりしてみたい", example: "「先月いちばん売れた商品は？」を一瞬で調べるなど", tags: { database: 1, relational: 0.5 } },
+  { id: "d18", axis: "domain", text: "自分でゲームを作ってみたい", example: "2D のアクションゲームや、3D の世界を歩き回るゲームなど", tags: { game: 1 } },
 
   // 部門の専用カード: インフラ・DevOps
   { id: "i01", axis: "department", department: "infra", text: "サーバーの設定を、手順ではなく「あるべき状態」としてファイルに書きたい", example: "「Web サーバーを 3 台」と書けば、足りない分を自動で作ってくれる", tags: { declarative: 1 } },
@@ -57,6 +58,12 @@ export const CARDS: FeatureCard[] = [
   { id: "b04", axis: "department", department: "database", text: "たくさんのアプリから同時に使われる、データベースのサーバーを運用したい", tags: { embedded: -1 } },
   { id: "b05", axis: "department", department: "database", text: "データをメモリに置いて、とにかく速く読み書きしたい", example: "ランキングや、ログイン状態の一時的な保存など", tags: { "in-memory": 1 } },
   { id: "b06", axis: "department", department: "database", text: "電源が切れても消えないよう、データを確実にディスクに残したい", tags: { "in-memory": -1 } },
+
+  // 部門の専用カード: ゲーム開発
+  { id: "g01", axis: "department", department: "game", text: "無料で、中身のソースコードまで公開されているツールを使いたい", tags: { "open-source": 1 } },
+  { id: "g02", axis: "department", department: "game", text: "ノードを線でつないで、コードを書かずにキャラクターの動きを作りたい", tags: { "visual-scripting": 1 } },
+  { id: "g03", axis: "department", department: "game", text: "ゲームの動きは、すべてコードで書きたい", tags: { "visual-scripting": -1 } },
+  { id: "g04", axis: "department", department: "game", text: "長く使われている、定番のゲームエンジンで学びたい", tags: { maturity: 1 } },
 
   // 言語の性質
   { id: "l01", axis: "language", text: "型を書いておけば、実行する前にミスを見つけてくれるのがうれしい", example: "数値を入れるべき場所に文字列を入れた、などのミス", tags: { "static-typing": 1 } },
