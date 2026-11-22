@@ -9,25 +9,25 @@
 記号の意味:
 
 - 空欄: 0
-- ⚠: 判定に使った数や事実が未確認。データ化するときに公式の資料で確かめる
+- ⚠: 判定に使った数や事実が未確認。公式の資料で確かめる（2026-11-22 時点で、すべて確認済み）
 
 ## 1. 言語（13 件）
 
 | 言語 | web-frontend | web-backend | mobile | systems | data-ai | cross-platform | static-typing | null-safety | native-compile | gc | concurrency | functional | oop | simple-syntax | fast-feedback | maturity |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | JavaScript | 1 | 1 | | | | | −1 | | −1 | 1 | 0.5 | | | | 1 | 1 |
-| TypeScript | 1 | 1 | | | | | 1 | 0.5 | −1 | 1 | 0.5 | 0.5 | | −1 ⚠ | 0.5 | |
+| TypeScript | 1 | 1 | | | | | 1 | 0.5 | −1 | 1 | 0.5 | 0.5 | | | 0.5 | |
 | Python | | 1 | | | 1 | | −0.5 | | −1 | 1 | 0.5 | 0.5 | 1 | 1 | 1 | 1 |
 | Java | | 1 | 0.5 | | | | 1 | | | 1 | 0.5 | 1 | 1 | | 1 | 1 |
-| C# | 0.5 | 1 | 0.5 | | 0.5 | 1 | 1 | 0.5 | | 1 | 0.5 | 1 ⚠ | 1 | −1 | 1 | 1 |
+| C# | 0.5 | 1 | 0.5 | | 0.5 | 1 | 1 | 0.5 | | 1 | 0.5 | 1 | 1 | −1 | 1 | 1 |
 | Go | | 1 | | | | | 1 | | 1 | 1 | 1 | | −1 | 1 | | |
 | Rust | 0.5 | 0.5 | | 1 | | | 1 | 1 | 1 | −1 | 1 | 1 | −1 | | | |
 | Kotlin | 0.5 | 1 | 1 | | 0.5 | 1 | 1 | 1 | | 1 | 0.5 | 1 | 1 | −1 | 1 | |
 | Swift | | 0.5 | 1 | 0.5 | | | 1 | 1 | 1 | 0.5 | 1 | 1 | | −1 | 1 | |
-| PHP | | 1 | | | | | −0.5 | | −1 | 1 | | 0.5 | | −1 ⚠ | 1 | 1 |
+| PHP | | 1 | | | | | −0.5 | | −1 | 1 | | 0.5 | | −1 | 1 | 1 |
 | Ruby | | 1 | | | | | −0.5 | | −1 | 1 | | 1 | 1 | | 1 | 1 |
 | C++ | | | | 1 | | | 1 | | 1 | −1 | 0.5 | | | −1 | | 1 |
-| Dart | 0.5 | 0.5 | 1 | | | 1 | 1 | 1 | 1 | 1 | 0.5 | 1 | 1 | ⚠ | 0.5 | |
+| Dart | 0.5 | 0.5 | 1 | | | 1 | 1 | 1 | 1 | 1 | 0.5 | 1 | 1 | | 0.5 | |
 
 ### 1.1 判定のメモ
 
@@ -48,7 +48,7 @@
 - concurrency: Go（チャネル）、Rust（Send と Sync によるデータ競合の防止）、Swift（actor）が 1。Java は `synchronized`、Kotlin は `suspend`、C++ は `co_await` があるので 0.5。PHP と Ruby は、並行処理用の構文がなく、Fiber や Ractor はクラスとして提供されるので 0。
 - functional（パターンマッチ、直和型、式指向の 3 つのうち、言語仕様にある数で判定）:
   - Java: 3 つともある（パターンマッチの switch、sealed と record、switch 式）ので 1
-  - C#: パターンマッチと switch 式があるので 1。直和型は導入が検討されている ⚠
+  - C#: パターンマッチと switch 式の 2 つがあるので 1（直和型がなくても基準を満たす。直和型は導入が検討されている段階）
   - TypeScript: 直和型（ユニオン型）だけなので 0.5
   - Python: パターンマッチ（match 文）だけなので 0.5
   - PHP: 値を返す match 式だけなので 0.5
@@ -58,7 +58,8 @@
   - 40 個以下: Go 約 25、Python 約 39（ソフトキーワードを含む）
   - 中間: Ruby 約 41、JavaScript 約 50、Rust 約 57、Java 約 68
   - 70 個以上: C#、C++、Kotlin、Swift
-  - 境界に近くて確認が必要: TypeScript、PHP（約 70）、Dart（約 70）⚠
+  - 公式の一覧で数え直した（2026-11-22）: PHP は 71 語なので −1。Dart は 67 語なので 0。
+  - TypeScript は公式のキーワード一覧がない（言語仕様書も更新が止まっている）ため、基準で決まらないものとして 0 にした。
 
 **開発環境とエコシステム**
 
@@ -98,11 +99,11 @@
   - 2〜3 個で 0: Angular（ルーター、テスト、CLI）、Next.js（ルーティング、create-next-app）、FastAPI（ルーティング、TestClient）、Flutter（Navigator、flutter_test、CLI）
   - 1 つ以下で −1: React、Vue.js、Svelte（ルーターなどは別のリポジトリ）、Express（ルーティングだけ）、React Native
 - template-syntax: Vue.js（SFC のテンプレート）、Svelte、Angular は HTML ベースのテンプレートなので 1。React と Next.js（JSX）、Flutter（Dart のウィジェット）、React Native（JSX）はコードの中で画面を組み立てるので −1。
-- compile-time-ui: Svelte と Angular は仮想 DOM を使わずテンプレートをコンパイルするので 1。React、Next.js、Vue.js は仮想 DOM を使うので −1。Vue.js の Vapor Mode が標準になったら見直す ⚠。Flutter と React Native は DOM を使わないので 0。
+- compile-time-ui: Svelte と Angular は仮想 DOM を使わずテンプレートをコンパイルするので 1。React、Next.js、Vue.js は仮想 DOM を使うので −1。Vue.js の Vapor Mode（仮想 DOM を使わない仕組み）が標準になったら見直す。Flutter と React Native は DOM を使わないので 0。
 - full-stack: 公式ドキュメントが、画面とサーバー処理を 1 つのプロジェクトで作ることを主な用途として掲げているもの（Next.js、Django、Rails、Laravel）を 1 にした。
 - web-frontend の 0.5: Rails（Hotwire）と Laravel（Livewire）は公式の仕組みで画面側も書ける。Flutter は Web にも出力できる。
 - fast-feedback: Spring Boot は DevTools を追加すると自動再起動するので 0.5。Express は自前の仕組みがないので 0。
-- maturity: FastAPI と React Native は 1.0 が出ていないため、最初の公開年（2018 年と 2015 年）で判定した ⚠
+- maturity: FastAPI と React Native は 1.0 が出ていない（2026-11-22 時点で FastAPI 0.165.0、React Native 0.88.1）ため、最初の公開年（2018 年と 2015 年）で判定した。
 
 ## 3. インフラ・DevOps（5 件）
 
@@ -136,7 +137,7 @@ Go の言語のタグに `infra: 1` を追加した（公式サイトの用途�
 
 ### 3.5.1 判定のメモ
 
-- deep-learning: scikit-learn は、公式の FAQ でディープラーニングを対象外としているので −1 ⚠
+- deep-learning: scikit-learn は、公式の FAQ で「deep learning and reinforcement learning are currently out of scope」としているので −1。
 - high-level-api:
   - TensorFlow は、Keras の `fit` で学習するのが公式チュートリアルの標準なので 1。
   - scikit-learn は、`fit` と `predict` が標準なので 1。

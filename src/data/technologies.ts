@@ -45,7 +45,7 @@ export const LANGUAGES: Language[] = [
   {
     department: "language", id:"typescript", name: "TypeScript",
     summary: "JavaScript に静的な型を加えた言語。大きな Web アプリの開発で広く使われる。",
-    tagWeights: { "web-frontend": 1, "web-backend": 1, "static-typing": 1, "null-safety": 0.5, "native-compile": -1, gc: 1, concurrency: 0.5, functional: 0.5, "simple-syntax": -1, "fast-feedback": 0.5 },
+    tagWeights: { "web-frontend": 1, "web-backend": 1, "static-typing": 1, "null-safety": 0.5, "native-compile": -1, gc: 1, concurrency: 0.5, functional: 0.5, "fast-feedback": 0.5 },
     resources: docs("https://www.typescriptlang.org/docs/"),
   },
   {
