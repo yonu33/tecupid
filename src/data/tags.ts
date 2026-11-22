@@ -11,6 +11,7 @@ export const TAGS = [
   "cross-platform",
   "full-stack",
   "infra",
+  "database",
   // 言語の性質
   "static-typing",
   "null-safety",
@@ -33,6 +34,10 @@ export const TAGS = [
   "deep-learning",
   "high-level-api",
   "dataframe",
+  // データベースの性質
+  "relational",
+  "embedded",
+  "in-memory",
   // 開発環境とエコシステム
   "fast-feedback",
   "maturity",
@@ -64,6 +69,7 @@ export const TAG_INFO: Record<Tag, TagInfo> = {
   "cross-platform": { label: "クロスプラットフォーム", axis: "domain", appliesTo: LF },
   "full-stack": { label: "フルスタック", axis: "domain", appliesTo: ["framework"] },
   infra: { label: "インフラ・DevOps", axis: "domain", appliesTo: ["language", "infra"] },
+  database: { label: "データベース", axis: "domain", appliesTo: ["database"] },
   "static-typing": { label: "静的型付け", axis: "language", appliesTo: ["language"] },
   "null-safety": { label: "null 安全", axis: "language", appliesTo: ["language"] },
   "native-compile": { label: "ネイティブコンパイル", axis: "language", appliesTo: ["language"] },
@@ -82,6 +88,9 @@ export const TAG_INFO: Record<Tag, TagInfo> = {
   "deep-learning": { label: "ディープラーニング", axis: "department", appliesTo: ["ai-data"] },
   "high-level-api": { label: "高水準 API", axis: "department", appliesTo: ["ai-data"] },
   dataframe: { label: "表データの加工", axis: "department", appliesTo: ["ai-data"] },
+  relational: { label: "リレーショナル", axis: "department", appliesTo: ["database"] },
+  embedded: { label: "組み込み型", axis: "department", appliesTo: ["database"] },
+  "in-memory": { label: "インメモリ", axis: "department", appliesTo: ["database"] },
   "fast-feedback": { label: "すぐ試せる", axis: "ecosystem", appliesTo: LF },
   maturity: { label: "歴史の長さ", axis: "ecosystem", appliesTo: "all" },
 };

@@ -31,6 +31,8 @@ export const CARDS: FeatureCard[] = [
   { id: "d13", axis: "domain", text: "グラフや統計を使って、データから何かを見つけるのが好き", tags: { "data-ai": 1 } },
   { id: "d14", axis: "domain", text: "サーバーやクラウドの基盤を作って、サービスを安定して動かしたい", example: "アクセスが増えても落ちない仕組みや、障害からの復旧など", tags: { infra: 1 } },
   { id: "d15", axis: "domain", text: "開発環境づくりやデプロイの作業を、自動化するのが好き", tags: { infra: 1, "ci-cd": 0.5 } },
+  { id: "d16", axis: "domain", text: "たくさんのデータを、速く安全に保存して取り出す仕組みに興味がある", tags: { database: 1 } },
+  { id: "d17", axis: "domain", text: "SQL を書いて、データを自由に検索したり集計したりしてみたい", example: "「先月いちばん売れた商品は？」を一瞬で調べるなど", tags: { database: 1, relational: 0.5 } },
 
   // 部門の専用カード: インフラ・DevOps
   { id: "i01", axis: "department", department: "infra", text: "サーバーの設定を、手順ではなく「あるべき状態」としてファイルに書きたい", example: "「Web サーバーを 3 台」と書けば、足りない分を自動で作ってくれる", tags: { declarative: 1 } },
@@ -47,6 +49,14 @@ export const CARDS: FeatureCard[] = [
   { id: "a04", axis: "department", department: "ai-data", text: "学習の 1 ステップずつを自分で書いて、中で何が起きているかを理解したい", tags: { "high-level-api": -1 } },
   { id: "a05", axis: "department", department: "ai-data", text: "Excel のような表のデータを、コードで集計したり加工したりしたい", example: "売上データの月別の集計や、抜けている値の処理など", tags: { dataframe: 1 } },
   { id: "a06", axis: "department", department: "ai-data", text: "モデルを作るより、データを整えて傾向を見つけるほうが楽しそう", tags: { dataframe: 1, "deep-learning": -0.5 } },
+
+  // 部門の専用カード: データベース
+  { id: "b01", axis: "department", department: "database", text: "表（テーブル）どうしを結び付けて、SQL でデータを取り出したい", example: "「注文」と「商品」の表をつないで、売上を計算するなど", tags: { relational: 1 } },
+  { id: "b02", axis: "department", department: "database", text: "決まった形にとらわれず、JSON のようなデータをそのまま保存したい", tags: { relational: -1 } },
+  { id: "b03", axis: "department", department: "database", text: "サーバーを立てずに、ファイル 1 つでデータベースを使いたい", example: "スマホアプリや小さなツールの中にデータを持たせるなど", tags: { embedded: 1 } },
+  { id: "b04", axis: "department", department: "database", text: "たくさんのアプリから同時に使われる、データベースのサーバーを運用したい", tags: { embedded: -1 } },
+  { id: "b05", axis: "department", department: "database", text: "データをメモリに置いて、とにかく速く読み書きしたい", example: "ランキングや、ログイン状態の一時的な保存など", tags: { "in-memory": 1 } },
+  { id: "b06", axis: "department", department: "database", text: "電源が切れても消えないよう、データを確実にディスクに残したい", tags: { "in-memory": -1 } },
 
   // 言語の性質
   { id: "l01", axis: "language", text: "型を書いておけば、実行する前にミスを見つけてくれるのがうれしい", example: "数値を入れるべき場所に文字列を入れた、などのミス", tags: { "static-typing": 1 } },

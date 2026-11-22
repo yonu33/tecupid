@@ -166,9 +166,9 @@ type Technology = {
 
 ### 6.3 初期データの規模（MVP）
 
-- 技術: 35 件（6.4 の 26 件と、6.6 のインフラ・DevOps 5 件、AI・データ 4 件）
-- 特徴カード: 63 枚（ドラフト: [feature-cards.md](feature-cards.md)）
-- タグ: 28 種類（6.5 の一覧）
+- 技術: 39 件（6.4 の 26 件と、6.6 のインフラ・DevOps 5 件、AI・データ 4 件、データベース 4 件）
+- 特徴カード: 71 枚（ドラフト: [feature-cards.md](feature-cards.md)）
+- タグ: 32 種類（6.5 の一覧）
 
 ### 6.4 初期に載せる技術（案）
 
@@ -260,6 +260,17 @@ type Technology = {
 | `high-level-api` | 少ないコードで学習できる | `fit` のように 1 回の呼び出しで学習する API が公式の標準なら +1。学習ループを自分で書くのが標準なら −1 | A |
 | `dataframe` | 表形式のデータを加工する | 表形式のデータの読み込み、加工、集計が主な用途なら +1 | A |
 
+**データベースの性質**
+
+「D」はデータベース部門を表す。分野のタグ `database` は、データベース部門の技術にすべて +1 で付ける（言語には付けない）。
+
+| タグ | 意味 | 判定基準 | 適用 |
+|---|---|---|---|
+| `database` | データの保存と検索の仕組み（分野） | データベース部門の技術はすべて +1 | D |
+| `relational` | テーブルを SQL で扱う | リレーショナルデータベースなら +1。ドキュメント型やキーバリュー型など、SQL のテーブルを使わない型なら −1 | D |
+| `embedded` | サーバーを立てずにアプリに組み込む | アプリのライブラリとして動くのが標準なら +1。サーバーとして動かすのが標準なら −1 | D |
+| `in-memory` | データを主にメモリに置く | データを主にメモリに置くのが標準なら +1。ディスクに置くのが標準なら −1 | D |
+
 AI・データ部門の技術には `maturity` を付けない。scikit-learn は 2007 年から公開されているが、1.0 は 2021 年で、今の基準では「新しい技術」と判定されてしまうためである（technology-weights.md の 4.5）。
 
 #### 外したタグと理由
@@ -291,12 +302,12 @@ AI・データ部門の技術には `maturity` を付けない。scikit-learn �
 | フレームワーク | `web-frontend`、`web-backend`、`mobile`、`full-stack` | 6.4 のフレームワーク 13 件 |
 | インフラ・DevOps | `infra` | Linux、Docker、Kubernetes、Terraform、GitHub Actions |
 | AI・データ | `data-ai` | PyTorch、TensorFlow、scikit-learn、pandas |
+| データベース | `database` | PostgreSQL、SQLite、MongoDB、Redis（MySQL は、今のタグでは PostgreSQL と区別できないため保留。technology-weights.md の 3.6） |
 
 #### 追加予定の部門（案）
 
 | 部門 | 技術の候補 | 検討が必要なこと |
 |---|---|---|
-| データベース | PostgreSQL、MySQL、SQLite、MongoDB、Redis | |
 | ゲーム開発 | Unity、Unreal Engine、Godot | 使う言語（C#、C++ など）を持たせれば、言語との組み合わせも出せる |
 | アルゴリズム | データ構造、探索、動的計画法、グラフアルゴリズム | ツールではなく知識の分野なので、客観的なタグの基準を新しく考える必要がある |
 | セキュリティ・暗号 | Web セキュリティ、ネットワーク、暗号、CTF | 同上。不正アクセス禁止法に触れないよう、合法な演習環境だけを学習リソースとして紹介する |

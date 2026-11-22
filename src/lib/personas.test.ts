@@ -136,6 +136,33 @@ describe("ペルソナ", () => {
     expect(aiTop(["d13", "a05", "a06"], ["a01"])).toBe("pandas");
   });
 
+  const dbTop = (like: string[], nope: string[]) => {
+    const r = recommend(answers(like, nope), CARDS, TECHNOLOGIES);
+    return r.departments.find((d) => d.department.id === "database")!.ranked[0].tech.id;
+  };
+
+  it("データベースに関心がある → データベース部門が関心ありになる", () => {
+    const r = recommend(answers(["d16", "d17"], ["d01", "d14"]), CARDS, TECHNOLOGIES);
+    expect(r.departments[1].department.id).toBe("database");
+    expect(r.departments[1].featured).toBe(true);
+  });
+
+  it("DB: SQL で、サーバーとして運用し、ディスクに確実に残す → PostgreSQL", () => {
+    expect(dbTop(["d16", "b01", "b04", "b06"], ["b02"])).toBe("postgresql");
+  });
+
+  it("DB: SQL で、サーバーなしでファイル 1 つ → SQLite", () => {
+    expect(dbTop(["d16", "b01", "b03"], ["b04"])).toBe("sqlite");
+  });
+
+  it("DB: JSON のようなデータをそのまま、ディスクに残す → MongoDB", () => {
+    expect(dbTop(["d16", "b02", "b06"], ["b01"])).toBe("mongodb");
+  });
+
+  it("DB: メモリに置いて、とにかく速く → Redis", () => {
+    expect(dbTop(["d16", "b05"], ["b06"])).toBe("redis");
+  });
+
   it("経験レベル: LV.10 は、レベルを指定しないときと同じ結果", () => {
     const a = answers(["d01", "d02", "l01"], ["d09"]);
     const ids = (r: ReturnType<typeof recommend>) => r.departments.flatMap((d) => d.ranked.map((x) => x.tech.id));

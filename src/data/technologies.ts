@@ -259,4 +259,36 @@ export const AI_DATA: Tool[] = [
   },
 ];
 
-export const TECHNOLOGIES: Technology[] = [...LANGUAGES, ...FRAMEWORKS, ...INFRA, ...AI_DATA];
+// MySQL は、今のタグでは PostgreSQL と重みがまったく同じになり区別できないため、まだ載せていない
+// （technology-weights.md の 3.6）。
+export const DATABASES: Tool[] = [
+  {
+    department: "database", id: "postgresql", name: "PostgreSQL",
+    summary: "機能が豊富なリレーショナルデータベース。SQL の標準にしっかり沿っていて、Web サービスで広く使われる。",
+    tagWeights: { database: 1, relational: 1, embedded: -1, "in-memory": -1, maturity: 1 },
+    resources: [
+      { title: "公式ドキュメント", url: "https://www.postgresql.org/docs/current/tutorial.html", official: true },
+      { title: "日本語訳（日本 PostgreSQL ユーザ会）", url: "https://www.postgresql.jp/document/current/html/tutorial.html", official: false },
+    ],
+  },
+  {
+    department: "database", id: "sqlite", name: "SQLite",
+    summary: "サーバーを立てずに、ファイル 1 つで使えるリレーショナルデータベース。スマホアプリなどに組み込まれている。",
+    tagWeights: { database: 1, relational: 1, embedded: 1, "in-memory": -1, maturity: 1 },
+    resources: docs("https://www.sqlite.org/quickstart.html"),
+  },
+  {
+    department: "database", id: "mongodb", name: "MongoDB",
+    summary: "JSON のような形のデータ（ドキュメント）を、そのまま保存できるデータベース。",
+    tagWeights: { database: 1, relational: -1, embedded: -1, "in-memory": -1, maturity: 1 },
+    resources: docs("https://www.mongodb.com/ja-jp/docs/manual/"),
+  },
+  {
+    department: "database", id: "redis", name: "Redis",
+    summary: "データをメモリに置いて、とても速く読み書きできるデータベース。キャッシュやランキングなどに使われる。",
+    tagWeights: { database: 1, relational: -1, embedded: -1, "in-memory": 1, maturity: 1 },
+    resources: docs("https://redis.io/docs/latest/develop/get-started/"),
+  },
+];
+
+export const TECHNOLOGIES: Technology[] = [...LANGUAGES, ...FRAMEWORKS, ...INFRA, ...AI_DATA, ...DATABASES];

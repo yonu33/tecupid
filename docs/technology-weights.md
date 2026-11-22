@@ -140,6 +140,23 @@ Go の言語のタグに `infra: 1` を追加した（公式サイトの用途�
   - PyTorch は、学習ループを自分で書くのが公式チュートリアルの標準なので −1。
 - pandas は、モデルの学習を扱わないので、deep-learning と high-level-api は 0。
 
+## 3.6 データベース（4 件）
+
+| 技術 | database | relational | embedded | in-memory | maturity |
+|---|---|---|---|---|---|
+| PostgreSQL | 1 | 1 | −1 | −1 | 1 |
+| SQLite | 1 | 1 | 1 | −1 | 1 |
+| MongoDB | 1 | −1 | −1 | −1 | 1 |
+| Redis | 1 | −1 | −1 | 1 | 1 |
+
+### 3.6.1 判定のメモ
+
+- relational: PostgreSQL と SQLite はリレーショナルなので 1。MongoDB（ドキュメント型）と Redis（キーバリュー型）は −1。
+- embedded: SQLite はアプリのライブラリとして動くのが標準なので 1。ほかはサーバーとして動かすのが標準なので −1。
+- in-memory: Redis はデータを主にメモリに置くので 1。ほかはディスクに置くので −1。
+- maturity: 1.0 は PostgreSQL（前身の Postgres95 を経て 1997 年に 6.0）、SQLite（2000 年）、MongoDB（2009 年）、Redis（2009 年）で、すべて 2011 年以前なので 1。部門の中では差がつかない。
+- MySQL を載せていない理由: relational 1、embedded −1、in-memory −1、maturity 1 で、PostgreSQL と重みがまったく同じになり、推薦で区別できない。2 つを区別する客観的なタグ（例: 開発の主体が企業かコミュニティか）を決めたら追加する。
+
 ## 4. 見つかった課題
 
 ### 4.1 React、Vue.js、Svelte の重みが同じ（対応済み）
