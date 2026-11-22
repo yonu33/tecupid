@@ -90,7 +90,8 @@ describe("parseSharedIds と parseSharedMatch", () => {
 
 describe("sharePostText", () => {
   it("文章の最後に #tecupid を付ける", () => {
-    expect(sharePostText(["Go", "Gin"])).toBe("tecupid で私にぴったりの技術は Go ＋ Gin でした\n\n#tecupid");
+    // 空行を入れない（X の投稿画面で、文章とハッシュタグのあいだに空白が出てしまうため）
+    expect(sharePostText(["Go", "Gin"])).toBe("tecupid で私にぴったりの技術は Go ＋ Gin でした\n#tecupid");
   });
 });
 
