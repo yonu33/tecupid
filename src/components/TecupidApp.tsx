@@ -6,7 +6,7 @@ import { BETA } from "../config";
 import { DATA_UPDATED, TECHNOLOGIES, type Technology } from "../data/technologies";
 import { buildDeck, cardsForLevel, followUpCards } from "../lib/deck";
 import { recommend, type Answer, type Ranked } from "../lib/scoring";
-import { buildShareUrl, parseSharedIds, parseSharedMatch, shareText, xShareUrl } from "../lib/share";
+import { buildShareUrl, parseSharedIds, parseSharedMatch, sharePostText, xShareUrl } from "../lib/share";
 import PixelSprite from "./PixelSprite";
 import TermWindow from "./TermWindow";
 import { CARET, CROSS, CUPID, HEART, SMALL_HEART, SMALL_HEART_EMPTY, SPARKLE } from "./sprites";
@@ -317,7 +317,7 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
     ? [result.combination.language.tech, result.combination.framework.tech]
     : [result.languages[0].tech];
   const shareUrl = buildShareUrl(window.location.origin, shareTechs.map((t) => t.id));
-  const text = shareText(shareTechs.map((t) => t.name));
+  const text = sharePostText(shareTechs.map((t) => t.name));
   const [copied, setCopied] = useState(false);
 
   const copy = async () => {

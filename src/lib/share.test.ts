@@ -12,6 +12,7 @@ import {
   parseSharedMatch,
   sharePath,
   shareTargets,
+  sharePostText,
   shareText,
   xShareUrl,
 } from "./share";
@@ -84,6 +85,12 @@ describe("parseSharedIds と parseSharedMatch", () => {
     expect(parseSharedMatch("?match=typescript,unknown", TECHNOLOGIES)).toBeNull();
     expect(parseSharedMatch("?match=go,rust,python,java", TECHNOLOGIES)).toBeNull();
     expect(parseSharedMatch("?match=<script>", TECHNOLOGIES)).toBeNull();
+  });
+});
+
+describe("sharePostText", () => {
+  it("文章の最後に #tecupid を付ける", () => {
+    expect(sharePostText(["Go", "Gin"])).toBe("tecupid で私にぴったりの技術は Go ＋ Gin でした\n\n#tecupid");
   });
 });
 

@@ -62,6 +62,14 @@ export function shareText(techNames: string[]): string {
   return `tecupid で私にぴったりの技術は ${techNames.join(" ＋ ")} でした`;
 }
 
+/** SNS に投稿するときに付けるハッシュタグ */
+export const SHARE_HASHTAG = "#tecupid";
+
+/** SNS に投稿する文章。シェアする文章の最後にハッシュタグを付ける */
+export function sharePostText(techNames: string[]): string {
+  return `${shareText(techNames)}\n\n${SHARE_HASHTAG}`;
+}
+
 /** X（旧 Twitter）の投稿画面の URL。SNS の共有ボタンは、ひとまず X だけにしている */
 export function xShareUrl(text: string, url: string): string {
   const q = new URLSearchParams({ text, url });
