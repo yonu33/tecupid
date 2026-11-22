@@ -19,6 +19,8 @@ import { CARET, CROSS, CUPID, HEART, SMALL_HEART, SMALL_HEART_EMPTY, SPARKLE } f
 const MIN_ANSWER_RATIO = 0.75;
 /** これ以上ドラッグしたら回答とみなす距離（px） */
 const SWIPE_THRESHOLD = 100;
+/** 答えたカードが画面の外へ飛んでいく演出の長さ（ミリ秒）。CSS の .card.leaving とそろえる */
+const EXIT_MS = 260;
 /** 経験レベルの初期値 */
 const DEFAULT_LEVEL = 5;
 /** マッチ度のメーターのハートの数 */
@@ -54,7 +56,11 @@ export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
     setPhase("swipe");
   };
 
-  const answer = useCallback(
+  /** 答えたカードが画面の外へ飛んでいく演出のあいだは、その向き */
+  const [exiting, setExiting] = useState<"like" | "nope" | null>(null);
+
+  /** 回答を記録して、次のカードへ進む */
+  const commit = useCallback(
     (liked: boolean) => {
       const card = deck[answers.length];
       if (!card) return;
@@ -68,6 +74,33 @@ export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
     },
     [deck, answers, baseCount, level],
   );
+
+  /** 答える。スワイプ、ボタン、キーのどれでも、カードが飛んでいく演出のあとで記録する */
+  const answer = useCallback(
+    (liked: boolean) => {
+      if (exiting || !deck[answers.length]) return;
+      try {
+        navigator.vibrate?.(12);
+      } catch {
+        // 振動に対応していない端末では何もしない
+      }
+      if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+        commit(liked);
+        return;
+      }
+      setExiting(liked ? "like" : "nope");
+      window.setTimeout(() => {
+        setExiting(null);
+        commit(liked);
+      }, EXIT_MS);
+    },
+    [exiting, deck, answers, commit],
+  );
+
+  // カードに答えているあいだは、画面の高さに収めるためにフッターを隠す（CSS の body[data-phase]）
+  useEffect(() => {
+    document.body.dataset.phase = phase;
+  }, [phase]);
 
   const undo = () => setAnswers((a) => a.slice(0, -1));
 
@@ -92,7 +125,7 @@ export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
   const department = card?.department ? DEPARTMENTS.find((d) => d.id === card.department) : undefined;
   const minAnswers = Math.ceil(baseCount * MIN_ANSWER_RATIO);
   return (
-    <main className="screen">
+    <main className="screen swipe">
       <div
         className="progress"
         role="progressbar"
@@ -116,7 +149,9 @@ export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
       <p className="visually-hidden" aria-live="polite">
         {card ? `${answers.length + 1} 枚目。${card.text}` : ""}
       </p>
-      {card && <SwipeCard key={card.id} card={card} onAnswer={answer} />}
+      {card && (
+        <SwipeCard key={card.id} card={card} exiting={exiting} hint={answers.length === 0} onSwipe={answer} />
+      )}
 
       <div className="actions">
         <button className="btn-key nope" onClick={() => answer(false)} aria-keyshortcuts="n ArrowLeft">
@@ -130,10 +165,10 @@ export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
           <span>すき</span>
         </button>
       </div>
-      <p className="hint">y / n キー、← → キー、左右のスワイプでも答えられます</p>
+      <p className="hint">カードを左右にスワイプしても答えられます</p>
 
       <div className="sub-actions">
-        <button className="btn-text" onClick={undo} disabled={answers.length === 0}>
+        <button className="btn-text" onClick={undo} disabled={answers.length === 0 || exiting !== null}>
           1 枚戻す
         </button>
         <button className="btn-text" onClick={() => setPhase("result")} disabled={answers.length < minAnswers}>
@@ -250,47 +285,81 @@ function LevelPicker({ level, onChange }: { level: number; onChange: (level: num
   );
 }
 
-function SwipeCard({ card, onAnswer }: { card: FeatureCard; onAnswer: (liked: boolean) => void }) {
+function SwipeCard({
+  card,
+  exiting,
+  hint,
+  onSwipe,
+}: {
+  card: FeatureCard;
+  /** 答えた直後、カードが飛んでいく向き */
+  exiting: "like" | "nope" | null;
+  /** 最初のカード。左右に揺らして、スワイプできることを見せる */
+  hint: boolean;
+  onSwipe: (liked: boolean) => void;
+}) {
   const [dx, setDx] = useState(0);
+  const [dragging, setDragging] = useState(false);
   const startX = useRef<number | null>(null);
 
   const onDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (exiting) return;
     startX.current = e.clientX;
+    setDragging(true);
     e.currentTarget.setPointerCapture(e.pointerId);
   };
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
     if (startX.current !== null) setDx(e.clientX - startX.current);
   };
   const onUp = () => {
-    if (Math.abs(dx) > SWIPE_THRESHOLD) onAnswer(dx > 0);
+    if (startX.current === null) return;
     startX.current = null;
-    setDx(0);
+    setDragging(false);
+    // しきい値を超えたら、ドラッグした位置からそのまま飛んでいく
+    if (Math.abs(dx) > SWIPE_THRESHOLD) onSwipe(dx > 0);
+    else setDx(0);
   };
 
-  const dragging = startX.current !== null;
-  const stamp = dx > 40 ? "like" : dx < -40 ? "nope" : null;
+  const stamp = exiting ?? (dx > 40 ? "like" : dx < -40 ? "nope" : null);
+  const transform = exiting
+    ? `translateX(${exiting === "like" ? 120 : -120}vw) rotate(${exiting === "like" ? 24 : -24}deg)`
+    : `translateX(${dx}px) rotate(${dx / 20}deg)`;
+  const className = [
+    "card",
+    dragging && "dragging",
+    exiting && "leaving",
+    hint && !dragging && dx === 0 && !exiting && "wiggle",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <TermWindow
       title="~/tecupid"
-      className={`card ${dragging ? "dragging" : ""}`}
-      style={{ transform: `translateX(${dx}px) rotate(${dx / 20}deg)` }}
+      className={className}
+      style={{ transform }}
       onPointerDown={onDown}
       onPointerMove={onMove}
       onPointerUp={onUp}
       onPointerCancel={onUp}
     >
-      {stamp === "like" && (
+      {stamp === "like" && !exiting && (
         <span className="stamp like">
           <PixelSprite sprite={SMALL_HEART} scale={3} />
           すき！
         </span>
       )}
-      {stamp === "nope" && (
+      {stamp === "nope" && !exiting && (
         <span className="stamp nope">
           <PixelSprite sprite={CROSS} scale={2} />
           パス
         </span>
+      )}
+      {exiting && (
+        <div className={`big-stamp ${exiting}`} aria-hidden="true">
+          <PixelSprite sprite={exiting === "like" ? HEART : CROSS} scale={6} />
+          <span>{exiting === "like" ? "すき！" : "パス"}</span>
+        </div>
       )}
       <p className="term-prompt" aria-hidden="true">
         $ tecupid next
@@ -298,7 +367,7 @@ function SwipeCard({ card, onAnswer }: { card: FeatureCard; onAnswer: (liked: bo
       <p className="card-text">{card.text}</p>
       {card.example && <p className="card-example">{card.example}</p>}
       <p className="term-ask" aria-hidden="true">
-        ? すき [y] / パス [n]
+        ← パス ／ すき →
         <span className="cursor" />
       </p>
     </TermWindow>
