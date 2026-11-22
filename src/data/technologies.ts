@@ -195,6 +195,24 @@ export const FRAMEWORKS: Framework[] = [
     tagWeights: { mobile: 1, "cross-platform": 1, "batteries-included": -1, "template-syntax": -1, "fast-feedback": 1 },
     resources: docs("https://reactnative.dev/docs/getting-started"),
   },
+  {
+    department: "framework", category: "backend", id: "gin", name: "Gin", languages: ["go"],
+    summary: "Go の軽量な Web フレームワーク。シンプルな書き方で、速い API サーバーを作れる。",
+    tagWeights: { "web-backend": 1, "batteries-included": -1 },
+    resources: docs("https://gin-gonic.com/ja/docs/"),
+  },
+  {
+    department: "framework", category: "mobile", id: "swiftui", name: "SwiftUI", languages: ["swift"],
+    summary: "Apple の UI フレームワーク。Swift のコードで、iPhone や Mac のアプリの画面を組み立てる。",
+    tagWeights: { mobile: 1, "batteries-included": -1, "template-syntax": -1, "fast-feedback": 1 },
+    resources: docs("https://developer.apple.com/jp/swiftui/"),
+  },
+  {
+    department: "framework", category: "mobile", id: "jetpack-compose", name: "Jetpack Compose", languages: ["kotlin"],
+    summary: "Android の UI フレームワーク。Kotlin のコードで画面を組み立てる、比較的新しい仕組み。",
+    tagWeights: { mobile: 1, "batteries-included": -1, "template-syntax": -1, "fast-feedback": 1, maturity: -1 },
+    resources: docs("https://developer.android.com/develop/ui/compose/documentation?hl=ja"),
+  },
 ];
 
 export const INFRA: Tool[] = [
@@ -219,7 +237,7 @@ export const INFRA: Tool[] = [
   {
     department: "infra", id: "terraform", name: "Terraform",
     summary: "クラウドのサーバーやネットワークを、コードで宣言して作るツール。",
-    tagWeights: { infra: 1, declarative: 1, distributed: 1, maturity: -1 },
+    tagWeights: { infra: 1, declarative: 1, distributed: 1 },
     resources: docs("https://developer.hashicorp.com/terraform/tutorials"),
   },
   {
@@ -230,8 +248,8 @@ export const INFRA: Tool[] = [
   },
 ];
 
-// maturity は付けない。scikit-learn は 2007 年から公開されているが 1.0 が 2021 年で、
-// 今の基準（1.0 の年）では実態と逆の判定になるため（technology-weights.md の 4.5）。
+// maturity はどれも 0。1.0 が 2017 年以降か、1.0 より前に 5 年以上公開されていた（scikit-learn、pandas）ため
+// （requirements.md の 6.5 の maturity の基準）。
 export const AI_DATA: Tool[] = [
   {
     department: "ai-data", id: "pytorch", name: "PyTorch",

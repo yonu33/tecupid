@@ -39,10 +39,17 @@ describe("ペルソナ", () => {
     expect(r.combination?.language.tech.id).toBe("dart");
   });
 
-  it("iPhone アプリを安全に作りたい → Swift。合うフレームワークがないので組み合わせは出さない", () => {
+  it("iPhone アプリを安全に作りたい → Swift ＋ SwiftUI", () => {
     const r = recommend(answers(["d03", "d04", "l04", "l05", "l06", "l11"], ["d05", "d06", "l07"]), CARDS, TECHNOLOGIES);
     expect(top(r.languages, 1)).toEqual(["swift"]);
-    expect(r.combination).toBeNull();
+    expect(r.combination?.framework.tech.id).toBe("swiftui");
+  });
+
+  // iOS と Android を区別するカードはまだないので、Kotlin らしい言語の性質（GC、クラス設計）で答える
+  it("スマホアプリを、GC がありクラスで設計する言語と、新しめの仕組みで作りたい → Kotlin ＋ Jetpack Compose", () => {
+    const r = recommend(answers(["d03", "d04", "l16", "l09", "e06"], ["l06"]), CARDS, TECHNOLOGIES);
+    expect(r.combination?.language.tech.id).toBe("kotlin");
+    expect(r.combination?.framework.tech.id).toBe("jetpack-compose");
   });
 
   it("データ分析と機械学習 → Python", () => {
@@ -59,6 +66,7 @@ describe("ペルソナ", () => {
   it("サーバーの並行処理をシンプルに書きたい → Go", () => {
     const r = recommend(answers(["d02", "d11", "l12", "l18", "l19", "l06", "f04"], ["l16", "l20", "d01"]), CARDS, TECHNOLOGIES);
     expect(top(r.languages, 1)).toEqual(["go"]);
+    expect(r.combination?.framework.tech.id).toBe("gin");
   });
 
   it("1 人で Web サービスを全部入りで作りたい → Rails、Laravel、Django が上位", () => {
