@@ -92,7 +92,7 @@ function resultPage(names: string[]): string {
   const parts = names.map((n, i) => `${i > 0 ? spriteSvg(HEART, 6) : ""}<span>${escapeHtml(n)}</span>`).join("");
   return html(
     "~/tecupid/match",
-    `<p class="muted">$ tecupid match</p><p class="muted"># 私にぴったりの技術は</p><div class="names">${parts}</div>${FOOTER}`,
+    `<p class="muted">$ tecupid match</p><p class="muted"># マッチングしました！</p><div class="names">${parts}</div>${FOOTER}`,
   );
 }
 

@@ -57,9 +57,12 @@ export function parseSharedMatch(search: string, technologies: Technology[]): Te
   return raw ? parseSharedIds(raw.split(","), technologies) : null;
 }
 
-/** シェアする文章 */
+/**
+ * シェアする文章。技術「マッチング」アプリなので、「マッチングしました」と言う。
+ * 日本語と英字のあいだには半角スペースを入れない（SNS の投稿で不自然に見えるため）。
+ */
 export function shareText(techNames: string[]): string {
-  return `tecupid で私にぴったりの技術は ${techNames.join(" ＋ ")} でした`;
+  return `tecupidで『${techNames.join(" ＋ ")}』にマッチングしました！`;
 }
 
 /** SNS に投稿するときに付けるハッシュタグ */

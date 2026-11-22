@@ -91,12 +91,13 @@ describe("parseSharedIds と parseSharedMatch", () => {
 describe("sharePostText", () => {
   it("文章の最後に #tecupid を付ける", () => {
     // 空行を入れない（X の投稿画面で、文章とハッシュタグのあいだに空白が出てしまうため）
-    expect(sharePostText(["Go", "Gin"])).toBe("tecupid で私にぴったりの技術は Go ＋ Gin でした\n#tecupid");
+    expect(sharePostText(["Go", "Gin"])).toBe("tecupidで『Go ＋ Gin』にマッチングしました！\n#tecupid");
   });
 });
 
 describe("shareText", () => {
-  it("技術名を ＋ でつなぐ", () => {
-    expect(shareText(["TypeScript", "React"])).toBe("tecupid で私にぴったりの技術は TypeScript ＋ React でした");
+  it("技術名を ＋ でつなぎ、『』で囲んで「マッチングしました」と言う", () => {
+    expect(shareText(["TypeScript", "React"])).toBe("tecupidで『TypeScript ＋ React』にマッチングしました！");
+    expect(shareText(["Python"])).toBe("tecupidで『Python』にマッチングしました！");
   });
 });
