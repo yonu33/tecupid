@@ -13,7 +13,8 @@
     "test:watch": "vitest",
     "preview": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
-    "astro": "astro"
+    "astro": "astro",
+    "og": "tsx scripts/generate-og.ts"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.9",
@@ -26,6 +27,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "playwright-core": "^1.65.1",
+    "tsx": "^4.23.15",
     "typescript": "^6.0.3",
     "vitest": "^5.1.1",
     "wrangler": "^4.166.0"

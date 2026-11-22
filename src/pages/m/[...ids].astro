@@ -1,0 +1,27 @@
+---
+// シェア用のページ（例: /m/typescript/react/）。
+// SNS で共有したときに、結果ごとのサムネイル（OGP 画像）が出るよう、シェアされうる結果ごとに静的に作る。
+// 中身はトップページと同じアプリで、「友だちのマッチング結果」を上に表示する。
+import TecupidApp from "../../components/TecupidApp";
+import { TECHNOLOGIES } from "../../data/technologies";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ogImagePath, parseSharedIds, shareTargets, shareText } from "../../lib/share";
+
+export function getStaticPaths() {
+  return shareTargets(TECHNOLOGIES).map((ids) => ({ params: { ids: ids.join("/") } }));
+}
+
+const ids = (Astro.params.ids ?? "").split("/");
+const techs = parseSharedIds(ids, TECHNOLOGIES);
+if (!techs) throw new Error(`不正なシェア用のページ: ${Astro.params.ids}`);
+const names = techs.map((t) => t.name);
+---
+
+<BaseLayout
+	title={names.join(" ＋ ")}
+	description={`${shareText(names)}。あなたにぴったりの技術も見つけよう。`}
+	ogImage={ogImagePath(ids)}
+	ogImageAlt={`tecupid のマッチング結果: ${names.join(" と ")}`}
+>
+	<TecupidApp client:only="react" sharedIds={ids} />
+</BaseLayout>

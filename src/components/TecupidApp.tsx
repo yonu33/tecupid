@@ -5,7 +5,7 @@ import { DEPARTMENTS } from "../data/departments";
 import { DATA_UPDATED, TECHNOLOGIES, type Technology } from "../data/technologies";
 import { buildDeck, cardsForLevel, followUpCards } from "../lib/deck";
 import { recommend, type Answer, type Ranked } from "../lib/scoring";
-import { buildShareUrl, parseSharedMatch, shareText } from "../lib/share";
+import { buildShareUrl, parseSharedIds, parseSharedMatch, shareText, xShareUrl } from "../lib/share";
 import PixelSprite from "./PixelSprite";
 import TermWindow from "./TermWindow";
 import { CARET, CROSS, CUPID, HEART, SMALL_HEART, SMALL_HEART_EMPTY, SPARKLE } from "./sprites";
@@ -23,21 +23,24 @@ const MAX_FEATURED = 3;
 
 type Phase = "start" | "swipe" | "result";
 
-export default function TecupidApp() {
+/** sharedIds: シェア用のページ（/m/...）で開いたときの、友だちの結果の技術の ID */
+export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
   const [phase, setPhase] = useState<Phase>("start");
   const [level, setLevel] = useState(DEFAULT_LEVEL);
   const [deck, setDeck] = useState<FeatureCard[]>([]);
   /** 最初の山札の枚数。これより後ろは、関心のある部門の追加カード */
   const [baseCount, setBaseCount] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  /** シェアされた URL（?match=...）で開いたときの、友だちの結果 */
-  const [shared, setShared] = useState(() => parseSharedMatch(window.location.search, TECHNOLOGIES));
+  /** シェアされた URL（/m/... か、古い形式の ?match=...）で開いたときの、友だちの結果 */
+  const [shared, setShared] = useState(() =>
+    sharedIds ? parseSharedIds(sharedIds, TECHNOLOGIES) : parseSharedMatch(window.location.search, TECHNOLOGIES),
+  );
 
   const start = () => {
     if (shared) {
-      // 自分の結果と混ざらないよう、シェアの表示とクエリを消す
+      // 自分の結果と混ざらないよう、シェアの表示を消して、URL もトップページに戻す
       setShared(null);
-      window.history.replaceState(null, "", window.location.pathname);
+      window.history.replaceState(null, "", "/");
     }
     const initial = buildDeck(cardsForLevel(CARDS, level));
     setDeck(initial);
@@ -306,21 +309,16 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
   const shareTechs: Technology[] = result.combination
     ? [result.combination.language.tech, result.combination.framework.tech]
     : [result.languages[0].tech];
-  const [shareStatus, setShareStatus] = useState<"idle" | "shared" | "copied">("idle");
+  const shareUrl = buildShareUrl(window.location.origin, shareTechs.map((t) => t.id));
+  const text = shareText(shareTechs.map((t) => t.name));
+  const [copied, setCopied] = useState(false);
 
-  const share = async () => {
-    const url = buildShareUrl(window.location.origin, shareTechs.map((t) => t.id));
-    const text = shareText(shareTechs.map((t) => t.name));
+  const copy = async () => {
     try {
-      if (navigator.share) {
-        await navigator.share({ title: "tecupid", text, url });
-        setShareStatus("shared");
-      } else {
-        await navigator.clipboard.writeText(`${text}\n${url}`);
-        setShareStatus("copied");
-      }
+      await navigator.clipboard.writeText(`${text}\n${shareUrl}`);
+      setCopied(true);
     } catch {
-      // 共有をキャンセルしたときなど。何もしない
+      setCopied(false);
     }
   };
 
@@ -367,8 +365,16 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
         <button className="btn-primary" onClick={onRetry}>
           もう一度やる
         </button>
-        <button className="btn-text" onClick={share}>
-          {shareStatus === "shared" ? "シェアしました" : shareStatus === "copied" ? "URL をコピーしました" : "結果をシェア"}
+      </div>
+
+      {/* SNS の共有はひとまず X だけ。ロゴ（商標）は使わず、文字だけにする */}
+      <div className="share-row" role="group" aria-label="結果をシェア">
+        <span className="share-label">// シェア</span>
+        <a className="btn-text" href={xShareUrl(text, shareUrl)} target="_blank" rel="noopener noreferrer">
+          X でポスト
+        </a>
+        <button className="btn-text" onClick={copy}>
+          {copied ? "コピーしました" : "URL をコピー"}
         </button>
       </div>
       <p className="note">

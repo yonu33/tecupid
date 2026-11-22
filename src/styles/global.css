@@ -811,6 +811,23 @@ details[open] > summary::before {
   margin-top: 40px;
 }
 
+.share-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 16px;
+  margin-top: 16px;
+}
+
+.share-label {
+  color: var(--muted);
+}
+
+.share-row .btn-text {
+  color: var(--accent);
+}
+
 /* 404 */
 .not-found .px-sprite {
   margin-bottom: 16px;

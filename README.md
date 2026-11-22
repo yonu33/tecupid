@@ -18,7 +18,20 @@ npm run check      # 型チェック
 npm run build      # dist/ に静的ビルド
 npm run preview    # ビルドして Cloudflare Workers のローカル環境で確認
 npm run deploy     # ビルドして Cloudflare Workers にデプロイ
+npm run og         # SNS 用のサムネイル画像（public/og/）を作り直す
 ```
+
+### 本番の URL
+
+SNS のサムネイル（OGP 画像）の URL は絶対 URL で書く必要があるため、ビルドするときに環境変数 `SITE_URL` で本番の URL を指定します。未指定のときは、OGP の画像と URL のメタタグを出力しません。
+
+```sh
+SITE_URL=https://tecupid.example.workers.dev npm run deploy
+```
+
+### サムネイル画像
+
+結果ごとのサムネイルは `npm run og` で `public/og/` に作り、コミットします。技術を追加したり名前を変えたりしたら作り直してください（画像が足りないとテストが失敗します）。手元の Edge（Windows）か Chrome を使います。ブラウザは `OG_BROWSER=chrome` のように変えられます。
 
 ## 構成
 
@@ -32,7 +45,9 @@ npm run deploy     # ビルドして Cloudflare Workers にデプロイ
 | `src/lib/deck.ts` | 1 回のセッションで出すカードの選び方 |
 | `src/components/TecupidApp.tsx` | スタート、カード、結果の画面 |
 | `src/components/sprites.ts` | ドット絵のスプライト |
-| `src/pages/` | トップ、利用規約、免責事項、プライバシーポリシー、tecupid について、404 |
+| `src/pages/` | トップ、シェア用のページ（`m/`）、利用規約、免責事項、プライバシーポリシー、tecupid について、404 |
+| `src/lib/share.ts` | シェア用の URL、OGP 画像のパス、X の投稿画面の URL |
+| `scripts/generate-og.ts` | SNS 用のサムネイル画像を作るスクリプト |
 | `wrangler.jsonc` | Cloudflare Workers の設定（静的アセットだけを配信） |
 | `docs/` | 要件定義書と、データのレビュー用の表 |
 
