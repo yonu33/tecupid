@@ -171,6 +171,23 @@ describe("ペルソナ", () => {
     expect(dbTop(["d16", "b05"], ["b06"])).toBe("redis");
   });
 
+  it("iPhone 向けのアプリを作りたい → Swift ＋ SwiftUI", () => {
+    const r = recommend(answers(["d03", "d04", "p01"], []), CARDS, TECHNOLOGIES);
+    expect(r.combination?.language.tech.id).toBe("swift");
+    expect(r.combination?.framework.tech.id).toBe("swiftui");
+  });
+
+  it("Android 向けのアプリを作りたい → Kotlin ＋ Jetpack Compose", () => {
+    const r = recommend(answers(["d03", "d04", "p02"], []), CARDS, TECHNOLOGIES);
+    expect(r.combination?.language.tech.id).toBe("kotlin");
+    expect(r.combination?.framework.tech.id).toBe("jetpack-compose");
+  });
+
+  it("iPhone と Android の両方に、1 つのコードで → Flutter か React Native", () => {
+    const r = recommend(answers(["d03", "d05", "p01", "p02"], []), CARDS, TECHNOLOGIES);
+    expect(["flutter", "react-native"]).toContain(r.combination?.framework.tech.id);
+  });
+
   const gameTop = (like: string[], nope: string[]) => {
     const r = recommend(answers(like, nope), CARDS, TECHNOLOGIES);
     return r.departments.find((d) => d.department.id === "game")!.ranked[0].tech.id;

@@ -57,13 +57,13 @@ export const LANGUAGES: Language[] = [
   {
     department: "language", id:"java", name: "Java",
     summary: "JVM の上で動く、クラスベースの静的型付け言語。業務システムで長く使われている。",
-    tagWeights: { "web-backend": 1, mobile: 0.5, "static-typing": 1, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "fast-feedback": 1, maturity: 1 },
+    tagWeights: { "web-backend": 1, mobile: 0.5, android: 1, "static-typing": 1, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "fast-feedback": 1, maturity: 1 },
     resources: docs("https://dev.java/learn/"),
   },
   {
     department: "language", id:"csharp", name: "C#",
     summary: ".NET の上で動く静的型付け言語。Web、デスクトップ、モバイルまで幅広く書ける。",
-    tagWeights: { "web-frontend": 0.5, "web-backend": 1, mobile: 0.5, "data-ai": 0.5, "cross-platform": 1, game: 0.5, "static-typing": 1, "null-safety": 0.5, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "simple-syntax": -1, "fast-feedback": 1, maturity: 1 },
+    tagWeights: { "web-frontend": 0.5, "web-backend": 1, mobile: 0.5, ios: 0.5, android: 0.5, "data-ai": 0.5, "cross-platform": 1, game: 0.5, "static-typing": 1, "null-safety": 0.5, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "simple-syntax": -1, "fast-feedback": 1, maturity: 1 },
     resources: docs("https://learn.microsoft.com/ja-jp/dotnet/csharp/"),
   },
   {
@@ -81,13 +81,13 @@ export const LANGUAGES: Language[] = [
   {
     department: "language", id:"kotlin", name: "Kotlin",
     summary: "Android の公式言語。null 安全と簡潔な文法が特徴で、サーバーやマルチプラットフォーム開発にも使える。",
-    tagWeights: { "web-frontend": 0.5, "web-backend": 1, mobile: 1, "data-ai": 0.5, "cross-platform": 1, "static-typing": 1, "null-safety": 1, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "simple-syntax": -1, "fast-feedback": 1 },
+    tagWeights: { "web-frontend": 0.5, "web-backend": 1, mobile: 1, android: 1, ios: 0.5, "data-ai": 0.5, "cross-platform": 1, "static-typing": 1, "null-safety": 1, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "simple-syntax": -1, "fast-feedback": 1 },
     resources: docs("https://kotlinlang.org/docs/home.html"),
   },
   {
     department: "language", id:"swift", name: "Swift",
     summary: "iPhone や Mac のアプリ開発の標準言語。安全性と速さを両立する。",
-    tagWeights: { "web-backend": 0.5, mobile: 1, systems: 0.5, "static-typing": 1, "null-safety": 1, "native-compile": 1, gc: 0.5, concurrency: 1, functional: 1, "simple-syntax": -1, "fast-feedback": 1 },
+    tagWeights: { "web-backend": 0.5, mobile: 1, ios: 1, systems: 0.5, "static-typing": 1, "null-safety": 1, "native-compile": 1, gc: 0.5, concurrency: 1, functional: 1, "simple-syntax": -1, "fast-feedback": 1 },
     resources: docs("https://www.swift.org/documentation/"),
   },
   {
@@ -111,7 +111,7 @@ export const LANGUAGES: Language[] = [
   {
     department: "language", id:"dart", name: "Dart",
     summary: "Flutter で使われる言語。1 つのコードからモバイル、デスクトップ、Web 向けのアプリを作れる。",
-    tagWeights: { "web-frontend": 0.5, "web-backend": 0.5, mobile: 1, "cross-platform": 1, "static-typing": 1, "null-safety": 1, "native-compile": 1, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "fast-feedback": 0.5 },
+    tagWeights: { "web-frontend": 0.5, "web-backend": 0.5, mobile: 1, ios: 0.5, android: 0.5, "cross-platform": 1, "static-typing": 1, "null-safety": 1, "native-compile": 1, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "fast-feedback": 0.5 },
     resources: docs("https://dart.dev/language"),
   },
 ];
@@ -186,13 +186,13 @@ export const FRAMEWORKS: Framework[] = [
   {
     department: "framework", category:"mobile", id: "flutter", name: "Flutter", languages: ["dart"],
     summary: "1 つのコードから iOS、Android、Web、デスクトップ向けのアプリを作れる UI フレームワーク。",
-    tagWeights: { "web-frontend": 0.5, mobile: 1, "cross-platform": 1, "template-syntax": -1, "fast-feedback": 1 },
+    tagWeights: { "web-frontend": 0.5, mobile: 1, ios: 0.5, android: 0.5, "cross-platform": 1, "template-syntax": -1, "fast-feedback": 1 },
     resources: docs("https://docs.flutter.dev/"),
   },
   {
     department: "framework", category:"mobile", id: "react-native", name: "React Native", languages: ["javascript", "typescript"],
     summary: "React の書き方で iOS と Android のアプリを作れるフレームワーク。",
-    tagWeights: { mobile: 1, "cross-platform": 1, "batteries-included": -1, "template-syntax": -1, "fast-feedback": 1 },
+    tagWeights: { mobile: 1, ios: 0.5, android: 0.5, "cross-platform": 1, "batteries-included": -1, "template-syntax": -1, "fast-feedback": 1 },
     resources: docs("https://reactnative.dev/docs/getting-started"),
   },
   {
@@ -204,13 +204,13 @@ export const FRAMEWORKS: Framework[] = [
   {
     department: "framework", category: "mobile", id: "swiftui", name: "SwiftUI", languages: ["swift"],
     summary: "Apple の UI フレームワーク。Swift のコードで、iPhone や Mac のアプリの画面を組み立てる。",
-    tagWeights: { mobile: 1, "batteries-included": -1, "template-syntax": -1, "fast-feedback": 1 },
+    tagWeights: { mobile: 1, ios: 1, "batteries-included": -1, "template-syntax": -1, "fast-feedback": 1 },
     resources: docs("https://developer.apple.com/jp/swiftui/"),
   },
   {
     department: "framework", category: "mobile", id: "jetpack-compose", name: "Jetpack Compose", languages: ["kotlin"],
     summary: "Android の UI フレームワーク。Kotlin のコードで画面を組み立てる、比較的新しい仕組み。",
-    tagWeights: { mobile: 1, "batteries-included": -1, "template-syntax": -1, "fast-feedback": 1, maturity: -1 },
+    tagWeights: { mobile: 1, android: 1, "batteries-included": -1, "template-syntax": -1, "fast-feedback": 1, maturity: -1 },
     resources: docs("https://developer.android.com/develop/ui/compose/documentation?hl=ja"),
   },
 ];

@@ -31,6 +31,12 @@
 
 ### 1.1 判定のメモ
 
+**iOS と Android（表に入れていない列）**
+
+- `ios`: Swift 1、Kotlin 0.5（Kotlin Multiplatform）、C# 0.5（.NET MAUI）、Dart 0.5（Flutter）
+- `android`: Kotlin 1、Java 1（どちらも Android の公式の開発言語）、C# 0.5、Dart 0.5
+- フレームワーク: SwiftUI は `ios: 1`、Jetpack Compose は `android: 1`、Flutter と React Native は両方 0.5
+
 **分野**
 
 - JavaScript と TypeScript の web-backend は、Node.js などのランタイムを前提にしている。

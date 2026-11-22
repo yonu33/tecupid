@@ -101,7 +101,16 @@ export function followUpCards(
   const pools = DEPARTMENTS
     .map((d) => ({
       interest: departmentInterest(d, pref),
-      pool: shuffle(cards.filter((c) => c.axis === "department" && c.department === d.id && !answered.has(c.id)), random),
+      pool: shuffle(
+        cards.filter(
+          (c) =>
+            c.axis === "department" &&
+            c.department === d.id &&
+            !answered.has(c.id) &&
+            (c.requires === undefined || (pref[c.requires] ?? 0) > 0),
+        ),
+        random,
+      ),
     }))
     .filter((d) => d.interest > 0 && Number.isFinite(d.interest) && d.pool.length > 0)
     .sort((a, b) => b.interest - a.interest)

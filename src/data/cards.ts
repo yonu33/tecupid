@@ -1,6 +1,6 @@
 // 特徴カード。元の表は docs/feature-cards.md。
 import type { DepartmentId } from "./departments";
-import type { Axis, TagWeights } from "./tags";
+import type { Axis, Tag, TagWeights } from "./tags";
 
 export type FeatureCard = {
   id: string;
@@ -11,6 +11,8 @@ export type FeatureCard = {
   department?: DepartmentId;
   /** 専門用語が多いカード。経験レベルが低い人には出さない（lib/deck.ts の cardsForLevel） */
   advanced?: boolean;
+  /** 部門の専用カードを追加で出すのは、このタグの好みが 0 より大きいときだけにする（lib/deck.ts の followUpCards） */
+  requires?: Tag;
   tags: TagWeights;
 };
 
@@ -37,6 +39,10 @@ export const CARDS: FeatureCard[] = [
   { id: "d19", axis: "domain", text: "パズルのような問題を、速く解ける手順を考えるのが好き", example: "競技プログラミングのような問題", tags: { algorithm: 1 } },
   { id: "d20", axis: "domain", text: "数式を使って、ものごとの仕組みを説明するのが好き", tags: { math: 1 } },
   { id: "d21", axis: "domain", text: "システムを攻撃から守る仕組みや、弱点の見つけ方に興味がある", tags: { security: 1 } },
+
+  // 部門の専用カード: フレームワーク（モバイルに関心がある人だけ）
+  { id: "p01", axis: "department", department: "framework", requires: "mobile", text: "iPhone や iPad で動くアプリを作りたい", tags: { ios: 1 } },
+  { id: "p02", axis: "department", department: "framework", requires: "mobile", text: "Android のスマホで動くアプリを作りたい", tags: { android: 1 } },
 
   // 部門の専用カード: インフラ・DevOps
   { id: "i01", axis: "department", department: "infra", text: "サーバーの設定を、手順ではなく「あるべき状態」としてファイルに書きたい", example: "「Web サーバーを 3 台」と書けば、足りない分を自動で作ってくれる", tags: { declarative: 1 } },

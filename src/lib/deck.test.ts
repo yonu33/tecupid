@@ -89,6 +89,23 @@ describe("followUpCards", () => {
     expect(cards.every((c) => c.department === "infra")).toBe(true);
   });
 
+  it("条件（requires）のあるカードは、その好みがあるときだけ返す", () => {
+    const platformCards = (likeIds: string[]) =>
+      followUpCards(
+        likeIds.map((cardId) => ({ cardId, liked: true })),
+        CARDS,
+        10,
+        seeded(1),
+      )
+        .filter((c) => c.requires === "mobile")
+        .map((c) => c.id)
+        .sort();
+    // Web にだけ関心がある人には、iPhone 向けや Android 向けのカードは出さない
+    expect(platformCards(["d01"])).toEqual([]);
+    // スマホアプリに関心がある人には出す
+    expect(platformCards(["d03"])).toEqual(["p01", "p02"]);
+  });
+
   it("関心のある部門がなければ、何も返さない", () => {
     expect(followUpCards([{ cardId: "d14", liked: false }], CARDS)).toEqual([]);
   });
