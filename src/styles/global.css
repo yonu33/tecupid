@@ -679,6 +679,11 @@ a.btn-primary {
   color: var(--accent);
 }
 
+.dept-note {
+  margin: -4px 0 16px;
+  color: var(--amber);
+}
+
 .rank-list {
   list-style: none;
   margin: 0;
@@ -764,6 +769,12 @@ a.btn-primary {
 
 .reason-icon {
   margin-top: 8px;
+}
+
+/* 学習リソースのリンク。複数あるときは 1 行ずつ並べる */
+.tech .resource {
+  display: block;
+  width: fit-content;
 }
 
 summary {

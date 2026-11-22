@@ -349,14 +349,26 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
       </p>
 
       {featured.map((d) => (
-        <RankSection key={d.department.id} title={`${d.department.name}部門`} ranked={d.ranked} best={best} />
+        <RankSection
+          key={d.department.id}
+          title={`${d.department.name}部門`}
+          note={d.department.note}
+          ranked={d.ranked}
+          best={best}
+        />
       ))}
 
       {others.length > 0 && (
         <details className="other-departments">
           <summary>そのほかの部門（{others.map((d) => d.department.name).join("、")}）</summary>
           {others.map((d) => (
-            <RankSection key={d.department.id} title={`${d.department.name}部門`} ranked={d.ranked} best={best} />
+            <RankSection
+          key={d.department.id}
+          title={`${d.department.name}部門`}
+          note={d.department.note}
+          ranked={d.ranked}
+          best={best}
+        />
           ))}
         </details>
       )}
@@ -386,10 +398,21 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
   );
 }
 
-function RankSection<T extends Technology>({ title, ranked, best }: { title: string; ranked: Ranked<T>[]; best: number }) {
+function RankSection<T extends Technology>({
+  title,
+  note,
+  ranked,
+  best,
+}: {
+  title: string;
+  note?: string;
+  ranked: Ranked<T>[];
+  best: number;
+}) {
   return (
     <section className="rank">
       <h2>{title}</h2>
+      {note && <p className="dept-note">! {note}</p>}
       <ol className="rank-list">
         {ranked.slice(0, 3).map((r, i) => (
           <TechItem key={r.tech.id} ranked={r} place={i + 1} percent={matchPercent(r.score, best)} />

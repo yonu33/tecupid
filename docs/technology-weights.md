@@ -173,6 +173,25 @@ C# の言語のタグに `game: 0.5` を追加した（Microsoft の .NET 公式
 - visual-scripting: Unreal Engine は Blueprint が標準の作り方なので 1。Unity は公式の Visual Scripting があるが、標準は C# のスクリプトなので 0.5。Godot は 4.0 でビジュアルスクリプトを廃止したので −1。
 - maturity: Unity（1.0 は 2005 年）と Unreal Engine（1998 年）は 1。Godot（1.0 は 2014 年）は 0。
 
+## 3.8 知識の分野（アルゴリズム、数学、セキュリティ・暗号。12 件）
+
+各トピックは、その部門の分野のタグ（`algorithm`、`math`、`security`）と内容のタグを 1 ずつ持ち、関係する分野のタグを持つ（requirements.md の 6.5）。
+
+| トピック | 内容のタグ | 関係する分野 |
+|---|---|---|
+| データ構造 | `data-structures` | database 0.5（データベースの索引） |
+| ソートと探索 | `sort-search` | |
+| 動的計画法 | `dynamic-programming` | |
+| グラフアルゴリズム | `graph-algorithms` | game 0.5（道探し）、infra 0.5（ネットワークの経路） |
+| 線形代数 | `linear-algebra` | data-ai 1、game 1（3D の表示） |
+| 確率・統計 | `probability` | data-ai 1 |
+| 離散数学 | `discrete-math` | algorithm 1 |
+| 微分積分 | `calculus` | data-ai 0.5（最適化）、game 0.5（物理の計算） |
+| Web セキュリティ | `web-security` | web-backend 1、web-frontend 0.5 |
+| ネットワークセキュリティ | `network-security` | infra 1 |
+| 暗号 | `cryptography` | math 0.5（整数論） |
+| CTF | `ctf` | systems 0.5 |
+
 ## 4. 見つかった課題
 
 ### 4.1 React、Vue.js、Svelte の重みが同じ（対応済み）

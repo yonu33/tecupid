@@ -186,6 +186,42 @@ describe("ペルソナ", () => {
     expect(gameTop(["d18", "g04"], ["g01"])).toBe("unity");
   });
 
+  const deptTop = (dept: string, like: string[], nope: string[] = []) => {
+    const r = recommend(answers(like, nope), CARDS, TECHNOLOGIES);
+    return r.departments.find((d) => d.department.id === dept)!.ranked[0].tech.id;
+  };
+
+  it("知識の分野: 各トピックの内容のカードに「すき」と答えると、そのトピックが 1 位", () => {
+    const cases: [string, string, string, string][] = [
+      ["algorithm", "d19", "r01", "data-structures"],
+      ["algorithm", "d19", "r02", "sort-search"],
+      ["algorithm", "d19", "r03", "dynamic-programming"],
+      ["algorithm", "d19", "r04", "graph-algorithms"],
+      ["math", "d20", "m01", "linear-algebra"],
+      ["math", "d20", "m02", "probability-statistics"],
+      ["math", "d20", "m03", "discrete-math"],
+      ["math", "d20", "m04", "calculus"],
+      ["security", "d21", "s01", "web-security"],
+      ["security", "d21", "s02", "network-security"],
+      ["security", "d21", "s03", "cryptography"],
+      ["security", "d21", "s04", "ctf"],
+    ];
+    for (const [dept, interest, card, expected] of cases) {
+      expect(deptTop(dept, [interest, card]), `${dept} / ${card}`).toBe(expected);
+    }
+  });
+
+  it("知識の分野: ほかの分野への関心ともつながる（AI → 線形代数か確率・統計、Web → Web セキュリティ、インフラ → ネットワークセキュリティ）", () => {
+    expect(["linear-algebra", "probability-statistics"]).toContain(deptTop("math", ["d12", "d20"]));
+    expect(deptTop("security", ["d02", "d21"])).toBe("web-security");
+    expect(deptTop("security", ["d14", "d21"])).toBe("network-security");
+  });
+
+  it("セキュリティ部門には、不正アクセス禁止法についての注意書きがある", () => {
+    const r = recommend(answers(["d21"], []), CARDS, TECHNOLOGIES);
+    expect(r.departments.find((d) => d.department.id === "security")?.department.note).toContain("不正アクセス禁止法");
+  });
+
   it("経験レベル: LV.10 は、レベルを指定しないときと同じ結果", () => {
     const a = answers(["d01", "d02", "l01"], ["d09"]);
     const ids = (r: ReturnType<typeof recommend>) => r.departments.flatMap((d) => d.ranked.map((x) => x.tech.id));

@@ -34,6 +34,9 @@ export const CARDS: FeatureCard[] = [
   { id: "d16", axis: "domain", text: "たくさんのデータを、速く安全に保存して取り出す仕組みに興味がある", tags: { database: 1 } },
   { id: "d17", axis: "domain", text: "SQL を書いて、データを自由に検索したり集計したりしてみたい", example: "「先月いちばん売れた商品は？」を一瞬で調べるなど", tags: { database: 1, relational: 0.5 } },
   { id: "d18", axis: "domain", text: "自分でゲームを作ってみたい", example: "2D のアクションゲームや、3D の世界を歩き回るゲームなど", tags: { game: 1 } },
+  { id: "d19", axis: "domain", text: "パズルのような問題を、速く解ける手順を考えるのが好き", example: "競技プログラミングのような問題", tags: { algorithm: 1 } },
+  { id: "d20", axis: "domain", text: "数式を使って、ものごとの仕組みを説明するのが好き", tags: { math: 1 } },
+  { id: "d21", axis: "domain", text: "システムを攻撃から守る仕組みや、弱点の見つけ方に興味がある", tags: { security: 1 } },
 
   // 部門の専用カード: インフラ・DevOps
   { id: "i01", axis: "department", department: "infra", text: "サーバーの設定を、手順ではなく「あるべき状態」としてファイルに書きたい", example: "「Web サーバーを 3 台」と書けば、足りない分を自動で作ってくれる", tags: { declarative: 1 } },
@@ -64,6 +67,24 @@ export const CARDS: FeatureCard[] = [
   { id: "g02", axis: "department", department: "game", text: "ノードを線でつないで、コードを書かずにキャラクターの動きを作りたい", tags: { "visual-scripting": 1 } },
   { id: "g03", axis: "department", department: "game", text: "ゲームの動きは、すべてコードで書きたい", tags: { "visual-scripting": -1 } },
   { id: "g04", axis: "department", department: "game", text: "長く使われている、定番のゲームエンジンで学びたい", tags: { maturity: 1 } },
+
+  // 部門の専用カード: アルゴリズム
+  { id: "r01", axis: "department", department: "algorithm", text: "データをどう並べてしまっておけば、速く取り出せるかを考えたい", example: "辞書の引き方や、順番待ちの列の作り方を工夫するなど", tags: { "data-structures": 1 } },
+  { id: "r02", axis: "department", department: "algorithm", text: "大量のデータを、速く並べ替えたり探したりする方法を知りたい", tags: { "sort-search": 1 } },
+  { id: "r03", axis: "department", department: "algorithm", text: "大きな問題を小さな問題に分けて、途中の答えを使い回す考え方に惹かれる", example: "同じ計算を何度もしないための工夫", tags: { "dynamic-programming": 1 } },
+  { id: "r04", axis: "department", department: "algorithm", text: "地図の最短ルートや、人と人のつながりを計算する方法を知りたい", tags: { "graph-algorithms": 1 } },
+
+  // 部門の専用カード: 数学
+  { id: "m01", axis: "department", department: "math", text: "3D の物体を回転させたり、画像を変形させたりする計算を知りたい", tags: { "linear-algebra": 1 } },
+  { id: "m02", axis: "department", department: "math", text: "データのばらつきや、確率で未来を予測する話に興味がある", tags: { probability: 1 } },
+  { id: "m03", axis: "department", department: "math", text: "論理パズルや、「必ずこうなる」と証明するのが好き", tags: { "discrete-math": 1 } },
+  { id: "m04", axis: "department", department: "math", text: "変化の速さや、いちばん良い値を求める計算に興味がある", example: "AI の学習で、誤差を少しずつ小さくしていく計算など", tags: { calculus: 1 } },
+
+  // 部門の専用カード: セキュリティ・暗号
+  { id: "s01", axis: "department", department: "security", text: "Web サイトへのよくある攻撃と、その防ぎ方を知りたい", example: "なりすましや、データベースを不正に操作される攻撃など", tags: { "web-security": 1 } },
+  { id: "s02", axis: "department", department: "security", text: "ネットワークを流れる通信を、のぞき見や改ざんから守りたい", tags: { "network-security": 1 } },
+  { id: "s03", axis: "department", department: "security", text: "パスワードやメッセージを、数学の力で安全に守る仕組みを知りたい", tags: { cryptography: 1 } },
+  { id: "s04", axis: "department", department: "security", text: "練習用に用意された問題で、攻撃と防御を実際に試してみたい", example: "CTF という、セキュリティの技術を競う大会の問題など", tags: { ctf: 1 } },
 
   // 言語の性質
   { id: "l01", axis: "language", text: "型を書いておけば、実行する前にミスを見つけてくれるのがうれしい", example: "数値を入れるべき場所に文字列を入れた、などのミス", tags: { "static-typing": 1 } },

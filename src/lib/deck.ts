@@ -8,7 +8,7 @@ export type Quota = Record<Axis, number>;
 
 /** 部門の専用カード（department）は最初の山札に入れず、followUpCards で追加する */
 // 分野は、部門ごとの関心を聞くカード（部門の数 − 1 枚）に加えて、低レイヤなどのカードも出せるよう多めにする
-export const DEFAULT_QUOTA: Quota = { domain: 7, language: 7, framework: 3, department: 0, ecosystem: 2 };
+export const DEFAULT_QUOTA: Quota = { domain: 9, language: 6, framework: 3, department: 0, ecosystem: 2 };
 
 /** 追加で出す部門の専用カードの最大枚数 */
 export const MAX_FOLLOW_UPS = 4;

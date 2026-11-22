@@ -49,7 +49,8 @@ export type ScoringOptions = {
   maxReasons?: number;
   /**
    * 軸ごとの重み。類似度を計算する前に、ユーザーと技術の両方のベクトルに掛ける。
-   * 分野のタグは 1 つの技術に 1〜2 個しかなく、言語の性質のタグに埋もれやすいので強める。
+   * - 分野: 1 つの技術に 1〜2 個しかなく、言語の性質のタグに埋もれやすいので強める
+   * - 部門の性質: 部門の中で技術を区別するタグ。関係する分野のタグ（2 倍）に埋もれないよう、同じだけ強める
    */
   axisWeights?: Partial<Record<Axis, number>>;
   /** 経験レベル（0 = まったくの初心者、10 = 自信あり）。省略すると 10 と同じで、初心者向けの補正をしない */
@@ -62,7 +63,7 @@ const DEFAULTS: Required<ScoringOptions> = {
   nopeFactor: 1,
   alpha: 1,
   maxReasons: 3,
-  axisWeights: { domain: 2 },
+  axisWeights: { domain: 2, department: 2 },
   level: 10,
   beginnerBoost: 1.5,
 };

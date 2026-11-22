@@ -3,7 +3,18 @@ import { describe, expect, it } from "vitest";
 import { CARDS } from "./cards";
 import { TAG_INFO, TAGS, type Tag, type TagWeights } from "./tags";
 import { DEPARTMENTS } from "./departments";
-import { AI_DATA, DATABASES, FRAMEWORKS, GAME_ENGINES, INFRA, LANGUAGES, TECHNOLOGIES } from "./technologies";
+import {
+  AI_DATA,
+  ALGORITHMS,
+  DATABASES,
+  FRAMEWORKS,
+  GAME_ENGINES,
+  INFRA,
+  LANGUAGES,
+  MATH_TOPICS,
+  SECURITY_TOPICS,
+  TECHNOLOGIES,
+} from "./technologies";
 
 const ALLOWED_WEIGHTS = new Set([-1, -0.5, 0.5, 1]);
 
@@ -112,7 +123,7 @@ describe("技術", () => {
   // （例: Ruby on Rails と Laravel。technology-weights.md の 3.1）。
   it("同じ部門の中に、区別できない技術がない", () => {
     const keyOf = (w: object) => JSON.stringify(Object.entries(w).sort());
-    for (const group of [LANGUAGES, INFRA, AI_DATA, DATABASES, GAME_ENGINES]) {
+    for (const group of [LANGUAGES, INFRA, AI_DATA, DATABASES, GAME_ENGINES, ALGORITHMS, MATH_TOPICS, SECURITY_TOPICS]) {
       const seen = new Map<string, string>();
       for (const t of group) {
         const key = keyOf(t.tagWeights);

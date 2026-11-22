@@ -312,4 +312,106 @@ export const GAME_ENGINES: Tool[] = [
   },
 ];
 
-export const TECHNOLOGIES: Technology[] = [...LANGUAGES, ...FRAMEWORKS, ...INFRA, ...AI_DATA, ...DATABASES, ...GAME_ENGINES];
+// 知識の分野（アルゴリズム、数学、セキュリティ）のトピック。
+// 内容のタグ（何についての知識か）と、関係する分野のタグ（どの分野で使われるか）で表す。
+// 学習リソースは公式のドキュメントがないため、公的機関や大学、よく知られた練習サイトのものを載せる。
+const link = (title: string, url: string): Resource => ({ title, url, official: false });
+
+export const ALGORITHMS: Tool[] = [
+  {
+    department: "algorithm", id: "data-structures", name: "データ構造",
+    summary: "データを効率よくしまって取り出すための形（配列、リスト、木、ハッシュなど）。データベースの索引にも使われる。",
+    tagWeights: { algorithm: 1, "data-structures": 1, database: 0.5 },
+    resources: [link("Open Data Structures（日本語訳）", "https://sites.google.com/view/open-data-structures-ja/home")],
+  },
+  {
+    department: "algorithm", id: "sort-search", name: "ソートと探索",
+    summary: "データを並べ替えたり、目的のデータを探したりする基本の手順。計算量の考え方を学ぶ入り口になる。",
+    tagWeights: { algorithm: 1, "sort-search": 1 },
+    resources: [link("AtCoder「アルゴリズムと数学 演習問題集」", "https://atcoder.jp/contests/math-and-algorithm")],
+  },
+  {
+    department: "algorithm", id: "dynamic-programming", name: "動的計画法",
+    summary: "大きな問題を小さな問題に分け、途中の答えを使い回して効率よく解く考え方。",
+    tagWeights: { algorithm: 1, "dynamic-programming": 1 },
+    resources: [link("AtCoder「Educational DP Contest」", "https://atcoder.jp/contests/dp")],
+  },
+  {
+    department: "algorithm", id: "graph-algorithms", name: "グラフアルゴリズム",
+    summary: "点と線のつながり（グラフ）を扱うアルゴリズム。地図の最短経路や、ネットワークの経路、ゲームの道探しに使われる。",
+    tagWeights: { algorithm: 1, "graph-algorithms": 1, game: 0.5, infra: 0.5 },
+    resources: [link("AtCoder「典型アルゴリズム問題集」", "https://atcoder.jp/contests/typical-algorithm")],
+  },
+];
+
+export const MATH_TOPICS: Tool[] = [
+  {
+    department: "math", id: "linear-algebra", name: "線形代数",
+    summary: "ベクトルと行列の数学。3D の表示や画像の処理、機械学習の計算の土台になる。",
+    tagWeights: { math: 1, "linear-algebra": 1, "data-ai": 1, game: 1 },
+    resources: [link("MIT OpenCourseWare「18.06 Linear Algebra」（英語）", "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/")],
+  },
+  {
+    department: "math", id: "probability-statistics", name: "確率・統計",
+    summary: "ばらつきのあるデータから、傾向を読み取ったり予測したりする数学。データ分析や機械学習に欠かせない。",
+    tagWeights: { math: 1, probability: 1, "data-ai": 1 },
+    resources: [
+      link("総務省統計局「なるほど統計学園」", "https://www.stat.go.jp/naruhodo/"),
+      link("MIT OpenCourseWare「18.05 Probability and Statistics」（英語）", "https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/"),
+    ],
+  },
+  {
+    department: "math", id: "discrete-math", name: "離散数学",
+    summary: "論理、集合、グラフ、整数などを扱う数学。アルゴリズムや暗号を理解する土台になる。",
+    tagWeights: { math: 1, "discrete-math": 1, algorithm: 1 },
+    resources: [link("MIT OpenCourseWare「6.042J Mathematics for Computer Science」（英語）", "https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/")],
+  },
+  {
+    department: "math", id: "calculus", name: "微分積分",
+    summary: "変化の割合や、積み重ねを扱う数学。機械学習の最適化や、ゲームの物理の計算に使われる。",
+    tagWeights: { math: 1, calculus: 1, "data-ai": 0.5, game: 0.5 },
+    resources: [link("MIT OpenCourseWare「18.01SC Single Variable Calculus」（英語）", "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/")],
+  },
+];
+
+export const SECURITY_TOPICS: Tool[] = [
+  {
+    department: "security", id: "web-security", name: "Web セキュリティ",
+    summary: "Web サイトへのよくある攻撃（なりすまし、SQL インジェクションなど）と、その防ぎ方。",
+    tagWeights: { security: 1, "web-security": 1, "web-backend": 1, "web-frontend": 0.5 },
+    resources: [
+      link("IPA「安全なウェブサイトの作り方」", "https://www.ipa.go.jp/security/vuln/websecurity/about.html"),
+      link("OWASP Top 10（英語）", "https://owasp.org/Top10/"),
+    ],
+  },
+  {
+    department: "security", id: "network-security", name: "ネットワークセキュリティ",
+    summary: "通信ののぞき見や改ざん、不正な侵入から、ネットワークを守る技術。",
+    tagWeights: { security: 1, "network-security": 1, infra: 1 },
+    resources: [link("総務省「国民のためのサイバーセキュリティサイト」", "https://www.soumu.go.jp/main_sosiki/cybersecurity/kokumin/")],
+  },
+  {
+    department: "security", id: "cryptography", name: "暗号",
+    summary: "データを数学で守る技術。パスワードの保存や、HTTPS の通信の安全を支えている。",
+    tagWeights: { security: 1, cryptography: 1, math: 0.5 },
+    resources: [link("CRYPTREC（暗号技術評価プロジェクト）", "https://www.cryptrec.go.jp/")],
+  },
+  {
+    department: "security", id: "ctf", name: "CTF",
+    summary: "練習用に用意された問題で、攻撃と防御の技術を競う大会。許可された環境で、安全に実践を学べる。",
+    tagWeights: { security: 1, ctf: 1, systems: 0.5 },
+    resources: [link("picoCTF（英語。練習用の CTF）", "https://picoctf.org/")],
+  },
+];
+
+export const TECHNOLOGIES: Technology[] = [
+  ...LANGUAGES,
+  ...FRAMEWORKS,
+  ...INFRA,
+  ...AI_DATA,
+  ...DATABASES,
+  ...GAME_ENGINES,
+  ...ALGORITHMS,
+  ...MATH_TOPICS,
+  ...SECURITY_TOPICS,
+];
