@@ -1,67 +1,41 @@
 /*
- * tecupid のスタイル。ドット絵（ピクセルアート）調。
- * レイアウトと配色（紫とピンク）は試作版を引き継いでいる。
- * 枠は box-shadow で描き、角を 1 ドット欠いてドット絵らしくしている。
+ * tecupid のスタイル。ターミナル × ドット絵。
+ * 黒い背景に緑の文字の、昔の端末風の配色。ハートのピンクは差し色として残す。
+ * レイアウトは試作版のまま。枠は box-shadow で描き、角を 1 ドット欠いてドット絵らしくしている。
+ * 配色は端末らしさを優先して 1 種類だけにする（ダークモードの切り替えはしない）。
  */
 
 :root {
   /* 1 ドットの大きさ */
   --px: 4px;
 
-  --bg: #fbf0f7;
-  --bg-dot: #f1dcea;
-  --surface: #ffffff;
-  --surface-hover: #f6f0ff;
-  --text: #2a1f3d;
-  --muted: #66597a;
-  --line: #2a1f3d;
-  --shadow: #d9c8ec;
-  --accent: #6c4cf5;
-  --button-bg: #6c4cf5;
-  --button-text: #ffffff;
-  --bar: #ff4f7b;
-  --bar-gap: #ffd6e3;
-  --window-bg: #2b2457;
-  --window-line: #ffffff;
-  --window-text: #ffffff;
-  --window-muted: #cdc6f2;
-  --like: #d12c5c;
-  --nope: #5d6480;
-  --gold: #f2b632;
+  --bg: #0a0f0b;
+  --bg-dot: #13241a;
+  --surface: #0f1a13;
+  --surface-hover: #16281d;
+  --text: #9cf7b9;
+  --muted: #4f9e6b;
+  --accent: #4ef08a;
+  --line: #3fbf70;
+  --shadow: #0d3a21;
+  --button-bg: #4ef08a;
+  --button-text: #0a0f0b;
+  --bar: #4ef08a;
+  --bar-gap: #163322;
+  --window-bg: #050906;
+  --window-text: #c8f7d6;
+  --window-muted: #4f9e6b;
+  --titlebar: #13261a;
+  --like: #ff6b92;
+  --nope: #9fb3a6;
+  --amber: #ffd35c;
+  --gold: #ffd35c;
   --silver: #c3cad9;
   --bronze: #e09a68;
-  --title-shadow: #ff9bb8;
-  --px-outline: #2a1f3d;
-  --px-empty: #e8e1f2;
-  color-scheme: light;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #15122a;
-    --bg-dot: #201b3d;
-    --surface: #221d40;
-    --surface-hover: #2b2550;
-    --text: #f3eefc;
-    --muted: #b8aed0;
-    --line: #9d92d6;
-    --shadow: #0a0816;
-    --accent: #b5a3ff;
-    --button-bg: #6c4cf5;
-    --button-text: #ffffff;
-    --bar: #ff6b92;
-    --bar-gap: #3a2f5e;
-    --window-bg: #2d2661;
-    --window-line: #f3eefc;
-    --window-text: #ffffff;
-    --window-muted: #cdc6f2;
-    --like: #ff6b92;
-    --nope: #a8afc8;
-    --title-shadow: #6c4cf5;
-    --px-outline: #120e22;
-    --px-empty: #3a3366;
-    color-scheme: dark;
-  }
+  --glow: rgb(78 240 138 / 0.45);
+  --px-outline: #1f6b40;
+  --px-empty: #1c3526;
+  color-scheme: dark;
 }
 
 * {
@@ -79,15 +53,35 @@ body {
   background-image: conic-gradient(at var(--px) var(--px), transparent 75%, var(--bg-dot) 0);
   background-size: 24px 24px;
   color: var(--text);
-  font-family: "DotGothic16", "Hiragino Sans", "Noto Sans JP", system-ui, sans-serif;
+  font-family: "DotGothic16", ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
   font-size: 16px;
   line-height: 1.75;
   word-break: auto-phrase;
 }
 
+/* 走査線。ブラウン管の端末らしさを少しだけ足す */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: repeating-linear-gradient(to bottom, transparent 0 2px, rgb(0 0 0 / 0.12) 2px 4px);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--button-text);
+}
+
 h1,
 h2 {
   font-weight: 400;
+}
+
+a {
+  color: var(--accent);
+  text-underline-offset: 4px;
 }
 
 button {
@@ -101,7 +95,7 @@ button:disabled {
 }
 
 :focus-visible {
-  outline: var(--px) dashed var(--accent);
+  outline: var(--px) dashed var(--like);
   outline-offset: 6px;
 }
 
@@ -111,11 +105,22 @@ button:disabled {
   vertical-align: middle;
 }
 
+/* 点滅するカーソル */
+.cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-left: 4px;
+  vertical-align: -0.12em;
+  background: currentColor;
+  animation: blink 1s steps(1) infinite;
+}
+
 /* ドット絵の枠: 上下左右に 1 ドットの線（角は欠ける）と、右下に 1 ドットの影 */
 .panel,
+.term,
 .btn-primary,
-.btn-px,
-.progress,
+.btn-key,
 .place,
 .stamp {
   --frame: var(--line);
@@ -133,19 +138,53 @@ button:disabled {
   background: var(--surface);
 }
 
-/* ゲームのメッセージウィンドウ風の枠: 濃い紺の地に、内側に白い線 */
-.window {
+/* ターミナルのウィンドウ */
+.term {
   background: var(--window-bg);
   color: var(--window-text);
-  box-shadow:
-    inset 0 0 0 var(--px) var(--window-bg),
-    inset 0 0 0 calc(var(--px) * 2) var(--window-line),
-    0 calc(var(--px) * -1) 0 0 var(--window-bg),
-    0 var(--px) 0 0 var(--window-bg),
-    calc(var(--px) * -1) 0 0 0 var(--window-bg),
-    var(--px) 0 0 0 var(--window-bg),
-    var(--px) calc(var(--px) * 2) 0 0 var(--shadow),
-    calc(var(--px) * 2) var(--px) 0 0 var(--shadow);
+}
+
+.term-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 12px;
+  background: var(--titlebar);
+  border-bottom: var(--px) solid var(--line);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.term-dots {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.term-dots i {
+  display: block;
+  width: 12px;
+  height: 12px;
+}
+
+.term-dots i:nth-child(1) {
+  background: var(--like);
+}
+
+.term-dots i:nth-child(2) {
+  background: var(--amber);
+}
+
+.term-dots i:nth-child(3) {
+  background: var(--accent);
+}
+
+.term-body {
+  padding: 20px 24px 24px;
+}
+
+.term-prompt {
+  margin: 0 0 12px;
+  color: var(--muted);
 }
 
 .screen {
@@ -169,25 +208,16 @@ button:disabled {
   letter-spacing: 0.08em;
 }
 
-.btn-primary:hover {
-  filter: brightness(1.12);
-}
-
 a.btn-primary {
   text-decoration: none;
 }
 
-.note a {
-  color: inherit;
-  text-underline-offset: 4px;
-}
-
-.note a:hover {
-  color: var(--accent);
+.btn-primary:hover {
+  filter: brightness(1.12);
 }
 
 .btn-primary:active,
-.btn-px:active {
+.btn-key:active {
   transform: translate(var(--px), var(--px));
   --drop: transparent;
 }
@@ -203,6 +233,21 @@ a.btn-primary {
 
 .btn-text:hover:not(:disabled) {
   color: var(--accent);
+}
+
+/* キーボードのキー風の表示 */
+.keycap {
+  display: inline-grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  background: var(--titlebar);
+  color: var(--accent);
+  box-shadow:
+    0 0 0 2px var(--line),
+    inset 0 -4px 0 0 rgb(0 0 0 / 0.4);
+  line-height: 1;
 }
 
 /* スタート */
@@ -249,19 +294,34 @@ a.btn-primary {
 
 .eyebrow {
   margin: 0;
-  color: var(--accent);
+  color: var(--muted);
 }
 
 .logo {
   margin: 4px 0 16px;
+  color: var(--accent);
   font-size: 48px;
   line-height: 1.2;
   letter-spacing: 0.06em;
-  text-shadow: var(--px) var(--px) 0 var(--title-shadow);
+  text-shadow:
+    0 0 12px var(--glow),
+    var(--px) var(--px) 0 var(--shadow);
 }
 
-.lead {
-  margin: 0 0 24px;
+/* 「> 」で始まる、端末の出力風の行 */
+.term-lines {
+  margin: 0 auto 24px;
+  text-align: left;
+}
+
+.term-lines p {
+  margin: 0;
+}
+
+.term-lines p::before,
+.card-text::before {
+  content: "> ";
+  color: var(--accent);
 }
 
 .caret {
@@ -272,6 +332,29 @@ a.btn-primary {
   margin-top: 28px;
   color: var(--muted);
   text-align: center;
+}
+
+.note a {
+  color: inherit;
+}
+
+.note a:hover {
+  color: var(--accent);
+}
+
+/* シェアされた URL で開いたときの、友だちの結果 */
+.shared {
+  width: calc(100% - 12px);
+  margin: 0 0 28px;
+}
+
+.shared .term-body {
+  padding: 16px 20px 20px;
+}
+
+.shared-cta {
+  margin: 8px 0 0;
+  color: var(--window-muted);
 }
 
 /* 経験レベルのスライダー */
@@ -322,7 +405,7 @@ a.btn-primary {
   height: 28px;
   margin-top: -10px;
   border: none;
-  background: var(--button-bg);
+  background: var(--like);
   box-shadow:
     0 calc(var(--px) * -1) 0 0 var(--line),
     0 var(--px) 0 0 var(--line),
@@ -345,7 +428,7 @@ a.btn-primary {
   height: 28px;
   border: none;
   border-radius: 0;
-  background: var(--button-bg);
+  background: var(--like);
   box-shadow:
     0 calc(var(--px) * -1) 0 0 var(--line),
     0 var(--px) 0 0 var(--line),
@@ -366,43 +449,57 @@ a.btn-primary {
 
 /* スワイプ */
 .progress {
-  width: calc(100% - 8px);
-  height: 16px;
-  margin: 8px 4px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin-bottom: 16px;
+  color: var(--accent);
+}
+
+.progress-track {
+  flex: 1;
+  height: 12px;
   background: var(--bar-gap);
-  --drop: transparent;
 }
 
 .progress-bar {
+  display: block;
   height: 100%;
-  /* 12px ごとに区切った、ゲームのゲージ風のバー */
-  background: repeating-linear-gradient(90deg, var(--bar) 0 12px, var(--bar-gap) 12px 16px);
+  /* 8px ごとに区切った、端末のゲージ風のバー */
+  background: repeating-linear-gradient(90deg, var(--bar) 0 8px, transparent 8px 12px);
   transition: width 0.2s steps(3, end);
 }
 
-.progress-text {
-  margin: 8px 0 16px;
+.progress-count {
+  min-width: 4.5em;
   color: var(--muted);
+  text-align: right;
 }
 
 .follow-up {
-  margin: -8px 0 16px;
-  color: var(--accent);
+  margin: -4px 0 16px;
+  color: var(--amber);
   text-align: center;
 }
 
 .card {
   position: relative;
   width: calc(100% - 12px);
-  min-height: 300px;
-  padding: 44px 32px;
+  min-height: 340px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   touch-action: pan-y;
   user-select: none;
   cursor: grab;
   transition: transform 0.2s;
+}
+
+.card .term-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card.dragging {
@@ -421,57 +518,67 @@ a.btn-primary {
   color: var(--window-muted);
 }
 
+.card-example::before {
+  content: "# ";
+}
+
+.term-ask {
+  margin: 20px 0 0;
+  color: var(--muted);
+}
+
+/* ドラッグ中のスタンプ。タイトルバーの右側の空いている場所に出す */
 .stamp {
   position: absolute;
-  top: 20px;
+  top: 2px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 2px 12px;
-  background: var(--surface);
+  background: var(--window-bg);
   --drop: transparent;
 }
 
 .stamp.like {
-  left: 24px;
+  right: 12px;
   color: var(--like);
   --frame: var(--like);
 }
 
 .stamp.nope {
-  right: 24px;
+  right: 12px;
   color: var(--nope);
   --frame: var(--nope);
 }
 
 .actions {
   display: flex;
-  gap: 40px;
+  gap: 24px;
   margin-top: 36px;
 }
 
-.btn-px {
-  display: flex;
-  flex-direction: column;
+.btn-key {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  width: 96px;
-  height: 88px;
+  gap: 10px;
+  min-width: 148px;
+  height: 64px;
+  padding: 0 16px;
   border: none;
   background: var(--surface);
   color: var(--text);
 }
 
-.btn-px:hover {
+.btn-key:hover {
   background: var(--surface-hover);
 }
 
-.btn-px.like {
+.btn-key.like {
   color: var(--like);
 }
 
-.btn-px.nope {
+.btn-key.nope {
   color: var(--nope);
 }
 
@@ -497,7 +604,6 @@ a.btn-primary {
 
 .result-eyebrow {
   text-align: center;
-  letter-spacing: 0.2em;
 }
 
 .result-head {
@@ -531,13 +637,16 @@ a.btn-primary {
 
 .combo {
   margin: 8px 8px 0 4px;
-  padding: 24px 20px;
   text-align: center;
 }
 
 .window-label {
   margin: 0;
   color: var(--window-muted);
+}
+
+.window-label::before {
+  content: "# ";
 }
 
 .combo-name {
@@ -547,8 +656,10 @@ a.btn-primary {
   align-items: center;
   justify-content: center;
   gap: 12px;
+  color: var(--accent);
   font-size: 24px;
   line-height: 1.4;
+  text-shadow: 0 0 10px var(--glow);
 }
 
 .combo-part {
@@ -557,43 +668,15 @@ a.btn-primary {
   gap: 12px;
 }
 
-/* シェアされた URL で開いたときの、友だちの結果 */
-.shared {
-  width: calc(100% - 12px);
-  margin: 0 0 24px;
-  padding: 20px;
-}
-
-.shared-cta {
-  margin: 8px 0 0;
-  color: var(--window-muted);
-}
-
-/* 画面には出さず、スクリーンリーダーだけが読む */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 .rank h2 {
   margin: 40px 0 16px;
   font-size: 24px;
 }
 
-.rank h2::before {
-  content: "";
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin-right: 12px;
-  background: var(--bar);
+.rank h2::before,
+.doc-body h2::before {
+  content: "## ";
+  color: var(--accent);
 }
 
 .rank-list {
@@ -630,20 +713,21 @@ a.btn-primary {
 
 .place-1 {
   background: var(--gold);
-  color: #2a1f3d;
+  color: #0a0f0b;
 }
 
 .place-2 {
   background: var(--silver);
-  color: #2a1f3d;
+  color: #0a0f0b;
 }
 
 .place-3 {
   background: var(--bronze);
-  color: #2a1f3d;
+  color: #0a0f0b;
 }
 
 .tech-name {
+  color: var(--accent);
   font-size: 24px;
   line-height: 1.3;
 }
@@ -682,11 +766,6 @@ a.btn-primary {
   margin-top: 8px;
 }
 
-.resource {
-  color: var(--accent);
-  text-underline-offset: 4px;
-}
-
 summary {
   cursor: pointer;
   list-style: none;
@@ -698,6 +777,7 @@ summary::-webkit-details-marker {
 
 summary::before {
   content: "[+] ";
+  color: var(--accent);
 }
 
 details[open] > summary::before {
@@ -732,12 +812,18 @@ details[open] > summary::before {
 }
 
 /* 404 */
-.not-found .result-title {
-  margin-top: 0;
-}
-
 .not-found .px-sprite {
   margin-bottom: 16px;
+}
+
+.not-found-term {
+  width: calc(100% - 12px);
+  margin: 8px 0 32px;
+  text-align: left;
+}
+
+.not-found-term p {
+  margin: 0;
 }
 
 /* 利用規約などの文書ページ */
@@ -751,12 +837,6 @@ details[open] > summary::before {
   margin: 0 0 20px;
 }
 
-.doc-back a,
-.doc-body a {
-  color: var(--accent);
-  text-underline-offset: 4px;
-}
-
 .doc-body {
   margin: 0 8px 0 4px;
   padding: 24px 24px 20px;
@@ -764,23 +844,19 @@ details[open] > summary::before {
 
 .doc-body h1 {
   margin: 0 0 16px;
+  color: var(--accent);
   font-size: 32px;
   line-height: 1.3;
+}
+
+.doc-body h1::before {
+  content: "# ";
 }
 
 .doc-body h2 {
   margin: 32px 0 8px;
   font-size: 24px;
   line-height: 1.4;
-}
-
-.doc-body h2::before {
-  content: "";
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  margin-right: 12px;
-  background: var(--bar);
 }
 
 .doc-body ol,
@@ -821,7 +897,6 @@ details[open] > summary::before {
 
 .site-footer a {
   color: var(--muted);
-  text-underline-offset: 4px;
 }
 
 .site-footer a:hover {
@@ -830,6 +905,19 @@ details[open] > summary::before {
 
 .site-footer p {
   margin: 12px 0 0;
+}
+
+/* 画面には出さず、スクリーンリーダーだけが読む */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* 2 コマのアニメーション */
@@ -850,7 +938,8 @@ details[open] > summary::before {
   .float-heart,
   .sparkle-1,
   .sparkle-2,
-  .caret {
+  .caret,
+  .cursor {
     animation: none;
   }
 

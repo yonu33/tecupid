@@ -7,6 +7,7 @@ import { buildDeck, cardsForLevel, followUpCards } from "../lib/deck";
 import { recommend, type Answer, type Ranked } from "../lib/scoring";
 import { buildShareUrl, parseSharedMatch, shareText } from "../lib/share";
 import PixelSprite from "./PixelSprite";
+import TermWindow from "./TermWindow";
 import { CARET, CROSS, CUPID, HEART, SMALL_HEART, SMALL_HEART_EMPTY, SPARKLE } from "./sprites";
 
 /** 「結果を見る」を押せるまでの最低枚数（仮の値。requirements.md の 10 章） */
@@ -17,6 +18,8 @@ const SWIPE_THRESHOLD = 100;
 const DEFAULT_LEVEL = 5;
 /** マッチ度のメーターのハートの数 */
 const METER_HEARTS = 5;
+/** 結果画面で上に展開する部門の最大数（言語を含む）。残りは折りたたむ */
+const MAX_FEATURED = 3;
 
 type Phase = "start" | "swipe" | "result";
 
@@ -63,8 +66,10 @@ export default function TecupidApp() {
   useEffect(() => {
     if (phase !== "swipe") return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") answer(true);
-      if (e.key === "ArrowLeft") answer(false);
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const key = e.key.toLowerCase();
+      if (e.key === "ArrowRight" || key === "y") answer(true);
+      if (e.key === "ArrowLeft" || key === "n") answer(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -87,12 +92,16 @@ export default function TecupidApp() {
         aria-valuemax={deck.length}
         aria-valuenow={answers.length}
       >
-        <div className="progress-bar" style={{ width: `${(answers.length / deck.length) * 100}%` }} />
+        <span aria-hidden="true">[</span>
+        <span className="progress-track">
+          <span className="progress-bar" style={{ width: `${(answers.length / deck.length) * 100}%` }} />
+        </span>
+        <span aria-hidden="true">]</span>
+        <span className="progress-count" aria-hidden="true">
+          {answers.length + 1}/{deck.length}
+        </span>
       </div>
-      <p className="progress-text">
-        {answers.length + 1} / {deck.length}
-      </p>
-      {department && <p className="follow-up">{department.name} に関心がありそうなので、追加の質問です</p>}
+      {department && <p className="follow-up">! {department.name} に関心がありそうなので、追加の質問です</p>}
 
       {/* カードが変わったら、スクリーンリーダーで新しいカードの文を読み上げる */}
       <p className="visually-hidden" aria-live="polite">
@@ -101,16 +110,18 @@ export default function TecupidApp() {
       {card && <SwipeCard key={card.id} card={card} onAnswer={answer} />}
 
       <div className="actions">
-        <button className="btn-px nope" onClick={() => answer(false)}>
-          <PixelSprite sprite={CROSS} scale={3} />
+        <button className="btn-key nope" onClick={() => answer(false)} aria-keyshortcuts="n ArrowLeft">
+          <kbd className="keycap" aria-hidden="true">n</kbd>
+          <PixelSprite sprite={CROSS} scale={2} />
           <span>パス</span>
         </button>
-        <button className="btn-px like" onClick={() => answer(true)}>
-          <PixelSprite sprite={HEART} scale={3} />
+        <button className="btn-key like" onClick={() => answer(true)} aria-keyshortcuts="y ArrowRight">
+          <kbd className="keycap" aria-hidden="true">y</kbd>
+          <PixelSprite sprite={HEART} scale={2} />
           <span>すき</span>
         </button>
       </div>
-      <p className="hint">ボタン、左右のスワイプ、← → キーで答えられます</p>
+      <p className="hint">y / n キー、← → キー、左右のスワイプでも答えられます</p>
 
       <div className="sub-actions">
         <button className="btn-text" onClick={undo} disabled={answers.length === 0}>
@@ -152,11 +163,11 @@ function StartScreen({
   return (
     <main className="screen start">
       {shared && (
-        <section className="shared window" aria-label="シェアされた結果">
+        <TermWindow title="~/tecupid/shared" className="shared" role="region" aria-label="シェアされた結果">
           <p className="window-label">友だちのマッチング結果</p>
           <MatchNames names={shared.map((t) => t.name)} />
           <p className="shared-cta">あなたにぴったりの技術も見つけよう</p>
-        </section>
+        </TermWindow>
       )}
       <div className="mascot" aria-hidden="true">
         <PixelSprite sprite={SPARKLE} scale={3} className="sparkle sparkle-1" />
@@ -164,15 +175,16 @@ function StartScreen({
         <PixelSprite sprite={HEART} scale={3} className="float-heart" />
         <PixelSprite sprite={SPARKLE} scale={2} className="sparkle sparkle-2" />
       </div>
-      <p className="eyebrow">エンジニアのための技術マッチングアプリ</p>
-      <h1 className="logo">tecupid</h1>
-      <p className="lead">
-        技術の特徴が書かれたカードが届きます。
-        <br />
-        気になったら「すき」、ちがうなら「パス」。
-        <br />
-        あなたにぴったりの技術を見つけます。
-      </p>
+      <p className="eyebrow">// エンジニアのための技術マッチングアプリ</p>
+      <h1 className="logo">
+        tecupid
+        <span className="cursor" aria-hidden="true" />
+      </h1>
+      <div className="term-lines">
+        <p>技術の特徴が書かれたカードが届きます。</p>
+        <p>気になったら「すき」、ちがうなら「パス」。</p>
+        <p>あなたにぴったりの技術を見つけます。</p>
+      </div>
 
       <LevelPicker level={level} onChange={onLevelChange} />
 
@@ -249,8 +261,9 @@ function SwipeCard({ card, onAnswer }: { card: FeatureCard; onAnswer: (liked: bo
   const stamp = dx > 40 ? "like" : dx < -40 ? "nope" : null;
 
   return (
-    <div
-      className={`card window ${dragging ? "dragging" : ""}`}
+    <TermWindow
+      title="~/tecupid"
+      className={`card ${dragging ? "dragging" : ""}`}
       style={{ transform: `translateX(${dx}px) rotate(${dx / 20}deg)` }}
       onPointerDown={onDown}
       onPointerMove={onMove}
@@ -269,16 +282,24 @@ function SwipeCard({ card, onAnswer }: { card: FeatureCard; onAnswer: (liked: bo
           パス
         </span>
       )}
+      <p className="term-prompt" aria-hidden="true">
+        $ tecupid next
+      </p>
       <p className="card-text">{card.text}</p>
       {card.example && <p className="card-example">{card.example}</p>}
-    </div>
+      <p className="term-ask" aria-hidden="true">
+        ? すき [y] / パス [n]
+        <span className="cursor" />
+      </p>
+    </TermWindow>
   );
 }
 
 function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: number; onRetry: () => void }) {
   const result = useMemo(() => recommend(answers, CARDS, TECHNOLOGIES, { level }), [answers, level]);
-  const featured = result.departments.filter((d) => d.featured);
-  const others = result.departments.filter((d) => !d.featured);
+  // 関心のある部門のうち、関心度の高い順に最大 MAX_FEATURED 部門（言語を含む）を上に出す
+  const featured = result.departments.filter((d) => d.featured).slice(0, MAX_FEATURED);
+  const others = result.departments.filter((d) => !featured.includes(d));
   /** マッチ度の基準。すべての部門で最もスコアの高い技術を 100 とする */
   const best = Math.max(0, ...result.departments.map((d) => d.ranked[0]?.score ?? 0));
   /** シェアするのは、おすすめの組み合わせ（なければ言語の 1 位） */
@@ -305,7 +326,7 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
 
   return (
     <main className="screen result">
-      <p className="eyebrow result-eyebrow">MATCHING RESULT</p>
+      <p className="eyebrow result-eyebrow">$ tecupid match --level {level}</p>
       <div className="result-head">
         <PixelSprite sprite={SPARKLE} scale={3} />
         <h1 className="result-title">あなたにぴったりの技術</h1>
@@ -318,10 +339,10 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
       )}
 
       {result.combination && (
-        <section className="combo window">
+        <TermWindow title="~/tecupid/match" className="combo" role="region" aria-label="おすすめの組み合わせ">
           <p className="window-label">おすすめの組み合わせ</p>
           <MatchNames names={[result.combination.language.tech.name, result.combination.framework.tech.name]} />
-        </section>
+        </TermWindow>
       )}
 
       <p className="meter-note">
