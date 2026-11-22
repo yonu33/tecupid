@@ -4,6 +4,7 @@
 import "@fontsource/dotgothic16";
 import "../styles/global.css";
 import SiteFooter from "../components/SiteFooter.astro";
+import { BETA } from "../config";
 import { OG_HEIGHT, OG_WIDTH, ogImagePath } from "../lib/share";
 
 interface Props {
@@ -36,6 +37,8 @@ const ogImageUrl = site ? new URL(ogImage, site).href : undefined;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="theme-color" content="#0a0f0b" />
 		<meta name="description" content={description} />
+		{/* ベータ版のあいだは検索エンジンに載せない */}
+		{BETA && <meta name="robots" content="noindex" />}
 		<meta name="generator" content={Astro.generator} />
 		<title>{pageTitle}</title>
 

@@ -2,6 +2,7 @@
 import PixelSprite from "../components/PixelSprite";
 import { CUPID } from "../components/sprites";
 import { DEPARTMENTS } from "../data/departments";
+import { BETA } from "../config";
 import { DATA_UPDATED, TECHNOLOGIES } from "../data/technologies";
 import DocLayout from "../layouts/DocLayout.astro";
 ---
@@ -13,6 +14,14 @@ import DocLayout from "../layouts/DocLayout.astro";
 	<p>
 		tecupid は、エンジニアのための技術マッチングアプリです。技術の特徴が書かれたカードに「すき」か「パス」で答えると、次に学ぶ技術の候補を推薦します。
 	</p>
+
+	{
+		BETA && (
+			<p class="beta-note">
+				現在はベータ版です。掲載している技術、カード、推薦の仕組みは、予告なく変わることがあります。
+			</p>
+		)
+	}
 
 	<h2>使い方</h2>
 	<ol>

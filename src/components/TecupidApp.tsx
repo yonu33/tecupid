@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent } from "react";
 import { CARDS, type FeatureCard } from "../data/cards";
 import { DEPARTMENTS } from "../data/departments";
+import { BETA } from "../config";
 import { DATA_UPDATED, TECHNOLOGIES, type Technology } from "../data/technologies";
 import { buildDeck, cardsForLevel, followUpCards } from "../lib/deck";
 import { recommend, type Answer, type Ranked } from "../lib/scoring";
@@ -187,6 +188,7 @@ function StartScreen({
       <h1 className="logo">
         tecupid
         <span className="cursor" aria-hidden="true" />
+        {BETA && <span className="beta-badge">BETA</span>}
       </h1>
       <div className="term-lines">
         <p>技術の特徴が書かれたカードが届きます。</p>

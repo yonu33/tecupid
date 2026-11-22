@@ -328,6 +328,20 @@ a.btn-primary {
   animation: blink 1s steps(1) infinite;
 }
 
+/* ベータ版の表示 */
+.beta-badge {
+  display: inline-block;
+  margin-left: 12px;
+  padding: 0 6px;
+  vertical-align: super;
+  border: 2px solid var(--amber);
+  color: var(--amber);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+  text-shadow: none;
+}
+
 .note {
   margin-top: 28px;
   color: var(--muted);
@@ -894,6 +908,10 @@ details[open] > summary::before {
 
 .doc-body li + li {
   margin-top: 4px;
+}
+
+.beta-note {
+  color: var(--amber);
 }
 
 .doc-hero {

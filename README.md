@@ -28,10 +28,10 @@ SNS のサムネイル（OGP 画像）の URL は絶対 URL で書く必要が�
 
 ```sh
 # bash
-SITE_URL=https://tecupid.example.workers.dev npm run deploy
+SITE_URL=https://tecupid.yonu.work npm run deploy
 
 # PowerShell
-$env:SITE_URL="https://tecupid.example.workers.dev"; npm run deploy
+$env:SITE_URL="https://tecupid.yonu.work"; npm run deploy
 ```
 
 `npm run deploy` は、`SITE_URL` がない（または https でない）と止まります。
