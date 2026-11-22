@@ -14,7 +14,8 @@
     "preview": "npm run build && wrangler dev",
     "deploy": "npm run build && wrangler deploy",
     "astro": "astro",
-    "og": "tsx scripts/generate-og.ts"
+    "og": "tsx scripts/generate-og.ts",
+    "simulate": "tsx scripts/simulate-min-answers.ts"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.9",

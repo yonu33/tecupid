@@ -19,6 +19,7 @@ npm run build      # dist/ に静的ビルド
 npm run preview    # ビルドして Cloudflare Workers のローカル環境で確認
 npm run deploy     # ビルドして Cloudflare Workers にデプロイ
 npm run og         # SNS 用のサムネイル画像（public/og/）を作り直す
+npm run simulate   # 「結果を見る」までの最低枚数を決めるシミュレーション
 ```
 
 ### 本番の URL
@@ -48,6 +49,7 @@ SITE_URL=https://tecupid.example.workers.dev npm run deploy
 | `src/pages/` | トップ、シェア用のページ（`m/`）、利用規約、免責事項、プライバシーポリシー、tecupid について、404 |
 | `src/lib/share.ts` | シェア用の URL、OGP 画像のパス、X の投稿画面の URL |
 | `scripts/generate-og.ts` | SNS 用のサムネイル画像を作るスクリプト |
+| `scripts/simulate-min-answers.ts` | 途中で結果を見たときに、1 位がどれだけ変わるかを測るシミュレーション |
 | `wrangler.jsonc` | Cloudflare Workers の設定（静的アセットだけを配信） |
 | `docs/` | 要件定義書と、データのレビュー用の表 |
 

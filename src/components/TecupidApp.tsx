@@ -10,8 +10,12 @@ import PixelSprite from "./PixelSprite";
 import TermWindow from "./TermWindow";
 import { CARET, CROSS, CUPID, HEART, SMALL_HEART, SMALL_HEART_EMPTY, SPARKLE } from "./sprites";
 
-/** 「結果を見る」を押せるまでの最低枚数（仮の値。requirements.md の 10 章） */
-const MIN_ANSWERS = 8;
+/**
+ * 「結果を見る」を押せるまでに答える割合。最初の山札の 4 分の 3（20 枚なら 15 枚）。
+ * scripts/simulate-min-answers.ts のシミュレーションで、8 枚では 1 位が最終結果と一致する割合が
+ * 言語で 43%、フレームワークで 20% にとどまったため（requirements.md の F-2）。
+ */
+const MIN_ANSWER_RATIO = 0.75;
 /** これ以上ドラッグしたら回答とみなす距離（px） */
 const SWIPE_THRESHOLD = 100;
 /** 経験レベルの初期値 */
@@ -85,6 +89,7 @@ export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
 
   const card = deck[answers.length];
   const department = card?.department ? DEPARTMENTS.find((d) => d.id === card.department) : undefined;
+  const minAnswers = Math.ceil(baseCount * MIN_ANSWER_RATIO);
   return (
     <main className="screen">
       <div
@@ -130,8 +135,8 @@ export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
         <button className="btn-text" onClick={undo} disabled={answers.length === 0}>
           1 枚戻す
         </button>
-        <button className="btn-text" onClick={() => setPhase("result")} disabled={answers.length < MIN_ANSWERS}>
-          {answers.length < MIN_ANSWERS ? `あと ${MIN_ANSWERS - answers.length} 枚で結果を見られます` : "ここで結果を見る"}
+        <button className="btn-text" onClick={() => setPhase("result")} disabled={answers.length < minAnswers}>
+          {answers.length < minAnswers ? `あと ${minAnswers - answers.length} 枚で結果を見られます` : "ここで結果を見る"}
         </button>
       </div>
     </main>
