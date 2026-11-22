@@ -59,6 +59,10 @@ $env:SITE_URL="https://tecupid.yonu.work"; npm run deploy
 | `wrangler.jsonc` | Cloudflare Workers の設定（静的アセットだけを配信） |
 | `docs/` | 要件定義書と、データのレビュー用の表 |
 
+## ライセンス
+
+プログラムのコードは [MIT ライセンス](LICENSE) です。特徴カードの文章、技術の概要、ドット絵、`docs/` の文書などは著作権を留保しています（範囲は LICENSE の Scope を参照）。
+
 ## クレジット
 
 - フォント: [DotGothic16](https://fonts.google.com/specimen/DotGothic16)（Copyright 2020 The DotGothic16 Project Authors）。[SIL Open Font License 1.1](https://openfontlicense.org/)
