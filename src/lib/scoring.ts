@@ -52,6 +52,10 @@ export type ScoringOptions = {
    * 分野のタグは 1 つの技術に 1〜2 個しかなく、言語の性質のタグに埋もれやすいので強める。
    */
   axisWeights?: Partial<Record<Axis, number>>;
+  /** 経験レベル（0 = まったくの初心者、10 = 自信あり）。省略すると 10 と同じで、初心者向けの補正をしない */
+  level?: number;
+  /** レベル 0 のときに加える、初心者向けの補正の強さ。レベル 10 で 0 になるよう線形に弱める */
+  beginnerBoost?: number;
 };
 
 const DEFAULTS: Required<ScoringOptions> = {
@@ -59,7 +63,27 @@ const DEFAULTS: Required<ScoringOptions> = {
   alpha: 1,
   maxReasons: 3,
   axisWeights: { domain: 2 },
+  level: 10,
+  beginnerBoost: 1.5,
 };
+
+/**
+ * 初心者向けの補正の向き。学び始めやすさに関係する、客観的に判定できるタグだけを使う。
+ * - simple-syntax: 覚える文法が少ない
+ * - gc: メモリの管理を自分でしなくてよい
+ * - fast-feedback: 書いてすぐ結果を確かめられる
+ * - maturity: 歴史が長い
+ */
+export const BEGINNER_PRIOR: Preference = { "simple-syntax": 1, gc: 1, "fast-feedback": 1, maturity: 0.5 };
+
+/** 経験レベルに応じた初心者向けの補正。レベルが低いほど強く、レベル 10 では空 */
+export function beginnerPrior(level: number, strength = DEFAULTS.beginnerBoost): Preference {
+  const factor = ((10 - Math.min(10, Math.max(0, level))) / 10) * strength;
+  if (factor === 0) return {};
+  const out: Preference = {};
+  for (const [tag, w] of entries(BEGINNER_PRIOR)) out[tag] = w * factor;
+  return out;
+}
 
 /** 回答からタグの選好ベクトルを作る */
 export function buildPreference(
@@ -170,7 +194,7 @@ export function recommend(
   options: ScoringOptions = {},
 ): Recommendation {
   const opt = { ...DEFAULTS, ...options };
-  const pref = buildPreference(answers, cards, opt.nopeFactor);
+  const pref = addPreference(buildPreference(answers, cards, opt.nopeFactor), beginnerPrior(opt.level, opt.beginnerBoost));
   const languages = rank(
     technologies.filter((t): t is Language => t.department === "language"),
     pref, answers, cards, opt,
@@ -205,6 +229,12 @@ function likedCards(answers: Answer[], cards: FeatureCard[]): FeatureCard[] {
     .filter((a) => a.liked)
     .map((a) => byId.get(a.cardId))
     .filter((c): c is FeatureCard => c !== undefined);
+}
+
+function addPreference(a: Preference, b: Preference): Preference {
+  const out: Preference = { ...a };
+  for (const [tag, w] of entries(b)) out[tag] = (out[tag] ?? 0) + w;
+  return out;
 }
 
 function entries(w: TagWeights): [Tag, number][] {

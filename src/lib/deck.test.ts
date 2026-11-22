@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { CARDS } from "../data/cards";
 import { DEPARTMENTS } from "../data/departments";
-import { arrange, buildDeck, DEFAULT_QUOTA, followUpCards, MAX_FOLLOW_UPS, MAX_SAME_AXIS_RUN } from "./deck";
+import {
+  arrange,
+  BEGINNER_MAX_LEVEL,
+  buildDeck,
+  cardsForLevel,
+  DEFAULT_QUOTA,
+  followUpCards,
+  MAX_FOLLOW_UPS,
+  MAX_SAME_AXIS_RUN,
+} from "./deck";
 
 /** テスト用の決定的な乱数 */
 function seeded(seed: number) {
@@ -53,6 +62,23 @@ describe("buildDeck の部門", () => {
   it("部門の専用カードは最初の山札に入らない", () => {
     const deck = buildDeck(CARDS, DEFAULT_QUOTA, seeded(1));
     expect(deck.filter((c) => c.axis === "department")).toHaveLength(0);
+  });
+});
+
+describe("cardsForLevel", () => {
+  it(`LV.${BEGINNER_MAX_LEVEL} 以下では専門用語の多いカードを外し、それより上ではすべて出す`, () => {
+    expect(cardsForLevel(CARDS, BEGINNER_MAX_LEVEL).some((c) => c.advanced)).toBe(false);
+    expect(cardsForLevel(CARDS, BEGINNER_MAX_LEVEL + 1)).toEqual(CARDS);
+  });
+
+  it("初心者向けのカードだけでも、軸ごとの枚数を満たした山札を作れる", () => {
+    const beginnerCards = cardsForLevel(CARDS, 0);
+    for (let seed = 1; seed <= 20; seed++) {
+      const deck = buildDeck(beginnerCards, DEFAULT_QUOTA, seeded(seed));
+      for (const [axis, n] of Object.entries(DEFAULT_QUOTA)) {
+        expect(deck.filter((c) => c.axis === axis)).toHaveLength(n);
+      }
+    }
   });
 });
 

@@ -9,6 +9,8 @@ export type FeatureCard = {
   axis: Axis;
   /** axis が department のとき、どの部門の専用カードか */
   department?: DepartmentId;
+  /** 専門用語が多いカード。経験レベルが低い人には出さない（lib/deck.ts の cardsForLevel） */
+  advanced?: boolean;
   tags: TagWeights;
 };
 
@@ -50,17 +52,17 @@ export const CARDS: FeatureCard[] = [
   { id: "l01", axis: "language", text: "型を書いておけば、実行する前にミスを見つけてくれるのがうれしい", example: "数値を入れるべき場所に文字列を入れた、などのミス", tags: { "static-typing": 1 } },
   { id: "l02", axis: "language", text: "型をいちいち書かずに、思いついたまま書き始めたい", tags: { "static-typing": -1, "fast-feedback": 0.5 } },
   { id: "l03", axis: "language", text: "エディタの補完が効いて、関数の使い方がすぐ分かるのがいい", example: "型の情報があると、エディタが候補を正確に出せる", tags: { "static-typing": 1 } },
-  { id: "l04", axis: "language", text: "「この値は空かもしれない」とコンパイラが教えてくれるのがいい", example: "空の値（null）を使ってしまうエラーを、実行前に防げる", tags: { "null-safety": 1, "static-typing": 0.5 } },
-  { id: "l05", axis: "language", text: "コンパイラが厳しくても、そのぶん安心して動かせるほうがいい", tags: { "static-typing": 0.5, "null-safety": 0.5, concurrency: 0.5 } },
+  { id: "l04", axis: "language", advanced: true, text: "「この値は空かもしれない」とコンパイラが教えてくれるのがいい", example: "空の値（null）を使ってしまうエラーを、実行前に防げる", tags: { "null-safety": 1, "static-typing": 0.5 } },
+  { id: "l05", axis: "language", advanced: true, text: "コンパイラが厳しくても、そのぶん安心して動かせるほうがいい", tags: { "static-typing": 0.5, "null-safety": 0.5, concurrency: 0.5 } },
   { id: "l06", axis: "language", text: "書いたプログラムを 1 つの実行ファイルにして、そのまま配りたい", example: "相手の PC に実行環境を入れてもらわなくても動く", tags: { "native-compile": 1 } },
   { id: "l07", axis: "language", text: "ビルドせずに、ソースコードをそのまま実行できるのが楽", tags: { "native-compile": -1, "fast-feedback": 0.5 } },
   { id: "l08", axis: "language", text: "コンパイルに時間がかかっても、速く動くプログラムを作りたい", tags: { "native-compile": 1, "fast-feedback": -0.5 } },
   { id: "l09", axis: "language", text: "メモリの確保や解放は、言語に任せておきたい", example: "使い終わったメモリを自動で片付けてくれる", tags: { gc: 1 } },
-  { id: "l10", axis: "language", text: "メモリの確保と解放を自分で制御して、無駄なく動かしたい", tags: { gc: -1, "native-compile": 0.5, systems: 0.5 } },
+  { id: "l10", axis: "language", advanced: true, text: "メモリの確保と解放を自分で制御して、無駄なく動かしたい", tags: { gc: -1, "native-compile": 0.5, systems: 0.5 } },
   { id: "l11", axis: "language", text: "複数の処理を同時に動かすコードを、安全に書きたい", example: "ダウンロードしながら画面を動かす、など", tags: { concurrency: 1 } },
-  { id: "l12", axis: "language", text: "処理どうしがメッセージを送り合って協力する設計に惹かれる", example: "共有した変数を奪い合う代わりに、メッセージでやり取りする", tags: { concurrency: 1 } },
-  { id: "l13", axis: "language", text: "データの形に応じて処理を書き分ける「パターンマッチ」を使いたい", example: "「成功ならこう、失敗ならこう」を漏れなく書ける", tags: { functional: 1 } },
-  { id: "l14", axis: "language", text: "if や switch が値を返す、式を組み合わせる書き方が好き", example: "const label = if (x > 0) \"正\" else \"負\" のような書き方", tags: { functional: 1 } },
+  { id: "l12", axis: "language", advanced: true, text: "処理どうしがメッセージを送り合って協力する設計に惹かれる", example: "共有した変数を奪い合う代わりに、メッセージでやり取りする", tags: { concurrency: 1 } },
+  { id: "l13", axis: "language", advanced: true, text: "データの形に応じて処理を書き分ける「パターンマッチ」を使いたい", example: "「成功ならこう、失敗ならこう」を漏れなく書ける", tags: { functional: 1 } },
+  { id: "l14", axis: "language", advanced: true, text: "if や switch が値を返す、式を組み合わせる書き方が好き", example: "const label = if (x > 0) \"正\" else \"負\" のような書き方", tags: { functional: 1 } },
   { id: "l15", axis: "language", text: "手順を上から順に書いていく、素直なスタイルが好き", tags: { functional: -0.5, "simple-syntax": 0.5 } },
   { id: "l16", axis: "language", text: "現実のものを「クラス」として表して設計するのが好き", example: "「ユーザー」や「商品」をクラスにして、データと操作をまとめる", tags: { oop: 1 } },
   { id: "l17", axis: "language", text: "クラスや継承を使わずに、データと関数を分けて書きたい", tags: { oop: -1, functional: 0.5 } },
@@ -77,8 +79,8 @@ export const CARDS: FeatureCard[] = [
   { id: "f06", axis: "framework", text: "画面は、HTML に近いテンプレートで書きたい", example: "HTML の中に、データを差し込む印を書いていく", tags: { "template-syntax": 1 } },
   { id: "f07", axis: "framework", text: "HTML と CSS の知識を、そのまま活かして画面を作りたい", tags: { "template-syntax": 1, "web-frontend": 0.5 } },
   { id: "f08", axis: "framework", text: "画面の部品も、普段のプログラムと同じようにコードの中で組み立てたい", tags: { "template-syntax": -1 } },
-  { id: "f09", axis: "framework", text: "ブラウザに送るプログラムは、ビルド時にできるだけ小さくしておきたい", example: "事前に変換しておくことで、表示を速くする", tags: { "compile-time-ui": 1 } },
-  { id: "f10", axis: "framework", text: "画面の差分を実行時に計算する「仮想 DOM」の仕組みを学びたい", example: "画面全体を作り直す代わりに、変わった部分だけを書き換える仕組み", tags: { "compile-time-ui": -1 } },
+  { id: "f09", axis: "framework", advanced: true, text: "ブラウザに送るプログラムは、ビルド時にできるだけ小さくしておきたい", example: "事前に変換しておくことで、表示を速くする", tags: { "compile-time-ui": 1 } },
+  { id: "f10", axis: "framework", advanced: true, text: "画面の差分を実行時に計算する「仮想 DOM」の仕組みを学びたい", example: "画面全体を作り直す代わりに、変わった部分だけを書き換える仕組み", tags: { "compile-time-ui": -1 } },
 
   // 開発環境とエコシステム
   { id: "e01", axis: "ecosystem", text: "1 行書いたら、すぐ結果を確かめながら進めたい", tags: { "fast-feedback": 1 } },

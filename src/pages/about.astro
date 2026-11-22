@@ -1,0 +1,72 @@
+---
+import PixelSprite from "../components/PixelSprite";
+import { CUPID } from "../components/sprites";
+import { DEPARTMENTS } from "../data/departments";
+import { DATA_UPDATED, TECHNOLOGIES } from "../data/technologies";
+import DocLayout from "../layouts/DocLayout.astro";
+---
+
+<DocLayout title="tecupid について" updated="2026-11-22" description="tecupid の使い方と、推薦の仕組みについて。">
+	<div class="doc-hero">
+		<PixelSprite sprite={CUPID} scale={4} />
+	</div>
+	<p>
+		tecupid は、エンジニアのための技術マッチングアプリです。技術の特徴が書かれたカードに「すき」か「パス」で答えると、次に学ぶ技術の候補を推薦します。
+	</p>
+
+	<h2>使い方</h2>
+	<ol>
+		<li>経験レベルを選んで、「はじめる」を押します。</li>
+		<li>カードに「すき」か「パス」で答えます。</li>
+		<li>部門ごとのおすすめと、公式ドキュメントへのリンクを確認します。</li>
+	</ol>
+
+	<h2>推薦の仕組み</h2>
+	<ul>
+		<li>
+			カードと技術には、「静的型付け」「自動メモリ管理」などのタグが付いています。回答から好みのタグを集計し、タグの傾向が近い技術を推薦します。
+		</li>
+		<li>
+			タグの基準には、公式ドキュメントや言語仕様で確かめられる性質だけを使っています。人気や求人数など、時期や人によって変わる指標は使っていません。
+		</li>
+		<li>経験レベルが低いほど、文法が小さい、すぐ試せるなど、学び始めやすい性質を少し優先します。</li>
+		<li>回答はブラウザの中だけで処理します。詳しくは<a href="/privacy/">プライバシーポリシー</a>をご覧ください。</li>
+	</ul>
+
+	<h2>掲載している技術</h2>
+	<p>{DATA_UPDATED} 時点の情報です。</p>
+	<ul>
+		{
+			DEPARTMENTS.map((d) => (
+				<li>
+					{d.name}: {TECHNOLOGIES.filter((t) => t.department === d.id)
+						.map((t) => t.name)
+						.join("、")}
+				</li>
+			))
+		}
+	</ul>
+
+	<h2>クレジット</h2>
+	<ul>
+		<li>
+			フォント: <a href="https://fonts.google.com/specimen/DotGothic16" target="_blank" rel="noopener noreferrer"
+				>DotGothic16</a
+			>（Copyright 2020 The DotGothic16 Project Authors）。<a
+				href="https://openfontlicense.org/"
+				target="_blank"
+				rel="noopener noreferrer">SIL Open Font License 1.1</a
+			>のもとで使用しています。
+		</li>
+		<li>ドット絵: tecupid のオリジナルです。</li>
+	</ul>
+
+	<h2>お問い合わせ</h2>
+	<p>
+		ご意見や、掲載している情報の誤りのご指摘は、<a
+			href="https://github.com/yonu33/tecupid/issues"
+			target="_blank"
+			rel="noopener noreferrer">GitHub の Issues</a
+		>へお寄せください。
+	</p>
+</DocLayout>

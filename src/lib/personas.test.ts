@@ -136,6 +136,23 @@ describe("ペルソナ", () => {
     expect(aiTop(["d13", "a05", "a06"], ["a01"])).toBe("pandas");
   });
 
+  it("経験レベル: LV.10 は、レベルを指定しないときと同じ結果", () => {
+    const a = answers(["d01", "d02", "l01"], ["d09"]);
+    const ids = (r: ReturnType<typeof recommend>) => r.departments.flatMap((d) => d.ranked.map((x) => x.tech.id));
+    expect(ids(recommend(a, CARDS, TECHNOLOGIES, { level: 10 }))).toEqual(ids(recommend(a, CARDS, TECHNOLOGIES)));
+  });
+
+  it("経験レベル: まったくの初心者（LV.0）で、まだ何も答えていない → Python", () => {
+    const r = recommend([], CARDS, TECHNOLOGIES, { level: 0 });
+    expect(top(r.languages, 1)).toEqual(["python"]);
+  });
+
+  it("経験レベル: 初心者が Web の画面を作りたい → TypeScript より JavaScript が上", () => {
+    const r = recommend(answers(["d01"], []), CARDS, TECHNOLOGIES, { level: 0 });
+    const ids = r.languages.map((x) => x.tech.id);
+    expect(ids.indexOf("javascript")).toBeLessThan(ids.indexOf("typescript"));
+  });
+
   it("クラス設計と型が好きな業務系 → Java ＋ Spring Boot", () => {
     const r = recommend(answers(["d02", "l16", "l01", "l03", "f01", "e04", "e05"], ["l17", "e06", "l02"]), CARDS, TECHNOLOGIES);
     expect(top(r.languages, 1)).toEqual(["java"]);

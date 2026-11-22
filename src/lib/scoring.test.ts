@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { FeatureCard } from "../data/cards";
 import type { Framework, Language } from "../data/technologies";
-import { applyAxisWeights, bestCombination, buildPreference, cosine, rank, reasonsFor, recommend } from "./scoring";
+import { applyAxisWeights, beginnerPrior, bestCombination, buildPreference, cosine, rank, reasonsFor, recommend } from "./scoring";
 
 const cards: FeatureCard[] = [
   { id: "a", axis: "language", text: "", tags: { "static-typing": 1 } },
@@ -84,6 +84,19 @@ describe("bestCombination", () => {
     const L = { tech: lang("l1", {}), score: 0.9, reasons: [] };
     const F = { tech: fw("x", ["l1"], {}), score: 0, reasons: [] };
     expect(bestCombination([F], [L], 1)).toBeNull();
+  });
+});
+
+describe("beginnerPrior", () => {
+  it("LV.0 で最も強く、LV.10 では空", () => {
+    expect(beginnerPrior(0, 1.5)).toEqual({ "simple-syntax": 1.5, gc: 1.5, "fast-feedback": 1.5, maturity: 0.75 });
+    expect(beginnerPrior(5, 1.5)["simple-syntax"]).toBeCloseTo(0.75);
+    expect(beginnerPrior(10, 1.5)).toEqual({});
+  });
+
+  it("範囲外のレベルは 0〜10 に丸める", () => {
+    expect(beginnerPrior(-3, 1)).toEqual(beginnerPrior(0, 1));
+    expect(beginnerPrior(99, 1)).toEqual({});
   });
 });
 

@@ -12,6 +12,14 @@ export const DEFAULT_QUOTA: Quota = { domain: 5, language: 7, framework: 3, depa
 /** 追加で出す部門の専用カードの最大枚数 */
 export const MAX_FOLLOW_UPS = 4;
 
+/** 経験レベルがこれ以下の人には、専門用語の多いカード（advanced）を出さない */
+export const BEGINNER_MAX_LEVEL = 3;
+
+/** 経験レベルに合わせて、出してよいカードだけを返す */
+export function cardsForLevel(cards: FeatureCard[], level: number): FeatureCard[] {
+  return level <= BEGINNER_MAX_LEVEL ? cards.filter((c) => !c.advanced) : cards;
+}
+
 /** 同じ軸のカードを続けてよい最大枚数 */
 export const MAX_SAME_AXIS_RUN = 2;
 

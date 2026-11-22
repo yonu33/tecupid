@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^7.1.9",
+    "@fontsource/dotgothic16": "^5.3.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "astro": "^7.4.13",

@@ -1,0 +1,16 @@
+---
+// Cloudflare Workers の not_found_handling: "404-page" で使われる
+import PixelSprite from "../components/PixelSprite";
+import { CUPID } from "../components/sprites";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="ページが見つかりません">
+	<main class="screen start not-found">
+		<PixelSprite sprite={CUPID} scale={6} />
+		<p class="eyebrow">404 NOT FOUND</p>
+		<h1 class="result-title">ページが見つかりません</h1>
+		<p class="lead">お探しのページは、移動したか削除された可能性があります。</p>
+		<a class="btn-primary" href="/">トップへもどる</a>
+	</main>
+</BaseLayout>
