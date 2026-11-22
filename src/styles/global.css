@@ -505,7 +505,10 @@ a.btn-primary {
   flex-direction: column;
   /* カードの上では、ブラウザにスクロールの判断をさせない（スワイプが途中で打ち切られないように） */
   touch-action: none;
+  -webkit-user-select: none;
   user-select: none;
+  /* iPhone で長押ししたときの選択やメニューを出さない */
+  -webkit-touch-callout: none;
   cursor: grab;
   transition: transform 0.2s;
 }

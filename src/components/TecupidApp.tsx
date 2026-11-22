@@ -303,35 +303,80 @@ function SwipeCard({
 }) {
   const [dx, setDx] = useState(0);
   const [dragging, setDragging] = useState(false);
-  const startX = useRef<number | null>(null);
-  /** 直近の指の位置と時刻。はじく速さを求めるのに使う */
-  const samples = useRef<{ x: number; t: number }[]>([]);
+  const cardRef = useRef<HTMLDivElement>(null);
+  /** ドラッグ中の状態。タッチイベントのリスナーからも最新の値を読めるよう ref に持つ */
+  const drag = useRef<{ startX: number; dx: number; samples: { x: number; t: number }[] } | null>(null);
 
-  const onDown = (e: PointerEvent<HTMLDivElement>) => {
-    if (exiting) return;
-    startX.current = e.clientX;
-    samples.current = [{ x: e.clientX, t: e.timeStamp }];
+  // 指の操作（タッチイベント）と、マウスやペンの操作（ポインターイベント）の両方から呼ぶ共通の処理
+  const begin = (x: number, t: number) => {
+    if (exiting) return false;
+    drag.current = { startX: x, dx: 0, samples: [{ x, t }] };
     setDragging(true);
-    e.currentTarget.setPointerCapture(e.pointerId);
+    return true;
   };
-  const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (startX.current === null) return;
-    setDx(e.clientX - startX.current);
-    samples.current = [...samples.current.slice(-4), { x: e.clientX, t: e.timeStamp }];
+  const track = (x: number, t: number) => {
+    const d = drag.current;
+    if (!d) return;
+    d.dx = x - d.startX;
+    d.samples = [...d.samples.slice(-4), { x, t }];
+    setDx(d.dx);
   };
-  const onUp = () => {
-    if (startX.current === null) return;
-    startX.current = null;
+  const finish = () => {
+    const d = drag.current;
+    if (!d) return;
+    drag.current = null;
     setDragging(false);
-    const s = samples.current;
-    const a = s[0];
-    const b = s[s.length - 1];
-    const velocity = a && b && b.t > a.t ? (b.x - a.x) / (b.t - a.t) : 0;
+    const a = d.samples[0];
+    const b = d.samples[d.samples.length - 1];
+    const velocity = b.t > a.t ? (b.x - a.x) / (b.t - a.t) : 0;
     const flicked =
-      Math.abs(dx) > FLICK_MIN_DISTANCE && Math.abs(velocity) > FLICK_MIN_VELOCITY && Math.sign(velocity) === Math.sign(dx);
+      Math.abs(d.dx) > FLICK_MIN_DISTANCE &&
+      Math.abs(velocity) > FLICK_MIN_VELOCITY &&
+      Math.sign(velocity) === Math.sign(d.dx);
     // しきい値を超えたか素早くはじいたら、ドラッグした位置からそのまま飛んでいく
-    if (Math.abs(dx) > SWIPE_THRESHOLD || flicked) onSwipe(dx > 0);
+    if (Math.abs(d.dx) > SWIPE_THRESHOLD || flicked) onSwipe(d.dx > 0);
     else setDx(0);
+  };
+  const gesture = useRef({ begin, track, finish });
+  gesture.current = { begin, track, finish };
+
+  // 指の操作はタッチイベントで受け取る。iPhone の Safari では、ポインターイベントだと
+  // ブラウザのスクロールや「戻る」の操作として扱われ、スワイプが打ち切られることがあるため。
+  // touchmove でブラウザの動作を止めるには、passive: false で登録する必要がある。
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 1) gesture.current.begin(e.touches[0].clientX, e.timeStamp);
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!drag.current) return;
+      e.preventDefault();
+      gesture.current.track(e.touches[0].clientX, e.timeStamp);
+    };
+    const onTouchEnd = () => gesture.current.finish();
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    el.addEventListener("touchcancel", onTouchEnd);
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener("touchcancel", onTouchEnd);
+    };
+  }, []);
+
+  // マウスとペンはポインターイベントで受け取る（指はタッチイベントで受け取るので、ここでは無視する）
+  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType === "touch") return;
+    if (begin(e.clientX, e.timeStamp)) e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "touch") track(e.clientX, e.timeStamp);
+  };
+  const onPointerUp = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "touch") finish();
   };
 
   const stamp = exiting ?? (dx > 40 ? "like" : dx < -40 ? "nope" : null);
@@ -350,12 +395,13 @@ function SwipeCard({
   return (
     <TermWindow
       title="~/tecupid"
+      ref={cardRef}
       className={className}
       style={{ transform }}
-      onPointerDown={onDown}
-      onPointerMove={onMove}
-      onPointerUp={onUp}
-      onPointerCancel={onUp}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerCancel={onPointerUp}
     >
       {stamp === "like" && !exiting && (
         <span className="stamp like">
