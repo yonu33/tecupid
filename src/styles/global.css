@@ -503,7 +503,8 @@ a.btn-primary {
   min-height: 340px;
   display: flex;
   flex-direction: column;
-  touch-action: pan-y;
+  /* カードの上では、ブラウザにスクロールの判断をさせない（スワイプが途中で打ち切られないように） */
+  touch-action: none;
   user-select: none;
   cursor: grab;
   transition: transform 0.2s;

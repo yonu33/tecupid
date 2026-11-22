@@ -18,7 +18,10 @@ import { CARET, CROSS, CUPID, HEART, SMALL_HEART, SMALL_HEART_EMPTY, SPARKLE } f
  */
 const MIN_ANSWER_RATIO = 0.75;
 /** これ以上ドラッグしたら回答とみなす距離（px） */
-const SWIPE_THRESHOLD = 100;
+const SWIPE_THRESHOLD = 80;
+/** 素早くはじいたときは、この距離（px）と速さ（px/ms）を超えれば回答とみなす。スマホの短いスワイプ用 */
+const FLICK_MIN_DISTANCE = 30;
+const FLICK_MIN_VELOCITY = 0.35;
 /** 答えたカードが画面の外へ飛んでいく演出の長さ（ミリ秒）。CSS の .card.leaving とそろえる */
 const EXIT_MS = 260;
 /** 経験レベルの初期値 */
@@ -301,22 +304,33 @@ function SwipeCard({
   const [dx, setDx] = useState(0);
   const [dragging, setDragging] = useState(false);
   const startX = useRef<number | null>(null);
+  /** 直近の指の位置と時刻。はじく速さを求めるのに使う */
+  const samples = useRef<{ x: number; t: number }[]>([]);
 
   const onDown = (e: PointerEvent<HTMLDivElement>) => {
     if (exiting) return;
     startX.current = e.clientX;
+    samples.current = [{ x: e.clientX, t: e.timeStamp }];
     setDragging(true);
     e.currentTarget.setPointerCapture(e.pointerId);
   };
   const onMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (startX.current !== null) setDx(e.clientX - startX.current);
+    if (startX.current === null) return;
+    setDx(e.clientX - startX.current);
+    samples.current = [...samples.current.slice(-4), { x: e.clientX, t: e.timeStamp }];
   };
   const onUp = () => {
     if (startX.current === null) return;
     startX.current = null;
     setDragging(false);
-    // しきい値を超えたら、ドラッグした位置からそのまま飛んでいく
-    if (Math.abs(dx) > SWIPE_THRESHOLD) onSwipe(dx > 0);
+    const s = samples.current;
+    const a = s[0];
+    const b = s[s.length - 1];
+    const velocity = a && b && b.t > a.t ? (b.x - a.x) / (b.t - a.t) : 0;
+    const flicked =
+      Math.abs(dx) > FLICK_MIN_DISTANCE && Math.abs(velocity) > FLICK_MIN_VELOCITY && Math.sign(velocity) === Math.sign(dx);
+    // しきい値を超えたか素早くはじいたら、ドラッグした位置からそのまま飛んでいく
+    if (Math.abs(dx) > SWIPE_THRESHOLD || flicked) onSwipe(dx > 0);
     else setDx(0);
   };
 
