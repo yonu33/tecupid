@@ -27,8 +27,14 @@ npm run simulate   # 「結果を見る」までの最低枚数を決めるシ�
 SNS のサムネイル（OGP 画像）の URL は絶対 URL で書く必要があるため、ビルドするときに環境変数 `SITE_URL` で本番の URL を指定します。未指定のときは、OGP の画像と URL のメタタグを出力しません。
 
 ```sh
+# bash
 SITE_URL=https://tecupid.example.workers.dev npm run deploy
+
+# PowerShell
+$env:SITE_URL="https://tecupid.example.workers.dev"; npm run deploy
 ```
+
+`npm run deploy` は、`SITE_URL` がない（または https でない）と止まります。
 
 ### サムネイル画像
 
