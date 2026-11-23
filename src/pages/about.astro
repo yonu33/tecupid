@@ -3,11 +3,16 @@ import PixelSprite from "../components/PixelSprite";
 import { CUPID } from "../components/sprites";
 import { DEPARTMENTS } from "../data/departments";
 import { BETA } from "../config";
-import { DATA_UPDATED, TECHNOLOGIES } from "../data/technologies";
+import { TECHNOLOGIES } from "../data/technologies";
 import DocLayout from "../layouts/DocLayout.astro";
+import { TECH_DATA_FILES, techDataUpdated } from "../lib/last-updated";
 ---
 
-<DocLayout title="tecupid について" updated="2026-11-22" description="tecupid の使い方と、推薦の仕組みについて。">
+<DocLayout
+	title="tecupid について"
+	description="tecupid の使い方と、推薦の仕組みについて。"
+	sources={["src/pages/about.astro", "src/data/departments.ts", ...TECH_DATA_FILES]}
+>
 	<div class="doc-hero">
 		<PixelSprite sprite={CUPID} scale={4} />
 	</div>
@@ -43,7 +48,7 @@ import DocLayout from "../layouts/DocLayout.astro";
 	</ul>
 
 	<h2>掲載している技術と分野</h2>
-	<p>{DATA_UPDATED} 時点の情報です。</p>
+	<p>{techDataUpdated()} 時点の情報です。</p>
 	<ul>
 		{
 			DEPARTMENTS.map((d) => (

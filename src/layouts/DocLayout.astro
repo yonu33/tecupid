@@ -1,15 +1,20 @@
 ---
 // 利用規約などの文書ページの共通部分
 import BaseLayout from "./BaseLayout.astro";
+import { lastUpdated } from "../lib/last-updated";
 
 interface Props {
   title: string;
   description?: string;
-  /** 最終更新日（YYYY-MM-DD） */
-  updated: string;
+  /**
+   * ページの中身が書かれたファイル（リポジトリのルートからの相対パス）。
+   * 最終更新日は、このうち最も新しく変更された日を git の履歴から求める
+   */
+  sources: string[];
 }
 
-const { title, description, updated } = Astro.props;
+const { title, description, sources } = Astro.props;
+const updated = lastUpdated(...sources);
 ---
 
 <BaseLayout title={title} description={description}>

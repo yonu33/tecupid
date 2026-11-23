@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, 
 import { CARDS, type FeatureCard } from "../data/cards";
 import { DEPARTMENTS } from "../data/departments";
 import { BETA } from "../config";
-import { DATA_UPDATED, TECHNOLOGIES, type Technology } from "../data/technologies";
+import { TECHNOLOGIES, type Technology } from "../data/technologies";
 import { buildDeck, cardsForLevel, followUpCards } from "../lib/deck";
 import { recommend, type Answer, type Ranked } from "../lib/scoring";
 import { buildShareUrl, parseSharedIds, parseSharedMatch, sharePostText, xShareUrl } from "../lib/share";
@@ -33,8 +33,11 @@ const MAX_FEATURED = 3;
 
 type Phase = "start" | "swipe" | "result";
 
-/** sharedIds: シェア用のページ（/m/...）で開いたときの、友だちの結果の技術の ID */
-export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
+/**
+ * sharedIds: シェア用のページ（/m/...）で開いたときの、友だちの結果の技術の ID
+ * dataUpdated: 技術の情報の最終更新日（YYYY-MM-DD）。ビルド時に git の履歴から求めて渡す
+ */
+export default function TecupidApp({ sharedIds, dataUpdated }: { sharedIds?: string[]; dataUpdated: string }) {
   const [phase, setPhase] = useState<Phase>("start");
   const [level, setLevel] = useState(DEFAULT_LEVEL);
   const [deck, setDeck] = useState<FeatureCard[]>([]);
@@ -122,7 +125,7 @@ export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
   if (phase === "start") {
     return <StartScreen level={level} shared={shared} onLevelChange={setLevel} onStart={start} />;
   }
-  if (phase === "result") return <ResultScreen answers={answers} level={level} onRetry={() => setPhase("start")} />;
+  if (phase === "result") return <ResultScreen answers={answers} level={level} dataUpdated={dataUpdated} onRetry={() => setPhase("start")} />;
 
   const card = deck[answers.length];
   const department = card?.department ? DEPARTMENTS.find((d) => d.id === card.department) : undefined;
@@ -434,7 +437,17 @@ function SwipeCard({
   );
 }
 
-function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: number; onRetry: () => void }) {
+function ResultScreen({
+  answers,
+  level,
+  dataUpdated,
+  onRetry,
+}: {
+  answers: Answer[];
+  level: number;
+  dataUpdated: string;
+  onRetry: () => void;
+}) {
   const result = useMemo(() => recommend(answers, CARDS, TECHNOLOGIES, { level }), [answers, level]);
   // 関心のある部門のうち、関心度の高い順に最大 MAX_FEATURED 部門（言語を含む）を上に出す
   const featured = result.departments.filter((d) => d.featured).slice(0, MAX_FEATURED);
@@ -511,7 +524,7 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
       <p className="note">
         推薦は学習の参考情報です。キャリアや就職での成果を保証するものではありません。
         <br />
-        技術の情報は {DATA_UPDATED} 時点のものです。最新の情報は公式ドキュメントで確認してください。
+        技術の情報は {dataUpdated} 時点のものです。最新の情報は公式ドキュメントで確認してください。
         <br />
         載ってほしい技術は、<a href="https://github.com/yonu33/tecupid/issues/new?template=tech-request.yml" target="_blank" rel="noopener noreferrer">GitHub でリクエスト</a>できます。
       </p>

@@ -5,9 +5,6 @@
 import type { DepartmentId } from "./departments";
 import type { Tag, TagWeights } from "./tags";
 
-/** 技術の情報（概要、タグの重み）を最後に見直した日。結果画面と「tecupid について」に表示する */
-export const DATA_UPDATED = "2026-11-22";
-
 export type Resource = { title: string; url: string; official: boolean };
 
 type TechnologyBase = {

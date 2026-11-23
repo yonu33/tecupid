@@ -5,6 +5,7 @@
 import TecupidApp from "../../components/TecupidApp";
 import { TECHNOLOGIES } from "../../data/technologies";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { techDataUpdated } from "../../lib/last-updated";
 import { ogImagePath, parseSharedIds, shareTargets, shareText } from "../../lib/share";
 
 export function getStaticPaths() {
@@ -23,5 +24,5 @@ const names = techs.map((t) => t.name);
 	ogImage={ogImagePath(ids)}
 	ogImageAlt={`tecupid のマッチング結果: ${names.join(" と ")}`}
 >
-	<TecupidApp client:only="react" sharedIds={ids} />
+	<TecupidApp client:only="react" sharedIds={ids} dataUpdated={techDataUpdated()} />
 </BaseLayout>

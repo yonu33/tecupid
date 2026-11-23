@@ -1,9 +1,10 @@
 ---
 import TecupidApp from "../components/TecupidApp";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { techDataUpdated } from "../lib/last-updated";
 ---
 
 <BaseLayout>
 	<!-- カードの並びは毎回ランダムなので、サーバー側では描画しない -->
-	<TecupidApp client:only="react" />
+	<TecupidApp client:only="react" dataUpdated={techDataUpdated()} />
 </BaseLayout>
