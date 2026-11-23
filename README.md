@@ -2,7 +2,7 @@
 
 エンジニアのための技術マッチングアプリ。
 
-技術の特徴が書かれたカードに「すき」か「パス」で答えると、あなたにぴったりの技術を部門ごとに推薦します。最初に経験レベル（0〜10）を選ぶと、初心者には専門用語の少ないカードを出し、学び始めやすい技術を少し優先します。
+技術の特徴が書かれたカードに「すき」か「興味なし」で答えると、あなたにぴったりの技術を部門ごとに推薦します。最初に経験レベル（0〜10）を選ぶと、初心者には専門用語の少ないカードを出し、学び始めやすい技術を少し優先します。
 
 > This is a web application that supports you in selecting a new technology to learn.
 
@@ -58,6 +58,10 @@ $env:SITE_URL="https://tecupid.yonu.work"; npm run deploy
 | `scripts/simulate-min-answers.ts` | 途中で結果を見たときに、1 位がどれだけ変わるかを測るシミュレーション |
 | `wrangler.jsonc` | Cloudflare Workers の設定（静的アセットだけを配信） |
 | `docs/` | 要件定義書と、データのレビュー用の表 |
+
+## 技術の追加リクエスト
+
+載せてほしい言語やフレームワークは、[技術の追加リクエスト](https://github.com/yonu33/tecupid/issues/new?template=tech-request.yml)から Issue を立ててください。推薦には公式ドキュメントで確かめられる性質だけを使うため、公式ドキュメントの URL を書いてもらっています。
 
 ## ライセンス
 

@@ -53,7 +53,7 @@ export const SMALL_HEART_EMPTY: Sprite = {
   palette: { k: OUTLINE, e: "var(--px-empty)" },
 };
 
-/** パス（12 × 12） */
+/** 興味なし（12 × 12） */
 export const CROSS: Sprite = {
   rows: [
     "kkk......kkk",

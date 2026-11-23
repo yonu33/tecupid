@@ -1,0 +1,32 @@
+name: 不具合の報告
+description: 表示がおかしい、操作できないなどの不具合を報告する
+title: "[不具合] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issue は誰でも見られます。名前やメールアドレスなどの個人情報は書かないでください。
+  - type: textarea
+    id: what
+    attributes:
+      label: 起きたこと
+      description: どの画面で、何をしたら、どうなったか
+    validations:
+      required: true
+  - type: dropdown
+    id: device
+    attributes:
+      label: 端末
+      options:
+        - iPhone
+        - Android
+        - パソコン
+        - その他
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: ブラウザ
+      placeholder: "例: Safari、Chrome"

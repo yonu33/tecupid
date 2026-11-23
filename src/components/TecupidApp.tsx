@@ -160,7 +160,7 @@ export default function TecupidApp({ sharedIds }: { sharedIds?: string[] }) {
         <button className="btn-key nope" onClick={() => answer(false)} aria-keyshortcuts="n ArrowLeft">
           <kbd className="keycap" aria-hidden="true">n</kbd>
           <PixelSprite sprite={CROSS} scale={2} />
-          <span>パス</span>
+          <span>興味なし</span>
         </button>
         <button className="btn-key like" onClick={() => answer(true)} aria-keyshortcuts="y ArrowRight">
           <kbd className="keycap" aria-hidden="true">y</kbd>
@@ -230,7 +230,7 @@ function StartScreen({
       </h1>
       <div className="term-lines">
         <p>技術の特徴が書かれたカードが届きます。</p>
-        <p>気になったら「すき」、ちがうなら「パス」。</p>
+        <p>気になったら「すき」、違えば「興味なし」。</p>
         <p>あなたにぴったりの技術を見つけます。</p>
       </div>
 
@@ -412,13 +412,13 @@ function SwipeCard({
       {stamp === "nope" && !exiting && (
         <span className="stamp nope">
           <PixelSprite sprite={CROSS} scale={2} />
-          パス
+          興味なし
         </span>
       )}
       {exiting && (
         <div className={`big-stamp ${exiting}`} aria-hidden="true">
           <PixelSprite sprite={exiting === "like" ? HEART : CROSS} scale={6} />
-          <span>{exiting === "like" ? "すき！" : "パス"}</span>
+          <span>{exiting === "like" ? "すき！" : "興味なし"}</span>
         </div>
       )}
       <p className="term-prompt" aria-hidden="true">
@@ -427,7 +427,7 @@ function SwipeCard({
       <p className="card-text">{card.text}</p>
       {card.example && <p className="card-example">{card.example}</p>}
       <p className="term-ask" aria-hidden="true">
-        ← パス ／ すき →
+        ← 興味なし ／ すき →
         <span className="cursor" />
       </p>
     </TermWindow>
@@ -512,6 +512,8 @@ function ResultScreen({ answers, level, onRetry }: { answers: Answer[]; level: n
         推薦は学習の参考情報です。キャリアや就職での成果を保証するものではありません。
         <br />
         技術の情報は {DATA_UPDATED} 時点のものです。最新の情報は公式ドキュメントで確認してください。
+        <br />
+        載ってほしい技術は、<a href="https://github.com/yonu33/tecupid/issues/new?template=tech-request.yml" target="_blank" rel="noopener noreferrer">GitHub でリクエスト</a>できます。
       </p>
     </main>
   );

@@ -12,7 +12,7 @@ import DocLayout from "../layouts/DocLayout.astro";
 		<PixelSprite sprite={CUPID} scale={4} />
 	</div>
 	<p>
-		tecupid は、エンジニアのための技術マッチングアプリです。技術の特徴が書かれたカードに「すき」か「パス」で答えると、次に学ぶ技術の候補を推薦します。
+		tecupid は、エンジニアのための技術マッチングアプリです。技術の特徴が書かれたカードに「すき」か「興味なし」で答えると、次に学ぶ技術の候補を推薦します。
 	</p>
 
 	{
@@ -26,7 +26,7 @@ import DocLayout from "../layouts/DocLayout.astro";
 	<h2>使い方</h2>
 	<ol>
 		<li>経験レベルを選んで、「はじめる」を押します。</li>
-		<li>カードに「すき」か「パス」で答えます。</li>
+		<li>カードに「すき」か「興味なし」で答えます。</li>
 		<li>部門ごとのおすすめと、公式ドキュメントへのリンクを確認します。</li>
 	</ol>
 
@@ -80,6 +80,9 @@ import DocLayout from "../layouts/DocLayout.astro";
 	</ul>
 
 	<h2>お問い合わせ</h2>
+	<p>
+		載ってほしい技術があれば、<a href="https://github.com/yonu33/tecupid/issues/new?template=tech-request.yml" target="_blank" rel="noopener noreferrer">技術の追加リクエスト</a>から教えてください。
+	</p>
 	<p>
 		ご意見や、掲載している情報の誤りのご指摘は、<a
 			href="https://github.com/yonu33/tecupid/issues"

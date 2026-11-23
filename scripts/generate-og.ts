@@ -101,7 +101,7 @@ function defaultPage(): string {
     "~/tecupid",
     `<p class="muted">$ tecupid --help</p><p class="muted"># エンジニアのための技術マッチングアプリ</p>
 <div class="names"><span>tecupid<span class="cursor"></span></span></div>
-<p class="desc">技術の特徴が書かれたカードに「すき」か「パス」で答えて、次に学ぶ技術を見つけよう</p>`,
+<p class="desc">技術の特徴が書かれたカードに「すき」か「興味なし」で答えて、次に学ぶ技術を見つけよう</p>`,
   );
 }
 

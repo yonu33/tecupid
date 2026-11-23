@@ -1,5 +1,9 @@
 name: CI
 
+# 公開リポジトリなので、CI にはリポジトリを読む権限だけを与える
+permissions:
+  contents: read
+
 on:
   push:
     branches: [main]

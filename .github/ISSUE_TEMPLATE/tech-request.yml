@@ -1,0 +1,54 @@
+name: 技術の追加リクエスト
+description: tecupid に載せてほしい言語やフレームワークなどをリクエストする
+title: "[追加リクエスト] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        tecupid に載せてほしい技術を教えてください。
+        推薦には、公式ドキュメントや言語仕様で確かめられる性質だけを使っています。そのため、公式ドキュメントの URL を必ず書いてください。
+        Issue は誰でも見られます。名前やメールアドレスなどの個人情報は書かないでください。
+  - type: input
+    id: name
+    attributes:
+      label: 技術の名前
+      placeholder: "例: Elixir"
+    validations:
+      required: true
+  - type: dropdown
+    id: department
+    attributes:
+      label: 部門
+      options:
+        - 言語
+        - フレームワーク
+        - インフラ・DevOps
+        - AI・データ
+        - データベース
+        - ゲーム開発
+        - アルゴリズム
+        - 数学
+        - セキュリティ・暗号
+        - その他（新しい部門）
+    validations:
+      required: true
+  - type: input
+    id: docs
+    attributes:
+      label: 公式ドキュメントの URL
+      placeholder: "https://"
+    validations:
+      required: true
+  - type: textarea
+    id: features
+    attributes:
+      label: 特徴（分かる範囲で）
+      description: 静的型付けか、メモリ管理は自動か、何を作るのによく使われるか、など
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: 確認
+      options:
+        - label: 同じ技術のリクエストがまだないことを、Issue の一覧で確かめました
+          required: true
