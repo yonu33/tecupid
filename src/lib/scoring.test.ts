@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import type { FeatureCard } from "../data/cards";
 import type { Framework, Language } from "../data/technologies";
-import { applyAxisWeights, beginnerPrior, bestCombination, buildPreference, cosine, rank, reasonsFor, recommend } from "./scoring";
+import {
+  applyAxisWeights, beginnerPrior, bestCombination, buildPreference, cosine, matchScore, rank, reasonsFor, recommend,
+  withoutNegativeDomains,
+} from "./scoring";
 
 const cards: FeatureCard[] = [
   { id: "a", axis: "language", text: "", tags: { "static-typing": 1 } },
@@ -45,6 +48,37 @@ describe("cosine", () => {
   it("どちらかが空なら 0", () => {
     expect(cosine({}, { gc: 1 })).toBe(0);
     expect(cosine({ gc: 1 }, {})).toBe(0);
+  });
+});
+
+describe("matchScore", () => {
+  it("分野だけ、または分野以外だけに答えたなら、その部分のコサイン類似度", () => {
+    expect(matchScore({ gc: 1, oop: 1 }, { gc: 2, oop: 2, "web-backend": 1 })).toBeCloseTo(1);
+    expect(matchScore({ "web-backend": 1 }, { "web-backend": 1, gc: 1 })).toBeCloseTo(1);
+  });
+
+  it("分野のタグを持たない技術は、分野の分の点数を得られない", () => {
+    const pref = { "web-backend": 1, gc: 1 };
+    // 分野 1 × 0 と、分野以外 1 × 1 を、答えた大きさ（1 と 1）で平均する
+    expect(matchScore(pref, { gc: 1 })).toBeCloseTo(0.5);
+    expect(matchScore(pref, { "web-backend": 1, gc: 1 })).toBeCloseTo(1);
+  });
+
+  it("0.5 の分野しか持たない技術は、その分野の専門の技術の半分の点数", () => {
+    expect(matchScore({ "web-frontend": 1 }, { "web-frontend": 0.5 })).toBeCloseTo(0.5);
+    expect(matchScore({ "web-frontend": 1 }, { "web-frontend": 1 })).toBeCloseTo(1);
+    // 軸の重みを掛けたあとのベクトルには、重み 1 のタグ 1 つの大きさを渡す
+    expect(matchScore({ "web-frontend": 2 }, { "web-frontend": 1 }, 2)).toBeCloseTo(0.5);
+  });
+
+  it("好みが空なら 0", () => {
+    expect(matchScore({}, { gc: 1 })).toBe(0);
+  });
+});
+
+describe("withoutNegativeDomains", () => {
+  it("分野のマイナスの好みだけを外す", () => {
+    expect(withoutNegativeDomains({ "web-frontend": -1, "web-backend": 1, gc: -1 })).toEqual({ "web-backend": 1, gc: -1 });
   });
 });
 

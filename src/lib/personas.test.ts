@@ -15,6 +15,8 @@ function answers(like: string[], nope: string[]): Answer[] {
 
 const top = (list: { tech: { id: string } }[], n: number) => list.slice(0, n).map((r) => r.tech.id);
 
+const LISP = ["clojure", "common-lisp", "racket"];
+
 describe("ペルソナ", () => {
   it("Web 全般が好きで型も好き → TypeScript", () => {
     const r = recommend(answers(["d01", "d02", "d07", "l01", "l03", "l09"], ["d09", "d10"]), CARDS, TECHNOLOGIES);
@@ -258,9 +260,10 @@ describe("ペルソナ", () => {
     expect(top(r.languages, 1)).toEqual(["python"]);
   });
 
-  it("経験レベル: 初心者が Web の画面を作りたい → TypeScript より JavaScript が上", () => {
+  it("経験レベル: 初心者が Web の画面を作りたい → JavaScript が 1 位で、TypeScript より上", () => {
     const r = recommend(answers(["d01"], []), CARDS, TECHNOLOGIES, { level: 0 });
     const ids = r.languages.map((x) => x.tech.id);
+    expect(ids[0]).toBe("javascript");
     expect(ids.indexOf("javascript")).toBeLessThan(ids.indexOf("typescript"));
   });
 
@@ -268,5 +271,34 @@ describe("ペルソナ", () => {
     const r = recommend(answers(["d02", "l16", "l01", "l03", "f01", "e04", "e05"], ["l17", "e06", "l02"]), CARDS, TECHNOLOGIES);
     expect(top(r.languages, 1)).toEqual(["java"]);
     expect(r.combination?.framework.tech.id).toBe("spring-boot");
+  });
+
+  it("Lisp: コードをデータとして扱うマクロと、少ない決まりごとの美しさに惹かれる → Lisp が 1 位", () => {
+    const r = recommend(answers(["l21", "l22"], []), CARDS, TECHNOLOGIES);
+    expect(LISP).toContain(top(r.languages, 1)[0]);
+  });
+
+  it("Lisp: マクロ、動的型付け、クラスを使わずにデータと関数を分ける → Clojure", () => {
+    const r = recommend(answers(["l21", "l22", "l02", "l17"], []), CARDS, TECHNOLOGIES);
+    expect(top(r.languages, 1)).toEqual(["clojure"]);
+  });
+
+  it("Lisp: マクロ、メッセージパッシング、パターンマッチ → Racket", () => {
+    const r = recommend(answers(["l21", "l22", "l12", "l13"], []), CARDS, TECHNOLOGIES);
+    expect(top(r.languages, 1)).toEqual(["racket"]);
+  });
+
+  it("Lisp: マクロと動的型付けは好きだが、文法は少なくなくてよい → Common Lisp", () => {
+    const r = recommend(answers(["l21", "l02"], ["l18"]), CARDS, TECHNOLOGIES);
+    expect(top(r.languages, 1)).toEqual(["common-lisp"]);
+  });
+
+  it("Lisp: 分野の好みだけで答えた人には、Lisp を 1 位にしない", () => {
+    for (const like of [["d01"], ["d02"], ["d01", "d02"], ["d03", "d04"], ["d09"], ["d12"], ["d14"], ["d18"]]) {
+      for (const level of [0, 5, 10]) {
+        const r = recommend(answers(like, []), CARDS, TECHNOLOGIES, { level });
+        expect(LISP, `${like.join(",")} LV.${level}`).not.toContain(top(r.languages, 1)[0]);
+      }
+    }
   });
 });

@@ -138,7 +138,7 @@ export function rank<T extends Technology>(
       const weightedTech = applyAxisWeights(tech.tagWeights, axisWeights);
       return {
         tech,
-        score: cosine(weightedPref, weightedTech),
+        score: matchScore(weightedPref, weightedTech, axisWeights.domain ?? 1),
         reasons: reasonsFor(weightedTech, liked, maxReasons, axisWeights),
       };
     })
@@ -196,20 +196,22 @@ export function recommend(
 ): Recommendation {
   const opt = { ...DEFAULTS, ...options };
   const pref = addPreference(buildPreference(answers, cards, opt.nopeFactor), beginnerPrior(opt.level, opt.beginnerBoost));
+  // 順位付けには、分野の「興味なし」を減点として使わない（興味がない ≠ 嫌い）
+  const rankingPref = withoutNegativeDomains(pref);
   const languages = rank(
     technologies.filter((t): t is Language => t.department === "language"),
-    pref, answers, cards, opt,
+    rankingPref, answers, cards, opt,
   );
   const frameworks = rank(
     technologies.filter((t): t is Framework => t.department === "framework"),
-    pref, answers, cards, opt,
+    rankingPref, answers, cards, opt,
   );
   const departments = DEPARTMENTS
     .map((department): DepartmentResult => {
       const ranked =
         department.id === "language" ? languages
         : department.id === "framework" ? frameworks
-        : rank(technologies.filter((t) => t.department === department.id), pref, answers, cards, opt);
+        : rank(technologies.filter((t) => t.department === department.id), rankingPref, answers, cards, opt);
       const interest = departmentInterest(department, pref);
       return { department, interest, featured: interest > 0, ranked };
     })
@@ -230,6 +232,53 @@ function likedCards(answers: Answer[], cards: FeatureCard[]): FeatureCard[] {
     .filter((a) => a.liked)
     .map((a) => byId.get(a.cardId))
     .filter((c): c is FeatureCard => c !== undefined);
+}
+
+/**
+ * 分野の軸のマイナスの好みを 0 にする。
+ * 分野のカードへの「興味なし」は「その分野に興味がない」という意味で、「嫌い」ではない。
+ * マイナスのまま使うと、分野のタグを多く持つ技術ほど減点され、分野のタグの少ない技術が
+ * 相対的に上位に来てしまう（Lisp を追加したときのシミュレーションでは、これをしないと初心者の約 20% で Lisp が 1 位になった）。
+ * 言語の性質などのカードは反対の好みをはっきり表す文なので、マイナスもそのまま使う。
+ */
+export function withoutNegativeDomains(pref: Preference): Preference {
+  const out: Preference = {};
+  for (const [tag, w] of entries(pref)) {
+    if (TAG_INFO[tag].axis === "domain" && w < 0) continue;
+    out[tag] = w;
+  }
+  return out;
+}
+
+/**
+ * スコア。分野のタグとそれ以外のタグで別々に類似度を求め、
+ * ユーザーの好みのベクトルの大きさ（どちらにどれだけ答えたか）で重み付けして平均する。
+ * - まとめて 1 つのコサイン類似度にすると、分野のタグが少ない技術ほど分母が小さくなり、
+ *   分野が合っていなくても性質だけで上位に来てしまう（分野のタグがほとんどない Lisp を追加したとき、
+ *   初心者の 38% で Lisp が 1 位になった）。分けて計算すれば、分野が合わない技術は分野の分の点数を得られない。
+ * - 分野の類似度では、技術の分野のベクトルの大きさを、最低でもタグ 1 つ分（domainUnit）とみなす。
+ *   0.5 の分野（公式のツールで対応している程度）しか持たない技術が、その分野の専門の技術と同じ点数にならないようにする。
+ * domainUnit には、重み 1 の分野のタグ 1 つの大きさ（分野の軸の重み）を渡す。
+ */
+export function matchScore(pref: TagWeights, tech: TagWeights, domainUnit = 1): number {
+  const [prefDomain, prefRest] = splitDomain(pref);
+  const [techDomain, techRest] = splitDomain(tech);
+  const nd = norm(prefDomain);
+  const nr = norm(prefRest);
+  if (nd + nr === 0) return 0;
+  const domainScore = nd === 0 ? 0 : dot(prefDomain, techDomain) / (nd * Math.max(norm(techDomain), domainUnit));
+  return (nd * domainScore + nr * cosine(prefRest, techRest)) / (nd + nr);
+}
+
+/** 分野の軸のタグと、それ以外のタグに分ける */
+function splitDomain(w: TagWeights): [TagWeights, TagWeights] {
+  const domain: TagWeights = {};
+  const rest: TagWeights = {};
+  for (const [tag, v] of entries(w)) {
+    if (TAG_INFO[tag].axis === "domain") domain[tag] = v;
+    else rest[tag] = v;
+  }
+  return [domain, rest];
 }
 
 function addPreference(a: Preference, b: Preference): Preference {

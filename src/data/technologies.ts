@@ -114,6 +114,28 @@ export const LANGUAGES: Language[] = [
     tagWeights: { "web-frontend": 0.5, "web-backend": 0.5, mobile: 1, ios: 0.5, android: 0.5, "cross-platform": 1, "static-typing": 1, "null-safety": 1, "native-compile": 1, gc: 1, concurrency: 0.5, functional: 1, oop: 1, "fast-feedback": 0.5 },
     resources: docs("https://dart.dev/language"),
   },
+  // Lisp 系の 3 つ（Issue #1 のリクエスト）。どれも homoiconic（コードをデータとして扱うマクロ）を持つ
+  {
+    department: "language", id: "clojure", name: "Clojure",
+    summary: "JVM の上で動く現代的な Lisp。変更できないデータを中心に、関数を組み合わせてプログラムを書く。",
+    tagWeights: { "web-frontend": 0.5, "static-typing": -1, gc: 1, concurrency: 0.5, functional: 0.5, oop: -1, "simple-syntax": 1, homoiconic: 1, "fast-feedback": 1, maturity: 1 },
+    resources: docs("https://clojure.org/guides/getting_started"),
+  },
+  {
+    department: "language", id: "common-lisp", name: "Common Lisp",
+    summary: "ANSI で標準化された、代表的な Lisp。マクロで言語そのものを拡張しながら、対話的に開発できる。",
+    tagWeights: { "static-typing": -0.5, gc: 1, functional: 0.5, "simple-syntax": -1, homoiconic: 1, "fast-feedback": 1, maturity: 1 },
+    resources: [
+      { title: "Common Lisp HyperSpec（規格書）", url: "https://www.lispworks.com/documentation/HyperSpec/Front/index.htm", official: false },
+      { title: "common-lisp.net", url: "https://common-lisp.net/", official: false },
+    ],
+  },
+  {
+    department: "language", id: "racket", name: "Racket",
+    summary: "Scheme の流れをくむ Lisp。強力なマクロで、自分専用の言語まで作れる。教育でも使われる。",
+    tagWeights: { "web-backend": 0.5, "static-typing": -0.5, gc: 1, concurrency: 1, functional: 1, homoiconic: 1, "fast-feedback": 1, maturity: 1 },
+    resources: docs("https://docs.racket-lang.org/getting-started/index.html"),
+  },
 ];
 
 export const FRAMEWORKS: Framework[] = [

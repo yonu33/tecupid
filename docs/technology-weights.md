@@ -11,23 +11,26 @@
 - 空欄: 0
 - ⚠: 判定に使った数や事実が未確認。公式の資料で確かめる（2026-11-22 時点で、すべて確認済み）
 
-## 1. 言語（13 件）
+## 1. 言語（16 件）
 
-| 言語 | web-frontend | web-backend | mobile | systems | data-ai | cross-platform | static-typing | null-safety | native-compile | gc | concurrency | functional | oop | simple-syntax | fast-feedback | maturity |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| JavaScript | 1 | 1 | | | | | −1 | | −1 | 1 | 0.5 | | | | 1 | 1 |
-| TypeScript | 1 | 1 | | | | | 1 | 0.5 | −1 | 1 | 0.5 | 0.5 | | | 0.5 | |
-| Python | | 1 | | | 1 | | −0.5 | | −1 | 1 | 0.5 | 0.5 | 1 | 1 | 1 | 1 |
-| Java | | 1 | 0.5 | | | | 1 | | | 1 | 0.5 | 1 | 1 | | 1 | 1 |
-| C# | 0.5 | 1 | 0.5 | | 0.5 | 1 | 1 | 0.5 | | 1 | 0.5 | 1 | 1 | −1 | 1 | 1 |
-| Go | | 1 | | | | | 1 | | 1 | 1 | 1 | | −1 | 1 | | |
-| Rust | 0.5 | 0.5 | | 1 | | | 1 | 1 | 1 | −1 | 1 | 1 | −1 | | | |
-| Kotlin | 0.5 | 1 | 1 | | 0.5 | 1 | 1 | 1 | | 1 | 0.5 | 1 | 1 | −1 | 1 | |
-| Swift | | 0.5 | 1 | 0.5 | | | 1 | 1 | 1 | 0.5 | 1 | 1 | | −1 | 1 | |
-| PHP | | 1 | | | | | −0.5 | | −1 | 1 | | 0.5 | | −1 | 1 | 1 |
-| Ruby | | 1 | | | | | −0.5 | | −1 | 1 | | 1 | 1 | | 1 | 1 |
-| C++ | | | | 1 | | | 1 | | 1 | −1 | 0.5 | | | −1 | | 1 |
-| Dart | 0.5 | 0.5 | 1 | | | 1 | 1 | 1 | 1 | 1 | 0.5 | 1 | 1 | | 0.5 | |
+| 言語 | web-frontend | web-backend | mobile | systems | data-ai | cross-platform | static-typing | null-safety | native-compile | gc | concurrency | functional | oop | simple-syntax | fast-feedback | maturity | homoiconic |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| JavaScript | 1 | 1 | | | | | −1 | | −1 | 1 | 0.5 | | | | 1 | 1 | |
+| TypeScript | 1 | 1 | | | | | 1 | 0.5 | −1 | 1 | 0.5 | 0.5 | | | 0.5 | | |
+| Python | | 1 | | | 1 | | −0.5 | | −1 | 1 | 0.5 | 0.5 | 1 | 1 | 1 | 1 | |
+| Java | | 1 | 0.5 | | | | 1 | | | 1 | 0.5 | 1 | 1 | | 1 | 1 | |
+| C# | 0.5 | 1 | 0.5 | | 0.5 | 1 | 1 | 0.5 | | 1 | 0.5 | 1 | 1 | −1 | 1 | 1 | |
+| Go | | 1 | | | | | 1 | | 1 | 1 | 1 | | −1 | 1 | | | |
+| Rust | 0.5 | 0.5 | | 1 | | | 1 | 1 | 1 | −1 | 1 | 1 | −1 | | | | |
+| Kotlin | 0.5 | 1 | 1 | | 0.5 | 1 | 1 | 1 | | 1 | 0.5 | 1 | 1 | −1 | 1 | | |
+| Swift | | 0.5 | 1 | 0.5 | | | 1 | 1 | 1 | 0.5 | 1 | 1 | | −1 | 1 | | |
+| PHP | | 1 | | | | | −0.5 | | −1 | 1 | | 0.5 | | −1 | 1 | 1 | |
+| Ruby | | 1 | | | | | −0.5 | | −1 | 1 | | 1 | 1 | | 1 | 1 | |
+| C++ | | | | 1 | | | 1 | | 1 | −1 | 0.5 | | | −1 | | 1 | |
+| Dart | 0.5 | 0.5 | 1 | | | 1 | 1 | 1 | 1 | 1 | 0.5 | 1 | 1 | | 0.5 | | |
+| Clojure | 0.5 | | | | | | −1 | | | 1 | 0.5 | 0.5 | −1 | 1 | 1 | 1 | 1 |
+| Common Lisp | | | | | | | −0.5 | | | 1 | | 0.5 | | −1 | 1 | 1 | 1 |
+| Racket | | 0.5 | | | | | −0.5 | | | 1 | 1 | 1 | | | 1 | 1 | 1 |
 
 ### 1.1 判定のメモ
 
@@ -66,6 +69,21 @@
   - 70 個以上: C#、C++、Kotlin、Swift
   - 公式の一覧で数え直した（2026-11-22）: PHP は 71 語なので −1。Dart は 67 語なので 0。
   - TypeScript は公式のキーワード一覧がない（言語仕様書も更新が止まっている）ため、基準で決まらないものとして 0 にした。
+  - Lisp 系はキーワードを持たないので、言語仕様が再定義を禁じている名前を数える。Clojure は特殊形式の 16 個なので 1。Common Lisp は、COMMON-LISP パッケージの 978 個の名前すべてについて、規格に従うプログラムでは再定義できないと規格が定めている（HyperSpec 11.1.2.1.2）ので −1。Racket は `if` なども含めてすべての名前を再定義できて、一覧がないので 0。
+  - 特殊形式の数で数えると 3 つとも 1 になるが、Common Lisp は 978 個の名前すべてが言語仕様の一部なので、仕様が小さいとは言えない。
+
+- homoiconic: Clojure、Common Lisp、Racket は、コードをリスト（S 式）で表し、それを変換するマクロが言語仕様にあるので 1。Rust の `macro_rules!` や C++ のテンプレートは、コードを言語のデータ構造として扱うわけではないので 0。
+
+**Lisp 系（Issue #1 で追加）**
+
+- 分野: Clojure は、公式の ClojureScript で JavaScript に変換できるので web-frontend が 0.5。Racket は、Web サーバーのライブラリ（`web-server`）が本体と一緒に配布されているので web-backend が 0.5。Common Lisp は、規格だけで公式の実装やライブラリがないので、分野のタグはない。
+- static-typing: Clojure は動的型付けで、型ヒント（`^String`）は Java との連携と速度のためのもので型の検査はしないので −1。Common Lisp は規格に型宣言（`declare`、`the`）があり、Racket には公式の Typed Racket があるので −0.5。
+- native-compile: Clojure は JVM のバイトコード、Common Lisp は規格で決まっていない（実装による）、Racket は読み込むときにコンパイルするのが標準なので、3 つとも 0。
+- concurrency: Racket は、スレッドどうしでメッセージを送り合う仕組み（`thread-send`、`thread-receive`）と place が標準にあるので 1。Clojure は STM（`dosync`）や `future` が標準にあるので 0.5（チャネルは core.async というライブラリ）。Common Lisp は規格に並行処理がないので 0。
+- functional: Racket は、パターンマッチ（`match`）と式指向の 2 つがあるので 1。Clojure と Common Lisp は式指向だけ（パターンマッチはライブラリ）なので 0.5。
+- oop: Clojure はクラスも継承もない（`defrecord` に継承はない）ので −1。Common Lisp（CLOS）と Racket（`racket/class`）は、クラスと継承があるが必須ではないので 0。
+- fast-feedback: 3 つとも公式の REPL があるので 1。
+- maturity（1.0 の年）: Clojure 2009、Common Lisp 1994（ANSI 規格）、Racket 2010（PLT Scheme から改名。PLT Scheme は 1995 年から）なので、3 つとも 1。
 
 **開発環境とエコシステム**
 
@@ -77,7 +95,7 @@
   - 2011 年以前で 1: JavaScript 1995、Python 1994、Java 1996、C# 2002、PHP 1995、Ruby 1996、C++ 1985
   - その間で 0: TypeScript 2014、Go 2012、Rust 2015、Kotlin 2016、Swift 2014、Dart 2013
 
-## 2. フレームワーク（13 件）
+## 2. フレームワーク（16 件）
 
 | フレームワーク | 言語 | web-frontend | web-backend | mobile | cross-platform | full-stack | batteries-included | template-syntax | compile-time-ui | fast-feedback | maturity |
 |---|---|---|---|---|---|---|---|---|---|---|---|

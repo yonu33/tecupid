@@ -27,6 +27,7 @@ export const TAGS = [
   "functional",
   "oop",
   "simple-syntax",
+  "homoiconic",
   // フレームワークの性質
   "batteries-included",
   "template-syntax",
@@ -106,6 +107,7 @@ export const TAG_INFO: Record<Tag, TagInfo> = {
   functional: { label: "関数型", axis: "language", appliesTo: ["language"] },
   oop: { label: "オブジェクト指向", axis: "language", appliesTo: ["language"] },
   "simple-syntax": { label: "小さな言語仕様", axis: "language", appliesTo: ["language"] },
+  homoiconic: { label: "コードはデータ（マクロ）", axis: "language", appliesTo: ["language"] },
   "batteries-included": { label: "全部入り", axis: "framework", appliesTo: ["framework"] },
   "template-syntax": { label: "HTML テンプレート", axis: "framework", appliesTo: ["framework"] },
   "compile-time-ui": { label: "ビルド時コンパイル", axis: "framework", appliesTo: ["framework"] },

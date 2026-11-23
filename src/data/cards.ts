@@ -112,6 +112,8 @@ export const CARDS: FeatureCard[] = [
   { id: "l17", axis: "language", text: "クラスや継承を使わずに、データと関数を分けて書きたい", tags: { oop: -1, functional: 0.5 } },
   { id: "l18", axis: "language", text: "言語の文法は少ないほうがいい。覚えることが少ないから", tags: { "simple-syntax": 1 } },
   { id: "l19", axis: "language", text: "誰が書いても似たようなコードになる言語がいい", example: "書き方の選択肢が少なく、他人のコードも読みやすい", tags: { "simple-syntax": 1 } },
+  { id: "l21", axis: "language", advanced: true, text: "コードそのものをデータとして扱って、言語を自分好みに拡張できるのに惹かれる", example: "マクロで、新しい書き方（構文）を自分で作れる", tags: { homoiconic: 1 } },
+  { id: "l22", axis: "language", text: "少ない決まりごとを組み合わせるだけで、すべてを組み立てる美しさに惹かれる", example: "関数の呼び出しも制御の書き方も、同じかっこの形で書くなど", tags: { "simple-syntax": 1, homoiconic: 0.5, functional: 0.5 } },
   { id: "l20", axis: "language", text: "構文や機能が多くても、使い分けて短く書けるほうがいい", tags: { "simple-syntax": -1 } },
 
   // フレームワークの性質
