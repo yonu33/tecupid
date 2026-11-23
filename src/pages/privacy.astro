@@ -1,8 +1,9 @@
 ---
 import DocLayout from "../layouts/DocLayout.astro";
+import { LEGAL_DATES } from "../lib/legal-dates";
 ---
 
-<DocLayout title="プライバシーポリシー" description="tecupid のプライバシーポリシーです。" sources={["src/pages/privacy.astro"]}>
+<DocLayout title="プライバシーポリシー" description="tecupid のプライバシーポリシーです。" updated={LEGAL_DATES.privacy.updated}>
 	<p>yonu33（以下「運営者」）は、tecupid（以下「本サービス」）での利用者の情報を、次のとおり取り扱います。</p>
 
 	<h2>取得する情報</h2>

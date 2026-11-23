@@ -1,8 +1,9 @@
 ---
 import DocLayout from "../layouts/DocLayout.astro";
+import { LEGAL_DATES } from "../lib/legal-dates";
 ---
 
-<DocLayout title="免責事項" description="tecupid の免責事項です。" sources={["src/pages/disclaimer.astro"]}>
+<DocLayout title="免責事項" description="tecupid の免責事項です。" updated={LEGAL_DATES.disclaimer.updated}>
 	<p>tecupid（以下「本サービス」）を利用するにあたり、次の点をご了承ください。</p>
 
 	<h2>推薦の結果について</h2>

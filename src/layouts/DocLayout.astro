@@ -6,15 +6,17 @@ import { lastUpdated } from "../lib/last-updated";
 interface Props {
   title: string;
   description?: string;
+  /** 手で決めた最終更新日（YYYY-MM-DD）。規約の類で使う（src/lib/legal-dates.ts） */
+  updated?: string;
   /**
-   * ページの中身が書かれたファイル（リポジトリのルートからの相対パス）。
-   * 最終更新日は、このうち最も新しく変更された日を git の履歴から求める
+   * ページの中身が書かれたファイル（リポジトリのルートからの相対パス）。updated がなければ、
+   * このうち最も新しく変更された日を、最終更新日として git の履歴から求める
    */
-  sources: string[];
+  sources?: string[];
 }
 
-const { title, description, sources } = Astro.props;
-const updated = lastUpdated(...sources);
+const { title, description, sources = [] } = Astro.props;
+const updated = Astro.props.updated ?? lastUpdated(...sources);
 ---
 
 <BaseLayout title={title} description={description}>

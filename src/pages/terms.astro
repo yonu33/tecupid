@@ -1,8 +1,9 @@
 ---
 import DocLayout from "../layouts/DocLayout.astro";
+import { LEGAL_DATES } from "../lib/legal-dates";
 ---
 
-<DocLayout title="利用規約" description="tecupid の利用規約です。" sources={["src/pages/terms.astro"]}>
+<DocLayout title="利用規約" description="tecupid の利用規約です。" updated={LEGAL_DATES.terms.updated}>
 	<p>
 		この利用規約（以下「本規約」）は、yonu33（以下「運営者」）が提供する tecupid（以下「本サービス」）の利用条件を定めるものです。本サービスを利用した時点で、本規約に同意したものとみなします。
 	</p>
