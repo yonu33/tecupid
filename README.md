@@ -10,6 +10,8 @@
 
 Node.js 22.23.4 以上が必要です。
 
+`package-lock.json` を更新するときは、新しい npm（11.19 以降）を使ってください。古い npm で作ると記録が足りず、CI の `npm ci` が失敗します。
+
 ```sh
 npm install
 npm run dev        # 開発サーバー（http://localhost:4321）
